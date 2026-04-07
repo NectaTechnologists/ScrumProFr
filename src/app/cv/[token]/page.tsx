@@ -1,17 +1,25 @@
 export const dynamic = 'force-dynamic'
 
-import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
+
+async function getPlayer(token: string) {
+  const url = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/players?share_token=eq.${token}&select=*`
+  
+  const res = await fetch(url, {
+    headers: {
+      'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!}`,
+    },
+    cache: 'no-store'
+  })
+  
+  const data = await res.json()
+  return data?.[0] || null
+}
 
 export default async function CVPage(props: any) {
   const token = props.params.token
-  const supabase = await createClient()
-
-  const { data: player } = await supabase
-    .from('players')
-    .select('*')
-    .eq('share_token', token)
-    .single()
+  const player = await getPlayer(token)
 
   if (!player) notFound()
 
@@ -67,29 +75,4 @@ export default async function CVPage(props: any) {
           </div>
         )}
         <div style={{ background: 'white', borderRadius: '12px', padding: '20px 24px', border: '1px solid #E8E4F0', marginBottom: '16px' }}>
-          <div style={{ fontSize: '11px', fontWeight: '700', color: '#9890b0', letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '14px' }}>Player Details</div>
-          {[
-            { k: 'Primary Position', v: player.position_primary?.replace(/_/g, ' ') },
-            { k: 'Secondary Position', v: player.position_secondary?.replace(/_/g, ' ') || '—' },
-            { k: 'Nationality', v: player.nationality_primary || '—' },
-            { k: 'School', v: player.school_attended || '—' },
-            { k: 'Height', v: player.height_cm ? `${player.height_cm} cm` : '—' },
-            { k: 'Weight', v: player.weight_kg ? `${player.weight_kg} kg` : '—' },
-          ].map(row => (
-            <div key={row.k} style={{ display: 'flex', justifyContent: 'space-between', padding: '9px 0', borderBottom: '1px solid #F5F5F7', fontSize: '13px' }}>
-              <span style={{ color: '#9890b0' }}>{row.k}</span>
-              <span style={{ fontWeight: '600', color: '#241637' }}>{row.v}</span>
-            </div>
-          ))}
-        </div>
-        <div style={{ background: 'white', borderRadius: '12px', padding: '20px 24px', border: '1px solid #E8E4F0', textAlign: 'center' }}>
-          <p style={{ fontSize: '13px', color: '#9890b0', marginBottom: '14px' }}>Interested in this player? Contact details are kept secure.</p>
-          <a href={`mailto:?subject=ScrumPro - ${player.first_name} ${player.last_name}&body=I am interested in this player.`}
-            style={{ display: 'inline-block', background: '#9437EA', color: 'white', padding: '12px 28px', borderRadius: '8px', fontWeight: '600', fontSize: '14px', textDecoration: 'none' }}>
-            ✉ Contact This Player
-          </a>
-        </div>
-      </div>
-    </div>
-  )
-}
+          <div style={{ fontSize: '11px', fontWeight: '700', color: '#9890b0', letterSpacing: '
