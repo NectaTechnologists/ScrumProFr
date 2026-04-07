@@ -114,7 +114,7 @@ export default async function CVPage({
             href={`mailto:?subject=ScrumPro - ${player.first_name} ${player.last_name}&body=I am interested in this player. Please get in touch.`}
             style={{ display: 'inline-block', background: '#9437EA', color: 'white', padding: '12px 28px', borderRadius: '8px', fontWeight: '600', fontSize: '14px', textDecoration: 'none' }}
           >
-            ✉ Contact This Player
+            ✉ Contact This Player 
           </a>
         </div>
       </div>
