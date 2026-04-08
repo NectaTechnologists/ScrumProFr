@@ -118,11 +118,7 @@ export default async function CVPage(props: any) {
             Interested in this player? Contact details are kept secure.
           </p>
           
-            href="mailto:?subject=ScrumPro&body=I am interested in this player."
-            style={{ display: 'inline-block', background: '#9437EA', color: 'white', padding: '12px 28px', borderRadius: '8px', fontWeight: '600', fontSize: '14px', textDecoration: 'none' }}
-          >
-            Contact This Player
-          </a>
+            <a href="mailto:?subject=ScrumPro&body=I am interested." style={{ display: 'inline-block', background: '#9437EA', color: 'white', padding: '12px 28px', borderRadius: '8px', fontWeight: '600', fontSize: '14px', textDecoration: 'none' }}>Contact This Player</a>
         </div>
 
       </div>
