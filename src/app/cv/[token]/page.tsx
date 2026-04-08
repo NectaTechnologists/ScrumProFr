@@ -18,7 +18,13 @@ async function getPlayer(token: string) {
 export default async function CVPage(props: any) {
   const token = props.params.token
   const player = await getPlayer(token)
-  if (!player) notFound()
+  if (!player) return (
+    <div style={{ padding: '40px', fontFamily: 'system-ui' }}>
+      <h1>Player not found</h1>
+      <p>Token: {token}</p>
+      <p>URL: {process.env.NEXT_PUBLIC_SUPABASE_URL}</p>
+    </div>
+  )
 
   const age = player.date_of_birth
     ? Math.floor((new Date().getTime() - new Date(player.date_of_birth).getTime()) / 31557600000)
