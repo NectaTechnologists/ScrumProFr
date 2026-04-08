@@ -16,7 +16,8 @@ async function getPlayer(token: string) {
 }
 
 export default async function CVPage(props: any) {
-  const token = props.params.token
+  const params = await props.params
+  const token = params.token
   const player = await getPlayer(token)
   if (!player) return (
     <div style={{ padding: '40px', fontFamily: 'system-ui' }}>
