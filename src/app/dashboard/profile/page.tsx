@@ -129,6 +129,11 @@ export default function ProfilePage() {
   return (
     <div style={{ minHeight: '100vh', background: '#F1EFE8', fontFamily: 'system-ui' }}>
       <div style={{ background: '#0D1B2E', padding: '0 28px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <svg width="32" height="30" viewBox="0 0 32 30" style={{ display:'block' }}>
+  <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
+  <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
+  <line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
+</svg>
         <span style={{ color: 'white', fontWeight: '700', fontSize: '18px' }}>
           GAIN<span style={{ color: '#1D9E75' }}>LINE</span>
         </span>
