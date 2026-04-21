@@ -130,7 +130,7 @@ export default function ProfilePage() {
     <div style={{ minHeight: '100vh', background: '#F1EFE8', fontFamily: 'system-ui' }}>
       <div style={{ background: '#0D1B2E', padding: '0 28px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <span style={{ color: 'white', fontWeight: '700', fontSize: '18px' }}>
-          Scrum<span style={{ color: '#1D9E75' }}>Pro</span>
+          GAIN<span style={{ color: '#1D9E75' }}>LINE</span>
         </span>
         <button onClick={() => router.push('/dashboard')}
           style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', fontSize: '14px' }}>
@@ -227,7 +227,7 @@ export default function ProfilePage() {
           </div>
 
           <button type="submit" disabled={loading}
-            style={{ width: '100%', padding: '12px', background: '#9437EA', color: 'white', border: 'none', borderRadius: '8px', fontSize: '14px', fontWeight: '600', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1 }}>
+            style={{ width: '100%', padding: '12px', background: '#1D9E75', color: 'white', border: 'none', borderRadius: '8px', fontSize: '14px', fontWeight: '600', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1 }}>
             {loading ? 'Saving...' : saved ? '✓ Saved!' : 'Save Profile'}
           </button>
         </form>
