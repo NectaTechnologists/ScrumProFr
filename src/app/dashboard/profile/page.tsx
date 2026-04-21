@@ -123,14 +123,14 @@ export default function ProfilePage() {
 
   const label = {
     display: 'block', fontSize: '13px',
-    fontWeight: '600', color: '#241637', marginBottom: '6px'
+    fontWeight: '600', color: '#0D1B2E', marginBottom: '6px'
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#F5F5F7', fontFamily: 'system-ui' }}>
-      <div style={{ background: '#241637', padding: '0 28px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+    <div style={{ minHeight: '100vh', background: '#F1EFE8', fontFamily: 'system-ui' }}>
+      <div style={{ background: '#0D1B2E', padding: '0 28px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <span style={{ color: 'white', fontWeight: '700', fontSize: '18px' }}>
-          Scrum<span style={{ color: '#3CB5FE' }}>Pro</span>
+          Scrum<span style={{ color: '#1D9E75' }}>Pro</span>
         </span>
         <button onClick={() => router.push('/dashboard')}
           style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', fontSize: '14px' }}>
@@ -139,22 +139,22 @@ export default function ProfilePage() {
       </div>
 
       <div style={{ maxWidth: '700px', margin: '0 auto', padding: '32px 20px' }}>
-        <h1 style={{ fontSize: '24px', fontWeight: '700', color: '#241637', marginBottom: '6px' }}>
+        <h1 style={{ fontSize: '24px', fontWeight: '700', color: '#0D1B2E', marginBottom: '6px' }}>
           My Rugby Profile
         </h1>
-        <p style={{ color: '#9890b0', marginBottom: '28px', fontSize: '14px' }}>
+        <p style={{ color: '#888780', marginBottom: '28px', fontSize: '14px' }}>
           Fill in your details to build your shareable Rugby CV
         </p>
 
         {shareUrl && (
           <div style={{ background: 'rgba(60,181,254,0.08)', border: '1px solid rgba(60,181,254,0.3)', borderRadius: '10px', padding: '16px 20px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: '12px', fontWeight: '700', color: '#3CB5FE', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '1px' }}>Your shareable CV link</div>
-              <div style={{ fontSize: '13px', color: '#241637', fontFamily: 'monospace' }}>{shareUrl}</div>
+              <div style={{ fontSize: '12px', fontWeight: '700', color: '#1D9E75', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '1px' }}>Your shareable CV link</div>
+              <div style={{ fontSize: '13px', color: '#0D1B2E', fontFamily: 'monospace' }}>{shareUrl}</div>
             </div>
             <button
               onClick={() => { navigator.clipboard.writeText(shareUrl); alert('Link copied!') }}
-              style={{ background: '#3CB5FE', color: 'white', border: 'none', borderRadius: '6px', padding: '8px 16px', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>
+              style={{ background: '#1D9E75', color: 'white', border: 'none', borderRadius: '6px', padding: '8px 16px', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>
               Copy Link
             </button>
           </div>
