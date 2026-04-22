@@ -139,8 +139,6 @@ export default function ProfilePage() {
     GAIN<span style={{ color:'#1D9E75' }}>LINE</span>
   </span>
 </div>
-  </span>
-</div>
         <button onClick={() => router.push('/dashboard')}
           style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', fontSize: '14px' }}>
           ← Back to Dashboard
