@@ -100,8 +100,8 @@ export default async function CVPage(props: any) {
         <div className="cv-nav-right">
           <span className="cv-nav-label" id="cv-nav-label">PLAYER CV</span>
           <div className="lang-toggle">
-            <button className="lang-btn" id="btn-en" onClick={() => {}} title="English">🇬🇧</button>
-            <button className="lang-btn" id="btn-fr" onClick={() => {}} title="Français">🇫🇷</button>
+            <button className="lang-btn" id="btn-en" title="English">🇬🇧</button>
+            <button className="lang-btn" id="btn-fr" title="Français">🇫🇷</button>
           </div>
         </div>
       </nav>
