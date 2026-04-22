@@ -22,7 +22,7 @@ export default function LoginPage() {
       if (error) { setMessage(error.message) } else { setMessage('Check your email to confirm your account!') }
     } else {
       const { error } = await supabase.auth.signInWithPassword({ email, password })
-      if (error) { setMessage(error.message) } else { router.push('/dashboard') }
+      if (error) {    setMessage(error.message)  } else {   // Check profile role and redirect accordingly   const { data: profile } = await supabase     .from('profiles')     .select('role')     .eq('id', (await supabase.auth.getUser()).data.user?.id || '')     .single()      if (profile?.role === 'org_user') {     router.push('/dashboard/coach')   } else {     router.push('/dashboard')   } }
     }
     setLoading(false)
   }
