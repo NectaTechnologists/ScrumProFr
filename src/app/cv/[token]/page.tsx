@@ -177,7 +177,7 @@ export default async function CVPage(props: any) {
               ].filter(v => v.url).map((v, i) => (
                 
                   key={i}
-                  href={v.url}
+                  href={v.url as string}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
