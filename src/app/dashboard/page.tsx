@@ -1,16 +1,50 @@
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
+'use client'
 
-export default async function DashboardPage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+import { useState, useEffect } from 'react'
+import { createClient } from '@/lib/supabase/client'
+import { useRouter } from 'next/navigation'
+import { t, Lang } from '@/lib/translations'
 
-  if (!user) redirect('/login')
+const FLAG_EN = '🇬🇧'
+const FLAG_FR = '🇫🇷'
+
+export default function DashboardPage() {
+  const supabase = createClient()
+  const router = useRouter()
+  const [user, setUser] = useState<any>(null)
+  const [lang, setLang] = useState<Lang>('en')
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const saved = localStorage.getItem('gainline_lang') as Lang
+    if (saved === 'en' || saved === 'fr') setLang(saved)
+
+    async function load() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) { router.push('/login'); return }
+      setUser(user)
+      setLoading(false)
+    }
+    load()
+  }, [])
+
+  function toggleLang(l: Lang) {
+    setLang(l)
+    localStorage.setItem('gainline_lang', l)
+  }
+
+  const T = t[lang]
+
+  if (loading) return (
+    <div style={{ minHeight: '100vh', background: '#F1EFE8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ fontFamily: 'Arial', color: '#888780', fontSize: '14px' }}>Loading...</div>
+    </div>
+  )
 
   const cards = [
-    { titleKey: 'dashboard_card_profile', descKey: 'dashboard_card_profile_desc', color: '#1D9E75', href: '/dashboard/profile' },
-    { titleKey: 'dashboard_card_docs', descKey: 'dashboard_card_docs_desc', color: '#0F6E56', href: '/dashboard/profile' },
-    { titleKey: 'dashboard_card_media', descKey: 'dashboard_card_media_desc', color: '#0D1B2E', href: '/dashboard/profile' },
+    { title: T.dashboard_card_profile, desc: T.dashboard_card_profile_desc, color: '#1D9E75', href: '/dashboard/profile' },
+    { title: T.dashboard_card_docs, desc: T.dashboard_card_docs_desc, color: '#0F6E56', href: '/dashboard/profile' },
+    { title: T.dashboard_card_media, desc: T.dashboard_card_media_desc, color: '#0D1B2E', href: '/dashboard/profile' },
   ]
 
   return (
@@ -21,12 +55,12 @@ export default async function DashboardPage() {
         .dash-nav { background: #0D1B2E; padding: 0 28px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
         .dash-logo { display: flex; align-items: center; gap: 10px; }
         .dash-logo-text { color: white; font-weight: 900; font-size: 20px; letter-spacing: -0.5px; font-family: 'Arial Black', Arial, sans-serif; }
-        .dash-nav-right { display: flex; align-items: center; gap: 16px; }
+        .dash-nav-right { display: flex; align-items: center; gap: 12px; }
         .dash-email { color: rgba(255,255,255,0.5); font-size: 13px; }
-        .signout-btn { background: transparent; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); padding: 7px 16px; border-radius: 6px; font-size: 13px; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; }
         .lang-toggle { display: flex; gap: 2px; background: rgba(255,255,255,0.08); padding: 3px; border-radius: 8px; }
         .lang-btn { background: transparent; border: none; cursor: pointer; font-size: 16px; width: 30px; height: 26px; border-radius: 5px; display: flex; align-items: center; justify-content: center; }
         .lang-btn-active { background: rgba(255,255,255,0.15); }
+        .signout-btn { background: transparent; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); padding: 7px 16px; border-radius: 6px; font-size: 13px; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; }
         .dash-content { padding: 48px 28px; max-width: 900px; margin: 0 auto; }
         .dash-title { font-size: 28px; font-weight: 900; color: #0D1B2E; margin-bottom: 8px; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -0.5px; }
         .dash-subtitle { color: #5F5E5A; margin-bottom: 36px; font-size: 15px; }
@@ -63,21 +97,23 @@ export default async function DashboardPage() {
           <span className="dash-logo-text">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
         </div>
         <div className="dash-nav-right">
-          <span className="dash-email">{user.email}</span>
-          {/* Lang toggle handled client-side via DashboardClient */}
+          <span className="dash-email">{user?.email}</span>
+          <div className="lang-toggle">
+            <button className={`lang-btn ${lang === 'en' ? 'lang-btn-active' : ''}`} onClick={() => toggleLang('en')}>{FLAG_EN}</button>
+            <button className={`lang-btn ${lang === 'fr' ? 'lang-btn-active' : ''}`} onClick={() => toggleLang('fr')}>{FLAG_FR}</button>
+          </div>
           <form action="/auth/signout" method="post">
-            <button type="submit" className="signout-btn" id="signout-btn">Sign out</button>
+            <button type="submit" className="signout-btn">{T.nav_sign_out}</button>
           </form>
         </div>
       </nav>
 
       <div className="dash-content">
-        <h1 className="dash-title" id="dash-title">Welcome to Gainline</h1>
-        <p className="dash-subtitle" id="dash-subtitle">Logged in as <strong>{user.email}</strong></p>
-
+        <h1 className="dash-title">{T.dashboard_welcome}</h1>
+        <p className="dash-subtitle">{T.dashboard_logged_in} <strong>{user?.email}</strong></p>
         <div className="dash-grid">
-          {cards.map((card, i) => (
-            <a key={i} href={card.href} className="dash-card">
+          {cards.map(card => (
+            <a key={card.title} href={card.href} className="dash-card">
               <div className="dash-card-icon">
                 <svg width="18" height="18" viewBox="0 0 18 18">
                   <line x1="3" y1="16" x2="6" y2="5" stroke="#1D9E75" strokeWidth="2.5" strokeLinecap="round" opacity="0.35"/>
@@ -86,66 +122,14 @@ export default async function DashboardPage() {
                 </svg>
               </div>
               <div>
-                <div className="dash-card-title" id={`card-title-${i}`}>
-                  {i === 0 ? 'My Rugby Profile' : i === 1 ? 'Documents' : 'Media Gallery'}
-                </div>
-                <div className="dash-card-desc" id={`card-desc-${i}`}>
-                  {i === 0 ? 'Build and share your digital player CV' : i === 1 ? 'Upload and manage your certificates and passport' : 'Add match photos and highlight videos'}
-                </div>
-                <span className="dash-card-btn" style={{ background: card.color }} id={`card-btn-${i}`}>Open →</span>
+                <div className="dash-card-title">{card.title}</div>
+                <div className="dash-card-desc">{card.desc}</div>
+                <span className="dash-card-btn" style={{ background: card.color }}>{T.dashboard_open}</span>
               </div>
             </a>
           ))}
         </div>
       </div>
-
-      {/* Client-side language script */}
-      <script dangerouslySetInnerHTML={{ __html: `
-        (function() {
-          var lang = localStorage.getItem('gainline_lang') || 'en';
-          var T = {
-            en: {
-              welcome: 'Welcome to Gainline',
-              logged_in: 'Logged in as',
-              signout: 'Sign out',
-              card0_title: 'My Rugby Profile',
-              card0_desc: 'Build and share your digital player CV',
-              card1_title: 'Documents',
-              card1_desc: 'Upload and manage your certificates and passport',
-              card2_title: 'Media Gallery',
-              card2_desc: 'Add match photos and highlight videos',
-              open: 'Open →'
-            },
-            fr: {
-              welcome: 'Bienvenue sur Gainline',
-              logged_in: 'Connecté en tant que',
-              signout: 'Se déconnecter',
-              card0_title: 'Mon profil rugby',
-              card0_desc: 'Créez et partagez votre CV joueur numérique',
-              card1_title: 'Documents',
-              card1_desc: 'Téléversez et gérez vos certificats et passeport',
-              card2_title: 'Galerie médias',
-              card2_desc: 'Ajoutez des photos de matchs et vidéos de highlights',
-              open: 'Ouvrir →'
-            }
-          };
-          var translations = T[lang] || T.en;
-          document.addEventListener('DOMContentLoaded', function() {
-            var title = document.getElementById('dash-title');
-            if (title) title.innerHTML = translations.welcome;
-            var signout = document.getElementById('signout-btn');
-            if (signout) signout.textContent = translations.signout;
-            for (var i = 0; i < 3; i++) {
-              var ct = document.getElementById('card-title-' + i);
-              var cd = document.getElementById('card-desc-' + i);
-              var cb = document.getElementById('card-btn-' + i);
-              if (ct) ct.textContent = translations['card' + i + '_title'];
-              if (cd) cd.textContent = translations['card' + i + '_desc'];
-              if (cb) cb.textContent = translations.open;
-            }
-          });
-        })();
-      `}} />
     </>
   )
 }
