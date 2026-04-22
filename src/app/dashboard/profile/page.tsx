@@ -249,7 +249,13 @@ export default function ProfilePage() {
           outline: none;
           font-family: system-ui;
           background: white;
-        }
+          color: #0D1B2E;
+          -webkit-text-fill-color: #0D1B2E;
+          appearance: none;
+          -webkit-appearance: none;
+        }  
+        .form-input::placeholder { color: #B4B2A9; -webkit-text-fill-color: #B4B2A9; }
+        .form-textarea::placeholder { color: #B4B2A9; -webkit-text-fill-color: #B4B2A9; }
 
         .form-input:focus { border-color: #1D9E75; }
 
