@@ -31,101 +31,113 @@ export default async function CVPage(props: any) {
     ? Math.floor((new Date().getTime() - new Date(player.date_of_birth).getTime()) / 31557600000)
     : null
 
-  const pos = (s: string) => s?.replace(/_/g, ' ') || '—'
+  const pos = (s: string) => s?.replace(/_/g, ' ') || '–'
+
+  const initials = [player.first_name?.[0], player.last_name?.[0]].filter(Boolean).join('')
 
   return (
-    <div style={{ minHeight: '100vh', background: '#F5F5F7', fontFamily: 'system-ui' }}>
+    <div style={{ minHeight: '100vh', background: '#F1EFE8', fontFamily: 'system-ui' }}>
 
-      <div style={{ background: '#241637', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <span style={{ color: 'white', fontWeight: '700', fontSize: '18px' }}>
-          Scrum<span style={{ color: '#3CB5FE' }}>Pro</span>
-        </span>
-        <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '12px' }}>Player CV</span>
+      {/* NAV */}
+      <div style={{ background: '#0D1B2E', padding: '0 28px', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <svg width="32" height="30" viewBox="0 0 32 30" style={{ display: 'block' }}>
+            <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
+            <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
+            <line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
+          </svg>
+          <span style={{ color: 'white', fontWeight: '900', fontSize: '18px', letterSpacing: '-0.5px', fontFamily: 'Arial Black, Arial, sans-serif' }}>
+            GAIN<span style={{ color: '#1D9E75' }}>LINE</span>
+          </span>
+        </div>
+        <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '12px', letterSpacing: '0.1em' }}>PLAYER CV</span>
       </div>
 
-      <div style={{ background: '#241637', padding: '32px 24px 28px' }}>
-        <div style={{ maxWidth: '700px', margin: '0 auto' }}>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '24px' }}>
-            <div style={{ width: '80px', height: '80px', borderRadius: '14px', background: 'linear-gradient(135deg,#9437EA,#3CB5FE)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '28px', fontWeight: '700', color: 'white' }}>
-              {player.first_name?.[0]}{player.last_name?.[0]}
-            </div>
-            <div>
-              <h1 style={{ color: 'white', fontSize: '26px', fontWeight: '700', margin: '0 0 8px' }}>
-                {player.first_name} {player.last_name}
-              </h1>
-              <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
-                <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '13px' }}>
+      {/* HERO */}
+      <div style={{ background: '#0D1B2E', padding: '40px 28px 48px' }}>
+        <div style={{ maxWidth: '760px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '28px' }}>
+          {/* Avatar */}
+          <div style={{ width: '80px', height: '80px', borderRadius: '16px', background: '#1D9E75', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <span style={{ color: 'white', fontSize: '28px', fontWeight: '900', fontFamily: 'Arial Black, Arial, sans-serif' }}>{initials}</span>
+          </div>
+          <div>
+            <h1 style={{ color: 'white', fontSize: '32px', fontWeight: '900', margin: '0 0 8px', fontFamily: 'Arial Black, Arial, sans-serif', letterSpacing: '-1px' }}>
+              {player.first_name} {player.last_name}
+            </h1>
+            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+              {player.position_primary && (
+                <span style={{ background: '#1D9E75', color: 'white', fontSize: '11px', fontWeight: '700', padding: '4px 10px', borderRadius: '4px', letterSpacing: '0.08em' }}>
                   {pos(player.position_primary)}
                 </span>
-                {player.nationality_primary && (
-                  <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '13px' }}>
-                    {player.nationality_primary}
-                  </span>
-                )}
-                {player.school_attended && (
-                  <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '13px' }}>
-                    {player.school_attended}
-                  </span>
-                )}
-              </div>
+              )}
+              {player.nationality_primary && (
+                <span style={{ color: 'rgba(255,255,255,0.55)', fontSize: '13px' }}>{player.nationality_primary}</span>
+              )}
+              {player.school_attended && (
+                <span style={{ color: 'rgba(255,255,255,0.55)', fontSize: '13px' }}>{player.school_attended}</span>
+              )}
             </div>
           </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', background: 'rgba(255,255,255,0.05)', borderRadius: '10px', overflow: 'hidden' }}>
-            <div style={{ padding: '16px', textAlign: 'center', borderRight: '1px solid rgba(255,255,255,0.08)' }}>
-              <div style={{ fontSize: '20px', fontWeight: '700', color: 'white' }}>{age || '—'}</div>
-              <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.4)', marginTop: '4px' }}>AGE</div>
-            </div>
-            <div style={{ padding: '16px', textAlign: 'center', borderRight: '1px solid rgba(255,255,255,0.08)' }}>
-              <div style={{ fontSize: '20px', fontWeight: '700', color: 'white' }}>{player.height_cm ? player.height_cm + 'cm' : '—'}</div>
-              <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.4)', marginTop: '4px' }}>HEIGHT</div>
-            </div>
-            <div style={{ padding: '16px', textAlign: 'center', borderRight: '1px solid rgba(255,255,255,0.08)' }}>
-              <div style={{ fontSize: '20px', fontWeight: '700', color: 'white' }}>{player.weight_kg ? player.weight_kg + 'kg' : '—'}</div>
-              <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.4)', marginTop: '4px' }}>WEIGHT</div>
-            </div>
-            <div style={{ padding: '16px', textAlign: 'center' }}>
-              <div style={{ fontSize: '14px', fontWeight: '700', color: 'white' }}>{pos(player.position_secondary)}</div>
-              <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.4)', marginTop: '4px' }}>ALT POS</div>
-            </div>
-          </div>
-
         </div>
-      </div>
 
-      <div style={{ maxWidth: '700px', margin: '0 auto', padding: '24px 20px' }}>
-
-        {player.bio && (
-          <div style={{ background: 'white', borderRadius: '12px', padding: '20px 24px', border: '1px solid #E8E4F0', marginBottom: '16px' }}>
-            <div style={{ fontSize: '11px', fontWeight: '700', color: '#9890b0', marginBottom: '10px' }}>ABOUT</div>
-            <p style={{ fontSize: '14px', color: '#5a5070', lineHeight: '1.7', margin: 0 }}>{player.bio}</p>
-          </div>
-        )}
-
-        <div style={{ background: 'white', borderRadius: '12px', padding: '20px 24px', border: '1px solid #E8E4F0', marginBottom: '16px' }}>
-          <div style={{ fontSize: '11px', fontWeight: '700', color: '#9890b0', marginBottom: '14px' }}>PLAYER DETAILS</div>
+        {/* Stats bar */}
+        <div style={{ maxWidth: '760px', margin: '28px auto 0', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1px', background: 'rgba(255,255,255,0.08)', borderRadius: '12px', overflow: 'hidden' }}>
           {[
-            ['Primary Position', pos(player.position_primary)],
-            ['Secondary Position', pos(player.position_secondary)],
-            ['Nationality', player.nationality_primary || '—'],
-            ['School', player.school_attended || '—'],
-            ['Height', player.height_cm ? player.height_cm + ' cm' : '—'],
-            ['Weight', player.weight_kg ? player.weight_kg + ' kg' : '—'],
-          ].map(([k, v]) => (
-            <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '9px 0', borderBottom: '1px solid #F5F5F7', fontSize: '13px' }}>
-              <span style={{ color: '#9890b0' }}>{k}</span>
-              <span style={{ fontWeight: '600', color: '#241637' }}>{v}</span>
+            { value: age ?? '–', label: 'AGE' },
+            { value: player.height_cm ? `${player.height_cm}cm` : '–', label: 'HEIGHT' },
+            { value: player.weight_kg ? `${player.weight_kg}kg` : '–', label: 'WEIGHT' },
+            { value: player.position_secondary ? pos(player.position_secondary) : '–', label: 'ALT POS' },
+          ].map(stat => (
+            <div key={stat.label} style={{ background: '#0F2438', padding: '20px 16px', textAlign: 'center' }}>
+              <div style={{ color: 'white', fontSize: '22px', fontWeight: '900', fontFamily: 'Arial Black, Arial, sans-serif' }}>{stat.value}</div>
+              <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '10px', letterSpacing: '0.12em', marginTop: '4px' }}>{stat.label}</div>
             </div>
           ))}
         </div>
+      </div>
 
-        <div style={{ background: 'white', borderRadius: '12px', padding: '20px 24px', border: '1px solid #E8E4F0', textAlign: 'center' }}>
-          <p style={{ fontSize: '13px', color: '#9890b0', marginBottom: '14px' }}>
-            Interested in this player? Contact details are kept secure.
+      {/* CONTENT */}
+      <div style={{ maxWidth: '760px', margin: '0 auto', padding: '32px 28px' }}>
+
+        {/* Bio */}
+        {player.bio && (
+          <div style={{ background: 'white', borderRadius: '12px', padding: '28px', border: '0.5px solid #D3D1C7', marginBottom: '16px' }}>
+            <p style={{ fontSize: '10px', color: '#1D9E75', letterSpacing: '0.14em', marginBottom: '12px', fontWeight: '700' }}>ABOUT</p>
+            <p style={{ fontSize: '15px', color: '#0D1B2E', lineHeight: '1.7', margin: 0 }}>{player.bio}</p>
+          </div>
+        )}
+
+        {/* Player Details */}
+        <div style={{ background: 'white', borderRadius: '12px', padding: '28px', border: '0.5px solid #D3D1C7', marginBottom: '16px' }}>
+          <p style={{ fontSize: '10px', color: '#1D9E75', letterSpacing: '0.14em', marginBottom: '20px', fontWeight: '700' }}>PLAYER DETAILS</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            {[
+              { label: 'Primary Position', value: pos(player.position_primary) },
+              { label: 'Secondary Position', value: player.position_secondary ? pos(player.position_secondary) : '–' },
+              { label: 'Nationality', value: player.nationality_primary || '–' },
+              { label: 'School', value: player.school_attended || '–' },
+              { label: 'Height', value: player.height_cm ? `${player.height_cm} cm` : '–' },
+              { label: 'Weight', value: player.weight_kg ? `${player.weight_kg} kg` : '–' },
+              { label: 'Age', value: age ? `${age} years` : '–' },
+            ].map(row => (
+              <div key={row.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '14px', borderBottom: '0.5px solid #F1EFE8' }}>
+                <span style={{ fontSize: '13px', color: '#888780' }}>{row.label}</span>
+                <span style={{ fontSize: '14px', fontWeight: '700', color: '#0D1B2E' }}>{row.value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Footer CTA */}
+        <div style={{ background: '#0D1B2E', borderRadius: '12px', padding: '28px', textAlign: 'center' }}>
+          <p style={{ fontSize: '10px', color: '#5DCAA5', letterSpacing: '0.14em', marginBottom: '8px' }}>POWERED BY</p>
+          <p style={{ fontSize: '18px', fontWeight: '900', color: 'white', fontFamily: 'Arial Black, Arial, sans-serif', letterSpacing: '-0.5px', marginBottom: '8px' }}>
+            GAIN<span style={{ color: '#1D9E75' }}>LINE</span>
           </p>
-          
-            <a href="mailto:?subject=ScrumPro&body=I am interested." style={{ display: 'inline-block', background: '#9437EA', color: 'white', padding: '12px 28px', borderRadius: '8px', fontWeight: '600', fontSize: '14px', textDecoration: 'none' }}>Contact This Player</a>
+          <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.4)', marginBottom: '16px' }}>No talent goes unseen</p>
+          <a href="/" style={{ background: '#1D9E75', color: 'white', fontSize: '12px', fontWeight: '700', padding: '10px 20px', borderRadius: '6px', textDecoration: 'none', fontFamily: 'Arial Black, Arial, sans-serif' }}>
+            Build your free profile →
+          </a>
         </div>
 
       </div>
