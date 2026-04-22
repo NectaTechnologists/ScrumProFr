@@ -14,18 +14,32 @@ export default function LoginPage() {
   const supabase = createClient()
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    setLoading(true)
-    setMessage('')
-    if (isSignUp) {
-      const { error } = await supabase.auth.signUp({ email, password })
-      if (error) { setMessage(error.message) } else { setMessage('Check your email to confirm your account!') }
+  e.preventDefault()
+  setLoading(true)
+  setMessage('')
+  if (isSignUp) {
+    const { error } = await supabase.auth.signUp({ email, password })
+    if (error) { setMessage(error.message) } else { setMessage('Check your email to confirm your account!') }
+  } else {
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error) {
+      setMessage(error.message)
     } else {
-      const { error } = await supabase.auth.signInWithPassword({ email, password })
-      if (error) {    setMessage(error.message)  } else {   // Check profile role and redirect accordingly   const { data: profile } = await supabase     .from('profiles')     .select('role')     .eq('id', (await supabase.auth.getUser()).data.user?.id || '')     .single()      if (profile?.role === 'org_user') {     router.push('/dashboard/coach')   } else {     router.push('/dashboard')   } }
+      const { data: { user } } = await supabase.auth.getUser()
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user?.id || '')
+        .single()
+      if (profile?.role === 'org_user') {
+        router.push('/dashboard/coach')
+      } else {
+        router.push('/dashboard')
+      }
     }
-    setLoading(false)
   }
+  setLoading(false)
+}
 
   return (
     <>
