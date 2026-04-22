@@ -251,9 +251,9 @@ export default function Home() {
         </div>
         <span className="footer-copy">gainline.pro &nbsp;·&nbsp; 2026</span>
         <div className="footer-links">
-          <a href="#" className="footer-link">Privacy</a>
-          <a href="#" className="footer-link">Terms</a>
-          <a href="#" className="footer-link">Contact</a>
+        <a href="/privacy" className="footer-link">Privacy</a>
+        <a href="/terms" className="footer-link">Terms</a>
+        <a href="mailto:hello@gainline.pro" className="footer-link">Contact</a>
         </div>
       </footer>
     </>
