@@ -166,7 +166,48 @@ export default async function CVPage(props: any) {
             </div>
           ))}
         </div>
-
+        {(player.video_url || player.video_url_2 || player.video_url_3) && (
+          <div className="cv-card" style={{ marginBottom: '16px' }}>
+            <p className="cv-card-label">VIDEO HIGHLIGHTS</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {[
+                { url: player.video_url, label: 'Highlight reel' },
+                { url: player.video_url_2, label: 'Match footage' },
+                { url: player.video_url_3, label: 'Additional footage' },
+              ].filter(v => v.url).map((v, i) => (
+                
+                  key={i}
+                  href={v.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '12px 16px',
+                    background: '#F1EFE8',
+                    borderRadius: '8px',
+                    textDecoration: 'none',
+                    border: '0.5px solid #D3D1C7',
+                  }}
+                >
+                  <div style={{ width: '32px', height: '32px', borderRadius: '6px', background: '#1D9E75', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <svg width="12" height="14" viewBox="0 0 12 14" fill="white">
+                      <path d="M0 0L12 7L0 14V0Z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '13px', fontWeight: '700', color: '#0D1B2E' }}>{v.label}</div>
+                    <div style={{ fontSize: '11px', color: '#888780', marginTop: '2px' }}>
+                      {v.url.includes('youtube') ? 'YouTube' : v.url.includes('vimeo') ? 'Vimeo' : 'Watch video'}
+                    </div>
+                  </div>
+                  <div style={{ marginLeft: 'auto', fontSize: '12px', color: '#1D9E75', fontWeight: '700' }}>Watch →</div>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
         <div className="cv-footer-card">
           <p className="cv-footer-label">POWERED BY</p>
           <p className="cv-footer-brand">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></p>
