@@ -135,7 +135,7 @@ export default function ProfilePage() {
     <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
     <line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
   </svg>
-  <span style={{ color:'white', fontWeight:'700', fontSize:'18px' }}>
+  <span style={{ color:'white', fontWeight:'900', fontSize:'18px', letterSpacing:'-0.5px', fontFamily:'Arial Black, Arial, sans-serif' }}>
     GAIN<span style={{ color:'#1D9E75' }}>LINE</span>
   </span>
 </div>
