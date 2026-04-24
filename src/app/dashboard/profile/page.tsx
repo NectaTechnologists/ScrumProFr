@@ -1,6 +1,6 @@
-'use client'
+src/app/dashboard/profile/page.tsx'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { t, Lang } from '@/lib/translations'
@@ -24,9 +24,10 @@ const COMPLETION_FIELDS = [
   { key: 'position_primary', weight: 10 },
   { key: 'height_cm', weight: 10 },
   { key: 'weight_kg', weight: 10 },
-  { key: 'school_attended', weight: 10 },
-  { key: 'bio', weight: 15 },
-  { key: 'video_url', weight: 15 },
+  { key: 'school_attended', weight: 5 },
+  { key: 'bio', weight: 10 },
+  { key: 'video_url', weight: 10 },
+  { key: 'avatar_url', weight: 5 },
 ]
 
 function calcCompletion(form: any) {
@@ -42,6 +43,7 @@ function getMissingKeys(form: any) {
 export default function ProfilePage() {
   const supabase = createClient()
   const router = useRouter()
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const [loading, setLoading] = useState(false)
   const [saved, setSaved] = useState(false)
   const [shareUrl, setShareUrl] = useState('')
@@ -49,11 +51,14 @@ export default function ProfilePage() {
   const [missingKeys, setMissingKeys] = useState<string[]>([])
   const [activeTab, setActiveTab] = useState<'profile' | 'media' | 'documents'>('profile')
   const [lang, setLang] = useState<Lang>('en')
+  const [avatarUploading, setAvatarUploading] = useState(false)
+  const [userId, setUserId] = useState<string>('')
 
   const [form, setForm] = useState({
     first_name: '', last_name: '', date_of_birth: '', nationality_primary: '',
     position_primary: 'HOOKER', position_secondary: '', height_cm: '', weight_kg: '',
     school_attended: '', bio: '', video_url: '', video_url_2: '', video_url_3: '',
+    avatar_url: '',
   })
 
   useEffect(() => {
@@ -63,6 +68,8 @@ export default function ProfilePage() {
     async function loadProfile() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
+      setUserId(user.id)
+
       const { data: player } = await supabase.from('players').select('*').eq('profile_id', user.id).single()
       if (player) {
         const loaded = {
@@ -71,7 +78,8 @@ export default function ProfilePage() {
           position_primary: player.position_primary || 'HOOKER', position_secondary: player.position_secondary || '',
           height_cm: player.height_cm || '', weight_kg: player.weight_kg || '',
           school_attended: player.school_attended || '', bio: player.bio || '',
-          video_url: player.video_url || '', video_url_2: player.video_url_2 || '', video_url_3: player.video_url_3 || '',
+          video_url: player.video_url || '', video_url_2: player.video_url_2 || '',
+          video_url_3: player.video_url_3 || '', avatar_url: player.avatar_url || '',
         }
         setForm(loaded)
         setCompletion(calcCompletion(loaded))
@@ -92,6 +100,48 @@ export default function ProfilePage() {
     localStorage.setItem('gainline_lang', l)
   }
 
+  async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file || !userId) return
+
+    // Validate file type and size
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload an image file')
+      return
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image must be under 5MB')
+      return
+    }
+
+    setAvatarUploading(true)
+
+    const fileExt = file.name.split('.').pop()
+    const filePath = `${userId}/avatar.${fileExt}`
+
+    const { error: uploadError } = await supabase.storage
+      .from('avatars')
+      .upload(filePath, file, { upsert: true })
+
+    if (uploadError) {
+      alert('Upload failed: ' + uploadError.message)
+      setAvatarUploading(false)
+      return
+    }
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('avatars')
+      .getPublicUrl(filePath)
+
+    // Update player record with avatar URL
+    await supabase.from('players')
+      .update({ avatar_url: publicUrl })
+      .eq('profile_id', userId)
+
+    setForm(prev => ({ ...prev, avatar_url: publicUrl }))
+    setAvatarUploading(false)
+  }
+
   async function handleSave(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
@@ -106,7 +156,8 @@ export default function ProfilePage() {
       weight_kg: form.weight_kg ? parseFloat(form.weight_kg) : null,
       school_attended: form.school_attended, bio: form.bio,
       video_url: form.video_url || null, video_url_2: form.video_url_2 || null,
-      video_url_3: form.video_url_3 || null, profile_visibility: 'PUBLIC',
+      video_url_3: form.video_url_3 || null, avatar_url: form.avatar_url || null,
+      profile_visibility: 'PUBLIC',
     }
     let result
     if (existing) {
@@ -134,9 +185,12 @@ export default function ProfilePage() {
     position_primary: T.profile_position_primary, height_cm: T.profile_height,
     weight_kg: T.profile_weight, school_attended: T.profile_school,
     bio: T.profile_bio, video_url: T.profile_video_1,
+    avatar_url: lang === 'fr' ? 'Photo de profil' : 'Profile photo',
   }
 
   const missingLabels = missingKeys.map(k => fieldLabels[k] || k).filter(Boolean)
+
+  const initials = [form.first_name?.[0], form.last_name?.[0]].filter(Boolean).join('').toUpperCase() || '?'
 
   return (
     <>
@@ -181,6 +235,19 @@ export default function ProfilePage() {
         .doc-placeholder h3 { font-size: 16px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 8px; }
         .doc-placeholder p { font-size: 13px; color: #888780; line-height: 1.65; }
         .coming-soon { display: inline-block; background: #E1F5EE; color: #0F6E56; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 4px; letter-spacing: 0.08em; margin-bottom: 16px; }
+
+        /* Avatar upload */
+        .avatar-section { display: flex; align-items: center; gap: 20px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #F1EFE8; }
+        .avatar-preview { width: 80px; height: 80px; border-radius: 16px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; position: relative; }
+        .avatar-preview img { width: 100%; height: 100%; object-fit: cover; }
+        .avatar-initials { color: white; font-size: 26px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; }
+        .avatar-upload-area { flex: 1; }
+        .avatar-upload-label { font-size: 13px; font-weight: 600; color: #0D1B2E; margin-bottom: 6px; display: block; }
+        .avatar-upload-hint { font-size: 12px; color: #888780; margin-bottom: 10px; }
+        .avatar-upload-btn { background: #F1EFE8; border: 1.5px solid #D3D1C7; color: #0D1B2E; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: Arial, sans-serif; display: inline-block; }
+        .avatar-upload-btn:hover { border-color: #1D9E75; }
+        .avatar-uploading { font-size: 13px; color: #1D9E75; }
+
         @media (max-width: 768px) {
           .prof-nav { padding: 0 16px; height: 56px; }
           .prof-logo-text { font-size: 16px; }
@@ -191,9 +258,11 @@ export default function ProfilePage() {
           .prof-form { padding: 20px 16px; }
           .share-box { flex-direction: column; align-items: flex-start; }
           .copy-btn { width: 100%; text-align: center; }
+          .avatar-section { flex-direction: column; align-items: flex-start; gap: 16px; }
         }
       `}</style>
 
+      {/* NAV */}
       <nav className="prof-nav">
         <div className="prof-logo">
           <svg width="32" height="30" viewBox="0 0 32 30" style={{ display: 'block' }}>
@@ -253,7 +322,7 @@ export default function ProfilePage() {
               <div className="share-label">{T.profile_share_label}</div>
               <div className="share-url">{shareUrl}</div>
             </div>
-            <button onClick={() => { navigator.clipboard.writeText(shareUrl); alert(T.profile_copy + '!') }} className="copy-btn">
+            <button onClick={() => { navigator.clipboard.writeText(shareUrl); alert(lang === 'fr' ? 'Lien copié !' : 'Link copied!') }} className="copy-btn">
               {T.profile_copy}
             </button>
           </div>
@@ -269,6 +338,43 @@ export default function ProfilePage() {
         {/* PROFILE TAB */}
         {activeTab === 'profile' && (
           <form onSubmit={handleSave} className="prof-form">
+
+            {/* Avatar upload section */}
+            <div className="avatar-section">
+              <div className="avatar-preview">
+                {form.avatar_url
+                  ? <img src={form.avatar_url} alt="Profile" />
+                  : <span className="avatar-initials">{initials}</span>
+                }
+              </div>
+              <div className="avatar-upload-area">
+                <label className="avatar-upload-label">
+                  {lang === 'fr' ? 'Photo de profil' : 'Profile photo'}
+                </label>
+                <p className="avatar-upload-hint">
+                  {lang === 'fr' ? 'JPG ou PNG, max 5MB' : 'JPG or PNG, max 5MB'}
+                </p>
+                {avatarUploading
+                  ? <span className="avatar-uploading">{lang === 'fr' ? 'Téléversement...' : 'Uploading...'}</span>
+                  : (
+                    <button type="button" className="avatar-upload-btn" onClick={() => fileInputRef.current?.click()}>
+                      {form.avatar_url
+                        ? (lang === 'fr' ? 'Changer la photo' : 'Change photo')
+                        : (lang === 'fr' ? 'Ajouter une photo' : 'Add photo')
+                      }
+                    </button>
+                  )
+                }
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  onChange={handleAvatarUpload}
+                />
+              </div>
+            </div>
+
             <div className="form-row">
               <div className="form-field"><label className="form-label">{T.profile_first_name}</label><input className="form-input" value={form.first_name} onChange={e => setForm({ ...form, first_name: e.target.value })} required placeholder="Abonga"/></div>
               <div className="form-field"><label className="form-label">{T.profile_last_name}</label><input className="form-input" value={form.last_name} onChange={e => setForm({ ...form, last_name: e.target.value })} required placeholder="Nkwelo"/></div>
