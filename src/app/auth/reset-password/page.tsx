@@ -16,23 +16,40 @@ export default function ResetPasswordPage() {
   const [ready, setReady] = useState(false)
   const [lang, setLang] = useState<Lang>('en')
 
-  useEffect(() => {
+ useEffect(() => {
   const saved = localStorage.getItem('gainline_lang') as Lang
   if (saved === 'en' || saved === 'fr') setLang(saved)
 
-  // Check for access_token in URL hash (Supabase puts it there after redirect)
+  // Handle PKCE flow — code in query string
+  const urlParams = new URLSearchParams(window.location.search)
+  const code = urlParams.get('code')
+  if (code) {
+    supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
+      if (!error) setReady(true)
+    })
+    return
+  }
+
+  // Handle legacy flow — access_token in hash
   const hash = window.location.hash
   if (hash && hash.includes('access_token')) {
     setReady(true)
     return
   }
 
-  // Also listen for PASSWORD_RECOVERY event
+  // Listen for auth events
   const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
     if (event === 'PASSWORD_RECOVERY' || event === 'SIGNED_IN') {
       setReady(true)
     }
   })
+
+  supabase.auth.getSession().then(({ data: { session } }) => {
+    if (session) setReady(true)
+  })
+
+  return () => subscription.unsubscribe()
+}, [])
 
   // Check existing session
   supabase.auth.getSession().then(({ data: { session } }) => {
