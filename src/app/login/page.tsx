@@ -132,4 +132,7 @@ export default function LoginPage() {
       </div>
     </>
   )
+<a href="/forgot-password" style={{ display: 'block', textAlign: 'center', marginTop: '12px', fontSize: '13px', color: '#888780', textDecoration: 'none' }}>
+  {lang === 'fr' ? 'Mot de passe oublié ?' : 'Forgot your password?'}
+</a>
 }
