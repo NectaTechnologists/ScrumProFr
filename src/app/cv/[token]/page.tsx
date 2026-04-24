@@ -110,7 +110,12 @@ export default async function CVPage(props: any) {
       <div className="cv-hero">
         <div className="cv-hero-inner">
           <div className="cv-profile">
-            <div className="cv-avatar"><span>{initials}</span></div>
+            <div className="cv-avatar">
+              {player.avatar_url
+                ? <img src={player.avatar_url} alt={player.first_name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '16px' }}/>
+                : <span>{initials}</span>
+              }
+            </div>
             <div>
               <h1 className="cv-name">{player.first_name} {player.last_name}</h1>
               <div className="cv-meta">
