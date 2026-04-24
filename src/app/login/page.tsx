@@ -127,7 +127,8 @@ export default function LoginPage() {
             {isSignUp ? T.toggle_to_login : T.toggle_to_signup}
           </button>
         </div>
-
+        <a href="/forgot-password" style={{ display: 'block', textAlign: 'center', marginTop: '12px', fontSize: '13px', color: '#888780', textDecoration: 'none' }}>{lang === 'fr' ? 'Mot de passe oublié ?' : 'Forgot your password?'}</a>
+        
         <a href="/" className="back-link">{T.back_home}</a>
       </div>
     </>
