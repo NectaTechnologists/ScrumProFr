@@ -13,8 +13,30 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: 'Gainline — Rugby',
+  title: 'Gainline — No Talent Goes Unseen',
   description: 'Gainline gives every rugby player a professional digital profile — and gives agents the tools to manage, present and place their players. Wherever the game takes you.',
+  openGraph: {
+    title: 'Gainline — No Talent Goes Unseen',
+    description: 'The digital platform for rugby player pathways. Build your free profile today.',
+    url: 'https://www.gainline.pro',
+    siteName: 'Gainline',
+    images: [
+      {
+        url: 'https://www.gainline.pro/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Gainline — No Talent Goes Unseen',
+      }
+    ],
+    locale: 'en_GB',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Gainline — No Talent Goes Unseen',
+    description: 'The digital platform for rugby player pathways.',
+    images: ['https://www.gainline.pro/og-image.png'],
+  },
 }
 
 export default function RootLayout({
