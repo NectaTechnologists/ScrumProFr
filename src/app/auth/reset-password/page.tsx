@@ -51,14 +51,6 @@ export default function ResetPasswordPage() {
   return () => subscription.unsubscribe()
 }, [])
 
-  // Check existing session
-  supabase.auth.getSession().then(({ data: { session } }) => {
-    if (session) setReady(true)
-  })
-
-  return () => subscription.unsubscribe()
-}, [])
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
