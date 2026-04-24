@@ -17,22 +17,30 @@ export default function ResetPasswordPage() {
   const [lang, setLang] = useState<Lang>('en')
 
   useEffect(() => {
-    const saved = localStorage.getItem('gainline_lang') as Lang
-    if (saved === 'en' || saved === 'fr') setLang(saved)
+  const saved = localStorage.getItem('gainline_lang') as Lang
+  if (saved === 'en' || saved === 'fr') setLang(saved)
 
-    // Supabase puts the session in the URL hash after redirect
-    // We need to let it process before showing the form
-    supabase.auth.onAuthStateChange((event) => {
-      if (event === 'PASSWORD_RECOVERY') {
-        setReady(true)
-      }
-    })
+  // Check for access_token in URL hash (Supabase puts it there after redirect)
+  const hash = window.location.hash
+  if (hash && hash.includes('access_token')) {
+    setReady(true)
+    return
+  }
 
-    // Also check if already in a session from the magic link
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) setReady(true)
-    })
-  }, [])
+  // Also listen for PASSWORD_RECOVERY event
+  const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+    if (event === 'PASSWORD_RECOVERY' || event === 'SIGNED_IN') {
+      setReady(true)
+    }
+  })
+
+  // Check existing session
+  supabase.auth.getSession().then(({ data: { session } }) => {
+    if (session) setReady(true)
+  })
+
+  return () => subscription.unsubscribe()
+}, [])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
