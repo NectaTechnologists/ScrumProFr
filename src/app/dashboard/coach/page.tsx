@@ -61,7 +61,7 @@ export default function CoachDashboard() {
       if (profile?.role === 'player') { router.push('/dashboard'); return }
 
       if (profile?.approved) {
-        await fetchPlayers({ position: '', nationality: '', age: '' })
+        await fetchPlayers({ position: '', nationality: '', age: '' }, '')
         const { data: sl } = await supabase
           .from('shortlists')
           .select('player_id')
@@ -79,7 +79,7 @@ export default function CoachDashboard() {
     localStorage.setItem('gainline_lang', l)
   }
 
-  async function fetchPlayers(f: { position: string, nationality: string, age: string }) {
+  async function fetchPlayers(f: { position: string, nationality: string, age: string }, nameSearch: string) {
     setSearching(true)
 
     let query = supabase
@@ -89,6 +89,9 @@ export default function CoachDashboard() {
       .limit(10)
       .order('created_at', { ascending: false })
 
+    if (nameSearch) {
+      query = query.or(`first_name.ilike.%${nameSearch}%,last_name.ilike.%${nameSearch}%`)
+    }
     if (f.position) {
       query = query.or(`position_primary.eq.${f.position},position_secondary.eq.${f.position}`)
     }
@@ -140,14 +143,14 @@ export default function CoachDashboard() {
   async function handleFilterChange(key: string, value: string) {
     const newFilters = { ...filters, [key]: value }
     setFilters(newFilters)
-    await fetchPlayers(newFilters)
+    await fetchPlayers(newFilters, search)
   }
 
   async function clearFilters() {
     const reset = { position: '', nationality: '', age: '' }
     setFilters(reset)
     setSearch('')
-    await fetchPlayers(reset)
+    await fetchPlayers(reset, '')
   }
 
   const pos = (s: string) => s?.replace(/_/g, ' ') || '–'
@@ -156,13 +159,7 @@ export default function CoachDashboard() {
   const hasFilters = filters.position || filters.nationality || filters.age || search
   const T = t[lang]
 
-  const displayedPlayers = players
-    .filter(p => tab === 'shortlist' ? shortlistedIds.has(p.id) : true)
-    .filter(p => {
-      if (!search) return true
-      const full = `${p.first_name} ${p.last_name}`.toLowerCase()
-      return full.includes(search.toLowerCase())
-    })
+  const displayedPlayers = players.filter(p => tab === 'shortlist' ? shortlistedIds.has(p.id) : true)
 
   if (loading) return (
     <div style={{ minHeight: '100vh', background: '#F1EFE8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -335,7 +332,7 @@ export default function CoachDashboard() {
             type="text"
             placeholder={lang === 'fr' ? 'Rechercher par nom...' : 'Search by name...'}
             value={search}
-            onChange={e => setSearch(e.target.value)}
+            onChange={e => { setSearch(e.target.value); fetchPlayers(filters, e.target.value) }}
           />
           <select className="filter-select" value={filters.position} onChange={e => handleFilterChange('position', e.target.value)}>
             <option value="">{T.coach_all_positions}</option>
