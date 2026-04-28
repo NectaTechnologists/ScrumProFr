@@ -182,7 +182,6 @@ export default function ProfilePage() {
         file_url: fileName,
         doc_type: selectedDocType,
         document_type: selectedDocType,
-        file_type: file.type,
         file_size_kb: Math.round(file.size / 1024),
       })
       .select()
