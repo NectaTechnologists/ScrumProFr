@@ -14,6 +14,7 @@ export default function LoginPage() {
   const [isSignUp, setIsSignUp] = useState(false)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
+  const [agreedToTerms, setAgreedToTerms] = useState(false)
   const [lang, setLang] = useState<Lang>('en')
   const router = useRouter()
   const supabase = createClient()
@@ -82,6 +83,10 @@ export default function LoginPage() {
         .message-success { background: #E1F5EE; border: 1px solid #5DCAA5; color: #0F6E56; }
         .toggle-btn { display: block; width: 100%; background: none; border: none; font-size: 13px; color: #1D9E75; cursor: pointer; font-family: Arial, sans-serif; margin-top: 20px; text-align: center; }
         .back-link { margin-top: 24px; font-size: 12px; color: rgba(255,255,255,0.35); text-decoration: none; display: block; text-align: center; }
+        .terms-check { display: flex; align-items: flex-start; gap: 10px; margin: 16px 0 4px; }
+        .terms-check input { margin-top: 2px; accent-color: #1D9E75; width: 16px; height: 16px; flex-shrink: 0; cursor: pointer; }
+        .terms-check label { font-size: 13px; color: #5F5E5A; line-height: 1.5; cursor: pointer; }
+        .terms-check a { color: #1D9E75; text-decoration: underline; }
         @media (max-width: 480px) {
           .login-wrap { padding: 32px 16px; }
           .login-card { padding: 28px 20px; border-radius: 12px; }
@@ -113,12 +118,28 @@ export default function LoginPage() {
             <input type="email" placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)} required className="field-input"/>
             <label className="field-label">{T.password_label}</label>
             <input type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} required className="field-input"/>
+            {isSignUp && (
+              <div className="terms-check">
+                <input
+                  type="checkbox"
+                  id="terms"
+                  checked={agreedToTerms}
+                  onChange={e => setAgreedToTerms(e.target.checked)}
+                />
+                <label htmlFor="terms">
+                  {lang === 'fr'
+                    ? <>J&apos;accepte les <a href="/terms" target="_blank">Conditions Générales d&apos;Utilisation</a> de Gainline</>
+                    : <>I agree to the Gainline <a href="/terms" target="_blank">Terms & Conditions</a></>
+                  }
+                </label>
+              </div>
+            )}
             {message && (
               <div className={`message-box ${message.includes('error') || message.includes('Invalid') ? 'message-error' : 'message-success'}`}>
                 {message}
               </div>
             )}
-            <button type="submit" disabled={loading} className="submit-btn">
+            <button type="submit" disabled={loading || (isSignUp && !agreedToTerms)} className="submit-btn">
               {loading ? T.loading_btn : isSignUp ? T.signup_btn : T.login_btn}
             </button>
           </form>
