@@ -152,7 +152,6 @@ export default function ProfilePage() {
     if (!validTypes.includes(file.type)) { window.alert('Please upload a PDF or image file'); return }
     if (file.size > 10 * 1024 * 1024) { window.alert('File must be under 10MB — please compress your file and try again'); return }
     if (documents.length >= 5) { window.alert(lang === 'fr' ? 'Maximum 5 documents atteint' : 'Maximum of 5 documents reached'); return }
-    if (documents.length >= 5) { alert(lang === 'fr' ? 'Maximum 5 documents atteint' : 'Maximum of 5 documents reached'); return }
 
     setDocUploading(true)
 
@@ -171,13 +170,15 @@ export default function ProfilePage() {
       .createSignedUrl(fileName, 60 * 60 * 24 * 365) // 1 year expiry
 
     // Save to database
-    const { data: newDoc } = await supabase
+   const { data: newDoc } = await supabase
       .from('player_documents')
       .insert({
         player_id: playerId,
         profile_id: userId,
         file_name: file.name,
-        file_url: fileName, // store path, not URL
+        storage_path: fileName,
+        file_url: fileName,
+        doc_type: selectedDocType,
         document_type: selectedDocType,
         file_type: file.type,
         file_size_kb: Math.round(file.size / 1024),
