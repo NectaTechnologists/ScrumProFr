@@ -23,7 +23,7 @@ export default function TermsPage() {
 
       <nav className="terms-nav">
         <span className="terms-logo-text">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
-        <button className="terms-back" onClick={() => router.back()}>← Back</button>
+        <button className="terms-back" onClick={() => window.close()}>← Close</button>
       </nav>
 
       <div className="terms-content">
