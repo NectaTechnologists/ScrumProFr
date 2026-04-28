@@ -144,10 +144,14 @@ export default function ProfilePage() {
     const file = e.target.files?.[0]
     if (!file || !userId || !playerId) return
 
+    // Reset input immediately so re-selection works
+    if (docInputRef.current) docInputRef.current.value = ''
+
     // Validate
     const validTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg']
-    if (!validTypes.includes(file.type)) { alert('Please upload a PDF or image file'); return }
-    if (file.size > 10 * 1024 * 1024) { alert('File must be under 10MB'); return }
+    if (!validTypes.includes(file.type)) { window.alert('Please upload a PDF or image file'); return }
+    if (file.size > 10 * 1024 * 1024) { window.alert('File must be under 10MB — please compress your file and try again'); return }
+    if (documents.length >= 5) { window.alert(lang === 'fr' ? 'Maximum 5 documents atteint' : 'Maximum of 5 documents reached'); return }
     if (documents.length >= 5) { alert(lang === 'fr' ? 'Maximum 5 documents atteint' : 'Maximum of 5 documents reached'); return }
 
     setDocUploading(true)
