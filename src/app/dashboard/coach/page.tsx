@@ -33,6 +33,7 @@ export default function CoachDashboard() {
   const [view, setView] = useState<'card' | 'list'>('card')
   const [tab, setTab] = useState<'all' | 'shortlist'>('all')
   const [lang, setLang] = useState<Lang>('en')
+  const [search, setSearch] = useState('')
 
   const [filters, setFilters] = useState({
     position: '',
@@ -61,7 +62,6 @@ export default function CoachDashboard() {
 
       if (profile?.approved) {
         await fetchPlayers({ position: '', nationality: '', age: '' })
-        // Load shortlist
         const { data: sl } = await supabase
           .from('shortlists')
           .select('player_id')
@@ -146,18 +146,23 @@ export default function CoachDashboard() {
   async function clearFilters() {
     const reset = { position: '', nationality: '', age: '' }
     setFilters(reset)
+    setSearch('')
     await fetchPlayers(reset)
   }
 
   const pos = (s: string) => s?.replace(/_/g, ' ') || '–'
   const getAge = (dob: string) => dob ? Math.floor((new Date().getTime() - new Date(dob).getTime()) / 31557600000) : null
   const getInitials = (p: any) => [p.first_name?.[0], p.last_name?.[0]].filter(Boolean).join('')
-  const hasFilters = filters.position || filters.nationality || filters.age
+  const hasFilters = filters.position || filters.nationality || filters.age || search
   const T = t[lang]
 
-  const displayedPlayers = tab === 'shortlist'
-    ? players.filter(p => shortlistedIds.has(p.id))
-    : players
+  const displayedPlayers = players
+    .filter(p => tab === 'shortlist' ? shortlistedIds.has(p.id) : true)
+    .filter(p => {
+      if (!search) return true
+      const full = `${p.first_name} ${p.last_name}`.toLowerCase()
+      return full.includes(search.toLowerCase())
+    })
 
   if (loading) return (
     <div style={{ minHeight: '100vh', background: '#F1EFE8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -214,6 +219,9 @@ export default function CoachDashboard() {
         .tab-active { background: #0D1B2E; color: white; }
         .tab-count { display: inline-block; background: #1D9E75; color: white; border-radius: 10px; font-size: 10px; padding: 1px 6px; margin-left: 6px; }
         .toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .search-input { padding: 9px 14px; border: 1.5px solid #D3D1C7; border-radius: 8px; font-size: 13px; color: #0D1B2E; background: white; outline: none; font-family: Arial, sans-serif; min-width: 180px; }
+        .search-input:focus { border-color: #1D9E75; }
+        .search-input::placeholder { color: #B4B2A9; }
         .filter-select { padding: 9px 14px; border: 1.5px solid #D3D1C7; border-radius: 8px; font-size: 13px; color: #0D1B2E; background: white; outline: none; font-family: Arial, sans-serif; cursor: pointer; }
         .filter-select:focus { border-color: #1D9E75; }
         .clear-btn { padding: 9px 14px; border: 1.5px solid #D3D1C7; border-radius: 8px; font-size: 13px; color: #888780; background: white; cursor: pointer; font-family: Arial, sans-serif; }
@@ -272,6 +280,7 @@ export default function CoachDashboard() {
           .page-title { font-size: 22px; }
           .player-grid { grid-template-columns: 1fr; }
           .toolbar { gap: 8px; }
+          .search-input { width: 100%; }
           .filter-select { font-size: 12px; padding: 8px 10px; }
           .view-toggle { margin-left: 0; }
           .row-stats { display: none; }
@@ -321,6 +330,13 @@ export default function CoachDashboard() {
         </div>
 
         <div className="toolbar">
+          <input
+            className="search-input"
+            type="text"
+            placeholder={lang === 'fr' ? 'Rechercher par nom...' : 'Search by name...'}
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
           <select className="filter-select" value={filters.position} onChange={e => handleFilterChange('position', e.target.value)}>
             <option value="">{T.coach_all_positions}</option>
             {POSITIONS.map(p => <option key={p} value={p}>{pos(p)}</option>)}
