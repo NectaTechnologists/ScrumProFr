@@ -145,10 +145,8 @@ export default function ProfilePage() {
     const file = e.target.files?.[0]
     if (!file || !userId || !playerId) return
 
-    // Reset input immediately so re-selection works
     if (docInputRef.current) docInputRef.current.value = ''
 
-    // Validate
     const validTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg']
     if (!validTypes.includes(file.type)) { window.alert('Please upload a PDF or image file'); return }
     if (file.size > 10 * 1024 * 1024) { window.alert('File must be under 10MB — please compress your file and try again'); return }
@@ -165,16 +163,15 @@ export default function ProfilePage() {
 
     if (uploadError) { alert('Upload failed: ' + uploadError.message); setDocUploading(false); return }
 
-    // Get signed URL path (not public — private bucket)
-    const { data: { signedUrl } } = await supabase.storage
+    const { data: signedUrlData } = await supabase.storage
       .from('documents')
-      .createSignedUrl(fileName, 60 * 60 * 24 * 365) // 1 year expiry
+      .createSignedUrl(fileName, 60 * 60 * 24 * 365)
 
-    // Save to database
-   const { data: newDoc, error: insertError } = await supabase
+    const signedUrl = signedUrlData?.signedUrl ?? ''
+
+    const { data: newDoc, error: insertError } = await supabase
       .from('player_documents')
       .insert({
-        if (insertError) { window.alert('Insert error: ' + insertError.message); setDocUploading(false); return }
         player_id: playerId,
         profile_id: userId,
         file_name: file.name,
@@ -187,12 +184,13 @@ export default function ProfilePage() {
       .select()
       .single()
 
+    if (insertError) { window.alert('Insert error: ' + insertError.message); setDocUploading(false); return }
+
     if (newDoc) {
       setDocuments(prev => [{ ...newDoc, signed_url: signedUrl }, ...prev])
     }
 
     setDocUploading(false)
-    // Reset file input
     if (docInputRef.current) docInputRef.current.value = ''
   }
 
