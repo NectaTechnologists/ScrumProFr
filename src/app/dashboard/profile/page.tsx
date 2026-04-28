@@ -112,6 +112,7 @@ export default function ProfilePage() {
       }
     }
     loadProfile()
+
   }, [])
 
   useEffect(() => {
@@ -170,9 +171,10 @@ export default function ProfilePage() {
       .createSignedUrl(fileName, 60 * 60 * 24 * 365) // 1 year expiry
 
     // Save to database
-   const { data: newDoc } = await supabase
+   const { data: newDoc, error: insertError } = await supabase
       .from('player_documents')
       .insert({
+        if (insertError) { window.alert('Insert error: ' + insertError.message); setDocUploading(false); return }
         player_id: playerId,
         profile_id: userId,
         file_name: file.name,
