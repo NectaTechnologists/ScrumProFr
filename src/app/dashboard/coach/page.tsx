@@ -207,7 +207,11 @@ export default function CoachDashboard() {
       <>
         <style>{`* { box-sizing: border-box; margin: 0; padding: 0; } body { font-family: Arial, sans-serif; background: #F1EFE8; }`}</style>
         <nav style={{ background: '#0D1B2E', padding: '0 16px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ color: 'white', fontWeight: '900', fontSize: '18px', letterSpacing: '-1px', fontFamily: 'Arial Black, Arial, sans-serif' }}>GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
+          <svg width="28" height="26" viewBox="0 0 32 30" style={{ display: 'block' }}>
+            <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
+            <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
+            <line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
+          </svg>
           <form action="/auth/signout" method="post">
             <button type="submit" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.7)', padding: '6px 14px', borderRadius: '6px', fontSize: '13px', cursor: 'pointer' }}>Sign out</button>
           </form>
@@ -226,11 +230,11 @@ export default function CoachDashboard() {
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: Arial, sans-serif; background: #F1EFE8; }
-        .nav { background: #0D1B2E; padding: 0 20px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+        .nav { background: #0D1B2E; padding: 0 16px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
         .nav-logo { display: flex; align-items: center; gap: 8px; }
-        .nav-logo-text { color: white; font-weight: 900; font-size: 18px; letter-spacing: -1px; font-family: 'Arial Black', Arial, sans-serif; }
+        .nav-logo-text { display: none; }
+        .nav-email { display: none; }
         .nav-right { display: flex; align-items: center; gap: 8px; }
-        .nav-email { color: rgba(255,255,255,0.5); font-size: 13px; }
         .signout-btn { background: transparent; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; }
         .lang-toggle { display: flex; gap: 2px; background: rgba(255,255,255,0.08); padding: 3px; border-radius: 8px; }
         .lang-btn { background: transparent; border: none; cursor: pointer; font-size: 15px; width: 28px; height: 24px; border-radius: 5px; display: flex; align-items: center; justify-content: center; }
@@ -310,7 +314,8 @@ export default function CoachDashboard() {
         .empty-state p { font-size: 13px; color: #888780; }
         @media (min-width: 769px) {
           .nav { padding: 0 28px; height: 64px; }
-          .nav-logo-text { font-size: 20px; }
+          .nav-logo-text { display: inline; color: white; font-weight: 900; font-size: 20px; letter-spacing: -1px; font-family: 'Arial Black', Arial, sans-serif; }
+          .nav-email { display: inline; color: rgba(255,255,255,0.5); font-size: 13px; }
           .signout-btn { padding: 7px 16px; font-size: 13px; }
           .lang-btn { font-size: 16px; width: 30px; height: 26px; }
           .content { padding: 40px 28px; }
@@ -331,7 +336,6 @@ export default function CoachDashboard() {
           .upgrade-banner { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 24px 28px; }
           .upgrade-text p { margin-bottom: 0; }
           .upgrade-btn { display: inline-block; width: auto; }
-          .nav-email { display: block; color: rgba(255,255,255,0.5); font-size: 13px; }
         }
       `}</style>
 
