@@ -4,8 +4,8 @@ export const t = {
   en: {
     // Nav
     nav_players: 'For players',
-    nav_agents: 'For agents',
-    nav_pricing: 'Pricing',
+    nav_agents: 'For coaches',
+    nav_pricing: 'How it works',
     nav_get_started: 'Get started',
     nav_sign_out: 'Sign out',
     nav_back_dashboard: '← Back to Dashboard',
@@ -16,10 +16,10 @@ export const t = {
     hero_title_1: 'The pathway starts',
     hero_title_2: 'with being',
     hero_title_highlight: 'seen.',
-    hero_sub: 'Gainline gives every rugby player a professional digital profile — and gives agents the tools to manage, present and place their players. Wherever the game takes you.',
+    hero_sub: 'Gainline gives every rugby player a professional digital profile — and gives coaches the tools to find, manage and develop their players. Wherever the game takes you.',
     hero_btn_player: 'Build your free profile',
-    hero_btn_agent: "I'm an agent",
-    hero_note: 'PLAYER PROFILES ALWAYS FREE · AGENT TOOLS FROM €99/MONTH',
+    hero_btn_agent: "I'm a coach",
+    hero_note: 'PLAYER PROFILES ALWAYS FREE · COACH TOOLS FREE DURING BETA',
 
     // Pull quote
     quote: '"In rugby, the pathway is everything. Gainline exists to make sure talent meets opportunity — no matter where in the world that talent is."',
@@ -27,25 +27,25 @@ export const t = {
 
     // Split sections
     for_players: 'FOR PLAYERS',
-    for_agents: 'FOR AGENTS',
+    for_agents: 'FOR COACHES',
     player_headline: 'Your profile is your passport to the game.',
     player_sub: 'Every pathway — academy selection, professional contract, overseas opportunity — begins with someone seeing what you can do. Gainline makes sure you\'re always visible, always professional, always ready.',
     player_bullets: [
       'Stats, video, history and accolades in one place',
-      'One shareable link — clubs, coaches, agents',
+      'One shareable link — clubs, coaches, scouts',
       'See who has viewed and saved your profile',
       'Free — always. No subscription, no expiry',
     ],
     player_cta: 'Build my free profile',
     agent_headline: 'Your players deserve better than a PDF.',
-    agent_sub: 'Gainline gives you a professional platform to manage your entire book — and present your players to any club, in any league, anywhere in the world. The way the modern game demands.',
+    agent_sub: 'Gainline gives you a professional platform to find and manage players — and present them to any club, in any league, anywhere in the world. The way the modern game demands.',
     agent_bullets: [
-      'Full book management — filter by position, age, location',
-      'Separate prospects from contracted players',
-      'Share profiles and track interest in real time',
-      'Passport, contract and medical document storage',
+      'Browse players by position, age and nationality',
+      'Shortlist and add private notes on players',
+      'View full player CVs including video highlights',
+      'Access player documents securely',
     ],
-    agent_cta: 'Start 30-day free trial',
+    agent_cta: 'Register as a coach',
 
     // Pathway section
     pathway_label: 'WHY VISIBILITY MATTERS',
@@ -59,12 +59,12 @@ export const t = {
 
     // CTA section
     cta_title: 'Cross the gainline.',
-    cta_sub: 'Whether you\'re a player chasing your next opportunity, or an agent building the game\'s next generation — this is where the pathway starts.',
+    cta_sub: 'Whether you\'re a player chasing your next opportunity, or a coach building the game\'s next generation — this is where the pathway starts.',
     cta_player_title: 'No talent goes unseen.',
     cta_player_sub: 'Your Gainline profile is free, forever. Build it today and let it open doors you don\'t even know exist yet.',
     cta_agent_title: 'Talent meets opportunity.',
-    cta_agent_sub: 'Give your players the professional presence they deserve. 30 days free, no commitment.',
-    cta_agent_btn: 'Start free trial',
+    cta_agent_sub: 'Give your players the professional presence they deserve. Register today and start building your player network.',
+    cta_agent_btn: 'Register as a coach',
 
     // Login
     login_title: 'Sign in to Gainline',
@@ -159,7 +159,7 @@ export const t = {
     // Coach portal
     coach_label: 'COACH & RECRUITER PORTAL',
     coach_title: 'Player Browser',
-    coach_free_tier: 'Free tier — showing up to 10 players',
+    coach_free_tier: 'Free during beta — showing up to 10 players',
     coach_all_positions: 'All positions',
     coach_all_nationalities: 'All nationalities',
     coach_any_age: 'Any age',
@@ -174,7 +174,7 @@ export const t = {
     coach_view_cv: 'View full CV →',
     coach_view_cv_short: 'View CV →',
     coach_upgrade_title: 'Want access to the full player pool?',
-    coach_upgrade_sub: 'Upgrade to unlock unlimited players, advanced filters, shortlisting and more.',
+    coach_upgrade_sub: 'Get in touch to unlock unlimited players, advanced filters and more.',
     coach_upgrade_btn: 'Request full access →',
     coach_empty_title: 'No players yet',
     coach_empty_sub: 'Players will appear here as they join Gainline and set their profile to public.',
@@ -191,8 +191,8 @@ export const t = {
   fr: {
     // Nav
     nav_players: 'Pour les joueurs',
-    nav_agents: 'Pour les agents',
-    nav_pricing: 'Tarifs',
+    nav_agents: 'Pour les entraîneurs',
+    nav_pricing: 'Comment ça marche',
     nav_get_started: 'Commencer',
     nav_sign_out: 'Se déconnecter',
     nav_back_dashboard: '← Retour au tableau de bord',
@@ -203,10 +203,10 @@ export const t = {
     hero_title_1: 'Le parcours commence',
     hero_title_2: 'par être',
     hero_title_highlight: 'visible.',
-    hero_sub: 'Gainline offre à chaque joueur de rugby un profil numérique professionnel — et donne aux agents les outils pour gérer, présenter et placer leurs joueurs. Où que le jeu vous mène.',
+    hero_sub: 'Gainline offre à chaque joueur de rugby un profil numérique professionnel — et donne aux entraîneurs les outils pour trouver, gérer et développer leurs joueurs. Où que le jeu vous mène.',
     hero_btn_player: 'Créer mon profil gratuit',
-    hero_btn_agent: 'Je suis agent',
-    hero_note: 'PROFILS JOUEURS TOUJOURS GRATUITS · OUTILS AGENTS À PARTIR DE 99€/MOIS',
+    hero_btn_agent: 'Je suis entraîneur',
+    hero_note: 'PROFILS JOUEURS TOUJOURS GRATUITS · OUTILS ENTRAÎNEURS GRATUITS EN BÊTA',
 
     // Pull quote
     quote: '« Dans le rugby, le parcours est tout. Gainline existe pour que le talent rencontre l\'opportunité — peu importe où ce talent se trouve dans le monde. »',
@@ -214,25 +214,25 @@ export const t = {
 
     // Split sections
     for_players: 'POUR LES JOUEURS',
-    for_agents: 'POUR LES AGENTS',
+    for_agents: 'POUR LES ENTRAÎNEURS',
     player_headline: 'Votre profil est votre passeport pour le jeu.',
     player_sub: 'Chaque parcours — sélection en académie, contrat professionnel, opportunité à l\'étranger — commence par quelqu\'un qui voit ce que vous savez faire. Gainline s\'assure que vous êtes toujours visible, toujours professionnel, toujours prêt.',
     player_bullets: [
       'Stats, vidéo, historique et distinctions en un seul endroit',
-      'Un lien partageable — clubs, entraîneurs, agents',
+      'Un lien partageable — clubs, entraîneurs, recruteurs',
       'Voyez qui a consulté et enregistré votre profil',
       'Gratuit — toujours. Sans abonnement, sans expiration',
     ],
     player_cta: 'Créer mon profil gratuit',
     agent_headline: 'Vos joueurs méritent mieux qu\'un PDF.',
-    agent_sub: 'Gainline vous offre une plateforme professionnelle pour gérer l\'ensemble de votre portefeuille — et présenter vos joueurs à n\'importe quel club, dans n\'importe quelle ligue, partout dans le monde. Comme le jeu moderne l\'exige.',
+    agent_sub: 'Gainline vous offre une plateforme professionnelle pour trouver et gérer les joueurs — et les présenter à n\'importe quel club, dans n\'importe quelle ligue, partout dans le monde.',
     agent_bullets: [
-      'Gestion complète du portefeuille — filtrer par poste, âge, localisation',
-      'Séparer les prospects des joueurs sous contrat',
-      'Partager les profils et suivre l\'intérêt en temps réel',
-      'Stockage de passeports, contrats et documents médicaux',
+      'Parcourir les joueurs par poste, âge et nationalité',
+      'Créer des listes et ajouter des notes privées',
+      'Voir les CV complets avec les vidéos de highlights',
+      'Accéder aux documents des joueurs en toute sécurité',
     ],
-    agent_cta: 'Essai gratuit 30 jours',
+    agent_cta: 'S\'inscrire en tant qu\'entraîneur',
 
     // Pathway section
     pathway_label: 'POURQUOI LA VISIBILITÉ EST ESSENTIELLE',
@@ -246,12 +246,12 @@ export const t = {
 
     // CTA section
     cta_title: 'Franchissez la ligne d\'avantage.',
-    cta_sub: 'Que vous soyez un joueur à la recherche de votre prochaine opportunité, ou un agent construisant la prochaine génération — c\'est ici que le parcours commence.',
+    cta_sub: 'Que vous soyez un joueur à la recherche de votre prochaine opportunité, ou un entraîneur construisant la prochaine génération — c\'est ici que le parcours commence.',
     cta_player_title: 'Aucun talent ne passe inaperçu.',
     cta_player_sub: 'Votre profil Gainline est gratuit, pour toujours. Créez-le aujourd\'hui et laissez-le ouvrir des portes que vous ne connaissez pas encore.',
     cta_agent_title: 'Le talent rencontre l\'opportunité.',
-    cta_agent_sub: 'Donnez à vos joueurs la présence professionnelle qu\'ils méritent. 30 jours gratuits, sans engagement.',
-    cta_agent_btn: 'Démarrer l\'essai gratuit',
+    cta_agent_sub: 'Donnez à vos joueurs la présence professionnelle qu\'ils méritent. Inscrivez-vous aujourd\'hui et commencez à construire votre réseau de joueurs.',
+    cta_agent_btn: 'S\'inscrire en tant qu\'entraîneur',
 
     // Login
     login_title: 'Se connecter à Gainline',
@@ -346,7 +346,7 @@ export const t = {
     // Coach portal
     coach_label: 'PORTAIL ENTRAÎNEURS & RECRUTEURS',
     coach_title: 'Navigateur de joueurs',
-    coach_free_tier: 'Version gratuite — jusqu\'à 10 joueurs affichés',
+    coach_free_tier: 'Gratuit en bêta — jusqu\'à 10 joueurs affichés',
     coach_all_positions: 'Tous les postes',
     coach_all_nationalities: 'Toutes les nationalités',
     coach_any_age: 'Tout âge',
@@ -361,7 +361,7 @@ export const t = {
     coach_view_cv: 'Voir le CV complet →',
     coach_view_cv_short: 'Voir le CV →',
     coach_upgrade_title: 'Accéder à l\'ensemble des joueurs ?',
-    coach_upgrade_sub: 'Passez à la version complète pour accéder à tous les joueurs, des filtres avancés, la liste de favoris et plus encore.',
+    coach_upgrade_sub: 'Contactez-nous pour débloquer tous les joueurs, des filtres avancés et plus encore.',
     coach_upgrade_btn: 'Demander l\'accès complet →',
     coach_empty_title: 'Aucun joueur pour l\'instant',
     coach_empty_sub: 'Les joueurs apparaîtront ici dès qu\'ils rejoindront Gainline et rendront leur profil public.',
