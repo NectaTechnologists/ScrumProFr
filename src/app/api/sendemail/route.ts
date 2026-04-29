@@ -28,7 +28,7 @@ export async function POST(req: Request) {
               ${message ? `<tr><td style="padding: 8px 0; color: #888780; vertical-align: top;">Message</td><td style="padding: 8px 0; color: #0D1B2E;">${message}</td></tr>` : ''}
             </table>
             <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid #D3D1C7;">
-              <a href="https://supabase.com/dashboard/project/vsfnjjxmkftdmcyygjca/editor" style="background: #1D9E75; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 13px;">Approve in Supabase →</a>
+              <a href="https://supabase.com/dashboard/project/vsfnjjxmkftdmcyygjca/editor/17739?schema=public&table=profiles&filter=approved%3Aeq%3Afalse" style="background: #1D9E75; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 13px;">Review in Supabase →</a>
             </div>
           </div>
         </div>
