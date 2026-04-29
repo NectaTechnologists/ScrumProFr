@@ -17,13 +17,8 @@ const positions = [
 ]
 
 const DOCUMENT_TYPES = [
-  'Fitness Report',
-  'Medical Clearance',
-  'Coaching Certificate',
-  'Training Assessment',
-  'Academic Certificate',
-  'Player Contract',
-  'Other',
+  'Fitness Report','Medical Clearance','Coaching Certificate',
+  'Training Assessment','Academic Certificate','Player Contract','Other',
 ]
 
 const COMPLETION_FIELDS = [
@@ -60,7 +55,7 @@ export default function ProfilePage() {
   const [shareUrl, setShareUrl] = useState('')
   const [completion, setCompletion] = useState(0)
   const [missingKeys, setMissingKeys] = useState<string[]>([])
-  const [activeTab, setActiveTab] = useState<'profile' | 'media' | 'documents'>('profile')
+  const [activeTab, setActiveTab] = useState<'profile' | 'career' | 'media' | 'documents'>('profile')
   const [lang, setLang] = useState<Lang>('en')
   const [avatarUploading, setAvatarUploading] = useState(false)
   const [userId, setUserId] = useState<string>('')
@@ -74,6 +69,8 @@ export default function ProfilePage() {
     position_primary: 'HOOKER', position_secondary: '', height_cm: '', weight_kg: '',
     school_attended: '', bio: '', video_url: '', video_url_2: '', video_url_3: '',
     avatar_url: '',
+    clubs_history: '', accolades: '', dominant_hand: '', fitness_score: '',
+    passport_countries: '', languages: '', agent_name: '', agent_email: '', agent_phone: '',
   })
 
   useEffect(() => {
@@ -96,23 +93,24 @@ export default function ProfilePage() {
           school_attended: player.school_attended || '', bio: player.bio || '',
           video_url: player.video_url || '', video_url_2: player.video_url_2 || '',
           video_url_3: player.video_url_3 || '', avatar_url: player.avatar_url || '',
+          clubs_history: player.clubs_history || '', accolades: player.accolades || '',
+          dominant_hand: player.dominant_hand || '', fitness_score: player.fitness_score || '',
+          passport_countries: player.passport_countries || '', languages: player.languages || '',
+          agent_name: player.agent_name || '', agent_email: player.agent_email || '',
+          agent_phone: player.agent_phone || '',
         }
         setForm(loaded)
         setCompletion(calcCompletion(loaded))
         setMissingKeys(getMissingKeys(loaded))
         setShareUrl(`${window.location.origin}/cv/${player.share_token}`)
 
-        // Load documents
         const { data: docs } = await supabase
-          .from('player_documents')
-          .select('*')
-          .eq('player_id', player.id)
+          .from('player_documents').select('*').eq('player_id', player.id)
           .order('created_at', { ascending: false })
         setDocuments(docs || [])
       }
     }
     loadProfile()
-
   }, [])
 
   useEffect(() => {
@@ -144,65 +142,33 @@ export default function ProfilePage() {
   async function handleDocumentUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file || !userId || !playerId) return
-
     if (docInputRef.current) docInputRef.current.value = ''
-
     const validTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg']
     if (!validTypes.includes(file.type)) { window.alert('Please upload a PDF or image file'); return }
-    if (file.size > 10 * 1024 * 1024) { window.alert('File must be under 10MB — please compress your file and try again'); return }
+    if (file.size > 10 * 1024 * 1024) { window.alert('File must be under 10MB'); return }
     if (documents.length >= 5) { window.alert(lang === 'fr' ? 'Maximum 5 documents atteint' : 'Maximum of 5 documents reached'); return }
-
     setDocUploading(true)
-
     const fileExt = file.name.split('.').pop()
     const fileName = `${userId}/${Date.now()}.${fileExt}`
-
-    const { error: uploadError } = await supabase.storage
-      .from('documents')
-      .upload(fileName, file, { upsert: false })
-
+    const { error: uploadError } = await supabase.storage.from('documents').upload(fileName, file, { upsert: false })
     if (uploadError) { alert('Upload failed: ' + uploadError.message); setDocUploading(false); return }
-
-    const { data: signedUrlData } = await supabase.storage
-      .from('documents')
-      .createSignedUrl(fileName, 60 * 60 * 24 * 365)
-
+    const { data: signedUrlData } = await supabase.storage.from('documents').createSignedUrl(fileName, 60 * 60 * 24 * 365)
     const signedUrl = signedUrlData?.signedUrl ?? ''
-
-    const { data: newDoc, error: insertError } = await supabase
-      .from('player_documents')
-      .insert({
-        player_id: playerId,
-        profile_id: userId,
-        file_name: file.name,
-        storage_path: fileName,
-        file_url: fileName,
-        doc_type: selectedDocType,
-        document_type: selectedDocType,
-        file_size_kb: Math.round(file.size / 1024),
-      })
-      .select()
-      .single()
-
+    const { data: newDoc, error: insertError } = await supabase.from('player_documents').insert({
+      player_id: playerId, profile_id: userId, file_name: file.name,
+      storage_path: fileName, file_url: fileName, doc_type: selectedDocType,
+      document_type: selectedDocType, file_size_kb: Math.round(file.size / 1024),
+    }).select().single()
     if (insertError) { window.alert('Insert error: ' + insertError.message); setDocUploading(false); return }
-
-    if (newDoc) {
-      setDocuments(prev => [{ ...newDoc, signed_url: signedUrl }, ...prev])
-    }
-
+    if (newDoc) setDocuments(prev => [{ ...newDoc, signed_url: signedUrl }, ...prev])
     setDocUploading(false)
     if (docInputRef.current) docInputRef.current.value = ''
   }
 
   async function handleDeleteDocument(doc: any) {
     if (!confirm(lang === 'fr' ? 'Supprimer ce document ?' : 'Delete this document?')) return
-
-    // Delete from storage
     await supabase.storage.from('documents').remove([doc.file_url])
-
-    // Delete from database
     await supabase.from('player_documents').delete().eq('id', doc.id)
-
     setDocuments(prev => prev.filter(d => d.id !== doc.id))
   }
 
@@ -222,6 +188,11 @@ export default function ProfilePage() {
       video_url: form.video_url || null, video_url_2: form.video_url_2 || null,
       video_url_3: form.video_url_3 || null, avatar_url: form.avatar_url || null,
       profile_visibility: 'PUBLIC',
+      clubs_history: form.clubs_history || null, accolades: form.accolades || null,
+      dominant_hand: form.dominant_hand || null, fitness_score: form.fitness_score || null,
+      passport_countries: form.passport_countries || null, languages: form.languages || null,
+      agent_name: form.agent_name || null, agent_email: form.agent_email || null,
+      agent_phone: form.agent_phone || null,
     }
     let result
     if (existing) {
@@ -254,7 +225,6 @@ export default function ProfilePage() {
 
   const missingLabels = missingKeys.map(k => fieldLabels[k] || k).filter(Boolean)
   const initials = [form.first_name?.[0], form.last_name?.[0]].filter(Boolean).join('').toUpperCase() || '?'
-
   const formatFileSize = (kb: number) => kb > 1024 ? `${(kb / 1024).toFixed(1)}MB` : `${kb}KB`
 
   return (
@@ -278,23 +248,25 @@ export default function ProfilePage() {
         .share-label { font-size: 12px; font-weight: 700; color: #1D9E75; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
         .share-url { font-size: 13px; color: #0D1B2E; font-family: monospace; word-break: break-all; }
         .copy-btn { background: #1D9E75; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
-        .tabs { display: flex; gap: 2px; background: white; padding: 3px; border-radius: 10px; border: 0.5px solid #D3D1C7; margin-bottom: 20px; }
-        .tab { flex: 1; padding: 10px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; font-weight: 700; font-family: Arial, sans-serif; background: transparent; color: #888780; text-align: center; }
+        .tabs { display: flex; gap: 2px; background: white; padding: 3px; border-radius: 10px; border: 0.5px solid #D3D1C7; margin-bottom: 20px; overflow-x: auto; }
+        .tab { flex: 1; padding: 10px 8px; border-radius: 8px; border: none; cursor: pointer; font-size: 12px; font-weight: 700; font-family: Arial, sans-serif; background: transparent; color: #888780; text-align: center; white-space: nowrap; }
         .tab-active { background: #0D1B2E; color: white; }
         .prof-form { background: white; border-radius: 12px; padding: 28px; border: 1px solid #E8E4F0; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
         .form-field { display: flex; flex-direction: column; gap: 6px; }
         .form-label { font-size: 13px; font-weight: 600; color: #0D1B2E; }
-        .form-input { width: 100%; padding: 10px 14px; border: 1.5px solid #E8E4F0; border-radius: 8px; font-size: 14px; outline: none; font-family: system-ui; background: white; color: #0D1B2E; -webkit-text-fill-color: #0D1B2E; }
+        .form-hint { font-size: 11px; color: #888780; margin-top: 4px; }
+        .form-input { width: 100%; padding: 10px 14px; border: 1.5px solid #E8E4F0; border-radius: 8px; font-size: 14px; outline: none; font-family: system-ui; background: white; color: #0D1B2E; }
         .form-input:focus { border-color: #1D9E75; }
-        .form-input::placeholder { color: #B4B2A9; -webkit-text-fill-color: #B4B2A9; }
+        .form-input::placeholder { color: #B4B2A9; }
         .form-full { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
         .form-textarea { width: 100%; padding: 10px 14px; border: 1.5px solid #E8E4F0; border-radius: 8px; font-size: 14px; outline: none; font-family: system-ui; height: 100px; resize: none; color: #0D1B2E; }
         .form-textarea:focus { border-color: #1D9E75; }
         .form-textarea::placeholder { color: #B4B2A9; }
         .save-btn { width: 100%; padding: 13px; background: #1D9E75; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Arial Black', Arial, sans-serif; margin-top: 8px; }
         .save-btn:disabled { opacity: 0.7; cursor: not-allowed; }
-        .section-title { font-size: 11px; color: #1D9E75; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 16px; }
+        .section-title { font-size: 11px; color: #1D9E75; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 16px; margin-top: 8px; }
+        .section-divider { border: none; border-top: 1px solid #F1EFE8; margin: 24px 0; }
         .video-hint { font-size: 12px; color: #888780; margin-top: 6px; }
         .avatar-section { display: flex; align-items: center; gap: 20px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #F1EFE8; }
         .avatar-preview { width: 80px; height: 80px; border-radius: 16px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
@@ -304,13 +276,9 @@ export default function ProfilePage() {
         .avatar-upload-label { font-size: 13px; font-weight: 600; color: #0D1B2E; margin-bottom: 6px; display: block; }
         .avatar-upload-hint { font-size: 12px; color: #888780; margin-bottom: 10px; }
         .avatar-upload-btn { background: #F1EFE8; border: 1.5px solid #D3D1C7; color: #0D1B2E; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: Arial, sans-serif; display: inline-block; }
-        .avatar-upload-btn:hover { border-color: #1D9E75; }
-
-        /* Document styles */
         .doc-upload-area { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #F1EFE8; }
         .doc-type-row { display: flex; gap: 10px; margin-bottom: 12px; align-items: flex-end; flex-wrap: wrap; }
         .doc-type-select { flex: 1; padding: 10px 14px; border: 1.5px solid #E8E4F0; border-radius: 8px; font-size: 14px; outline: none; font-family: system-ui; background: white; color: #0D1B2E; min-width: 160px; }
-        .doc-type-select:focus { border-color: #1D9E75; }
         .doc-upload-btn { background: #1D9E75; color: white; border: none; border-radius: 8px; padding: 10px 18px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; flex-shrink: 0; }
         .doc-upload-btn:disabled { opacity: 0.6; cursor: not-allowed; }
         .doc-hint { font-size: 12px; color: #888780; }
@@ -321,16 +289,13 @@ export default function ProfilePage() {
         .doc-name { font-size: 13px; font-weight: 700; color: #0D1B2E; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .doc-meta { font-size: 11px; color: #888780; margin-top: 2px; }
         .doc-delete { background: none; border: none; color: #C4C2BA; cursor: pointer; font-size: 18px; flex-shrink: 0; padding: 4px; }
-        .doc-delete:hover { color: #E05555; }
         .doc-empty { text-align: center; padding: 32px 20px; color: #888780; font-size: 14px; }
         .doc-count { font-size: 12px; color: #888780; margin-bottom: 12px; }
         .doc-private-note { background: #F1EFE8; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 10px; }
         .doc-private-note p { font-size: 12px; color: #5F5E5A; line-height: 1.6; }
-
         @media (max-width: 768px) {
           .prof-nav { padding: 0 16px; height: 56px; }
           .prof-logo-text { font-size: 16px; }
-          .prof-back { font-size: 13px; }
           .prof-content { padding: 24px 16px; }
           .prof-title { font-size: 20px; }
           .form-row { grid-template-columns: 1fr; gap: 12px; }
@@ -385,12 +350,7 @@ export default function ProfilePage() {
               {completion === 100 ? T.completion_complete : completion >= 70 ? T.completion_strong : completion >= 40 ? T.completion_getting : T.completion_starting}
             </div>
             <div style={{ fontSize: '13px', color: '#5F5E5A', lineHeight: '1.5' }}>
-              {completion === 100
-                ? T.completion_done
-                : missingLabels.length > 0
-                  ? `${T.completion_missing} ${missingLabels.slice(0, 3).join(', ')}${missingLabels.length > 3 ? ` +${missingLabels.length - 3}` : ''}`
-                  : T.completion_done
-              }
+              {completion === 100 ? T.completion_done : missingLabels.length > 0 ? `${T.completion_missing} ${missingLabels.slice(0, 3).join(', ')}${missingLabels.length > 3 ? ` +${missingLabels.length - 3}` : ''}` : T.completion_done}
             </div>
           </div>
         </div>
@@ -401,14 +361,13 @@ export default function ProfilePage() {
               <div className="share-label">{T.profile_share_label}</div>
               <div className="share-url">{shareUrl}</div>
             </div>
-            <button onClick={() => { navigator.clipboard.writeText(shareUrl); alert(lang === 'fr' ? 'Lien copié !' : 'Link copied!') }} className="copy-btn">
-              {T.profile_copy}
-            </button>
+            <button onClick={() => { navigator.clipboard.writeText(shareUrl); alert(lang === 'fr' ? 'Lien copié !' : 'Link copied!') }} className="copy-btn">{T.profile_copy}</button>
           </div>
         )}
 
         <div className="tabs">
           <button className={`tab ${activeTab === 'profile' ? 'tab-active' : ''}`} onClick={() => setActiveTab('profile')}>{T.profile_tab_profile}</button>
+          <button className={`tab ${activeTab === 'career' ? 'tab-active' : ''}`} onClick={() => setActiveTab('career')}>{lang === 'fr' ? 'Carrière' : 'Career'}</button>
           <button className={`tab ${activeTab === 'media' ? 'tab-active' : ''}`} onClick={() => setActiveTab('media')}>{T.profile_tab_media}</button>
           <button className={`tab ${activeTab === 'documents' ? 'tab-active' : ''}`} onClick={() => setActiveTab('documents')}>{T.profile_tab_docs}</button>
         </div>
@@ -465,6 +424,80 @@ export default function ProfilePage() {
           </form>
         )}
 
+        {activeTab === 'career' && (
+          <form onSubmit={handleSave} className="prof-form">
+
+            <p className="section-title">{lang === 'fr' ? 'HISTORIQUE DE CLUBS' : 'CLUB HISTORY'}</p>
+            <div className="form-full">
+              <label className="form-label">{lang === 'fr' ? 'Clubs représentés' : 'Clubs represented'}</label>
+              <textarea className="form-textarea" value={form.clubs_history} onChange={e => setForm({ ...form, clubs_history: e.target.value })} placeholder={lang === 'fr' ? 'ex. Stade Français (2022–2024), Racing 92 (2020–2022)' : 'e.g. Stade Français (2022–2024), Racing 92 (2020–2022)'}/>
+              <p className="form-hint">{lang === 'fr' ? 'Listez vos clubs avec les années' : 'List clubs with years, most recent first'}</p>
+            </div>
+
+            <div className="form-full">
+              <label className="form-label">{lang === 'fr' ? 'Distinctions & récompenses' : 'Accolades & achievements'}</label>
+              <textarea className="form-textarea" value={form.accolades} onChange={e => setForm({ ...form, accolades: e.target.value })} placeholder={lang === 'fr' ? 'ex. Capitaine U20, Sélection nationale, MVP 2023' : 'e.g. U20 Captain, National selection, MVP 2023'}/>
+            </div>
+
+            <hr className="section-divider"/>
+            <p className="section-title">{lang === 'fr' ? 'ATTRIBUTS PHYSIQUES' : 'PHYSICAL ATTRIBUTES'}</p>
+
+            <div className="form-row">
+              <div className="form-field">
+                <label className="form-label">{lang === 'fr' ? 'Main dominante' : 'Dominant hand'}</label>
+                <select className="form-input" value={form.dominant_hand} onChange={e => setForm({ ...form, dominant_hand: e.target.value })}>
+                  <option value="">{lang === 'fr' ? 'Sélectionner' : 'Select'}</option>
+                  <option value="Right">{lang === 'fr' ? 'Droite' : 'Right'}</option>
+                  <option value="Left">{lang === 'fr' ? 'Gauche' : 'Left'}</option>
+                  <option value="Both">{lang === 'fr' ? 'Les deux' : 'Both'}</option>
+                </select>
+              </div>
+              <div className="form-field">
+                <label className="form-label">{lang === 'fr' ? 'Score de condition physique' : 'Fitness score'}</label>
+                <input className="form-input" value={form.fitness_score} onChange={e => setForm({ ...form, fitness_score: e.target.value })} placeholder={lang === 'fr' ? 'ex. Beep test 13.2' : 'e.g. Beep test 13.2'}/>
+                <p className="form-hint">{lang === 'fr' ? 'Tout test de condition physique pertinent' : 'Any relevant fitness test result'}</p>
+              </div>
+            </div>
+
+            <hr className="section-divider"/>
+            <p className="section-title">{lang === 'fr' ? 'ÉLIGIBILITÉ & LANGUES' : 'ELIGIBILITY & LANGUAGES'}</p>
+
+            <div className="form-row">
+              <div className="form-field">
+                <label className="form-label">{lang === 'fr' ? 'Pays de passeport' : 'Passport countries'}</label>
+                <input className="form-input" value={form.passport_countries} onChange={e => setForm({ ...form, passport_countries: e.target.value })} placeholder={lang === 'fr' ? 'ex. Afrique du Sud, France' : 'e.g. South Africa, France'}/>
+                <p className="form-hint">{lang === 'fr' ? 'Important pour les transferts internationaux' : 'Important for international transfers'}</p>
+              </div>
+              <div className="form-field">
+                <label className="form-label">{lang === 'fr' ? 'Langues parlées' : 'Languages spoken'}</label>
+                <input className="form-input" value={form.languages} onChange={e => setForm({ ...form, languages: e.target.value })} placeholder={lang === 'fr' ? 'ex. Anglais, Français, Zulu' : 'e.g. English, French, Zulu'}/>
+              </div>
+            </div>
+
+            <hr className="section-divider"/>
+            <p className="section-title">{lang === 'fr' ? 'AGENT / CONTACT' : 'AGENT / CONTACT'}</p>
+
+            <div className="form-full">
+              <label className="form-label">{lang === 'fr' ? 'Nom de l\'agent' : 'Agent name'}</label>
+              <input className="form-input" value={form.agent_name} onChange={e => setForm({ ...form, agent_name: e.target.value })} placeholder={lang === 'fr' ? 'ex. Jean Dupont' : 'e.g. John Smith'}/>
+            </div>
+            <div className="form-row">
+              <div className="form-field">
+                <label className="form-label">{lang === 'fr' ? 'Email de l\'agent' : 'Agent email'}</label>
+                <input className="form-input" type="email" value={form.agent_email} onChange={e => setForm({ ...form, agent_email: e.target.value })} placeholder="agent@example.com"/>
+              </div>
+              <div className="form-field">
+                <label className="form-label">{lang === 'fr' ? 'Téléphone de l\'agent' : 'Agent phone'}</label>
+                <input className="form-input" type="tel" value={form.agent_phone} onChange={e => setForm({ ...form, agent_phone: e.target.value })} placeholder="+27 82 000 0000"/>
+              </div>
+            </div>
+
+            <button type="submit" disabled={loading} className="save-btn">
+              {loading ? T.profile_saving : saved ? T.profile_saved : T.profile_save}
+            </button>
+          </form>
+        )}
+
         {activeTab === 'media' && (
           <form onSubmit={handleSave} className="prof-form">
             <p className="section-title">{T.profile_video_title}</p>
@@ -478,19 +511,13 @@ export default function ProfilePage() {
 
         {activeTab === 'documents' && (
           <div className="prof-form">
-            {/* Privacy note */}
             <div className="doc-private-note">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: '2px' }}>
                 <rect x="3" y="7" width="10" height="8" rx="2" stroke="#1D9E75" strokeWidth="1.5"/>
                 <path d="M5 7V5a3 3 0 016 0v2" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round"/>
               </svg>
-              <p>{lang === 'fr'
-                ? 'Vos documents sont privés et ne sont visibles que par les entraîneurs et agents vérifiés sur Gainline — jamais sur votre CV public.'
-                : 'Your documents are private and only visible to verified coaches and agents on Gainline — never on your public CV.'
-              }</p>
+              <p>{lang === 'fr' ? 'Vos documents sont privés et ne sont visibles que par les entraîneurs et agents vérifiés sur Gainline.' : 'Your documents are private and only visible to verified coaches and agents on Gainline — never on your public CV.'}</p>
             </div>
-
-            {/* Upload area */}
             <div className="doc-upload-area">
               <p className="section-title">{lang === 'fr' ? 'AJOUTER UN DOCUMENT' : 'ADD DOCUMENT'}</p>
               <div className="doc-type-row">
@@ -504,9 +531,7 @@ export default function ProfilePage() {
               </div>
               <p className="doc-hint">{lang === 'fr' ? 'PDF ou image, max 10MB. Maximum 5 documents.' : 'PDF or image, max 10MB. Maximum 5 documents.'}</p>
             </div>
-
-            {/* Document list */}
-            <p className="doc-count">{documents.length}/5 {lang === 'fr' ? 'documents' : 'documents'}</p>
+            <p className="doc-count">{documents.length}/5 documents</p>
             {documents.length > 0 ? (
               <div className="doc-list">
                 {documents.map(doc => (
@@ -529,7 +554,7 @@ export default function ProfilePage() {
               </div>
             ) : (
               <div className="doc-empty">
-                <p>{lang === 'fr' ? 'Aucun document encore. Ajoutez vos certificats et rapports ci-dessus.' : 'No documents yet. Add your certificates and reports above.'}</p>
+                <p>{lang === 'fr' ? 'Aucun document encore.' : 'No documents yet. Add your certificates and reports above.'}</p>
               </div>
             )}
           </div>
