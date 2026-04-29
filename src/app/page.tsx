@@ -150,7 +150,7 @@ export default function Home() {
         </a>
         <div className="nav-links">
           <a href="/login" className="nav-link">{T.nav_players}</a>
-          <a href="/login" className="nav-link">{T.nav_agents}</a>
+          <a href="/register/coach" className="nav-link">{T.nav_agents}</a>
           <a href="/login" className="nav-link">{T.nav_pricing}</a>
           <div className="lang-toggle">
             <button className={`lang-btn ${lang === 'en' ? 'lang-btn-active' : ''}`} onClick={() => toggleLang('en')} title="English">{FLAG_EN}</button>
