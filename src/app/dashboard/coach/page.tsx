@@ -206,17 +206,10 @@ export default function CoachDashboard() {
     return (
       <>
         <style>{`* { box-sizing: border-box; margin: 0; padding: 0; } body { font-family: Arial, sans-serif; background: #F1EFE8; }`}</style>
-        <nav style={{ background: '#0D1B2E', padding: '0 28px', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <svg width="32" height="30" viewBox="0 0 32 30" style={{ display: 'block' }}>
-              <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
-              <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-              <line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
-            </svg>
-            <span style={{ color: 'white', fontWeight: '900', fontSize: '20px', letterSpacing: '-1px', fontFamily: 'Arial Black, Arial, sans-serif' }}>GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
-          </div>
+        <nav style={{ background: '#0D1B2E', padding: '0 16px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <span style={{ color: 'white', fontWeight: '900', fontSize: '18px', letterSpacing: '-1px', fontFamily: 'Arial Black, Arial, sans-serif' }}>GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
           <form action="/auth/signout" method="post">
-            <button type="submit" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.7)', padding: '7px 16px', borderRadius: '6px', fontSize: '13px', cursor: 'pointer' }}>Sign out</button>
+            <button type="submit" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.7)', padding: '6px 14px', borderRadius: '6px', fontSize: '13px', cursor: 'pointer' }}>Sign out</button>
           </form>
         </nav>
         <div style={{ maxWidth: '560px', margin: '80px auto', padding: '0 20px', textAlign: 'center' }}>
@@ -233,113 +226,118 @@ export default function CoachDashboard() {
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: Arial, sans-serif; background: #F1EFE8; }
-        .nav { background: #0D1B2E; padding: 0 28px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
-        .nav-logo { display: flex; align-items: center; gap: 10px; }
-        .nav-logo-text { color: white; font-weight: 900; font-size: 20px; letter-spacing: -1px; font-family: 'Arial Black', Arial, sans-serif; }
-        .nav-right { display: flex; align-items: center; gap: 12px; }
+        .nav { background: #0D1B2E; padding: 0 20px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+        .nav-logo { display: flex; align-items: center; gap: 8px; }
+        .nav-logo-text { color: white; font-weight: 900; font-size: 18px; letter-spacing: -1px; font-family: 'Arial Black', Arial, sans-serif; }
+        .nav-right { display: flex; align-items: center; gap: 8px; }
         .nav-email { color: rgba(255,255,255,0.5); font-size: 13px; }
-        .signout-btn { background: transparent; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); padding: 7px 16px; border-radius: 6px; font-size: 13px; cursor: pointer; font-family: Arial, sans-serif; }
+        .signout-btn { background: transparent; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; }
         .lang-toggle { display: flex; gap: 2px; background: rgba(255,255,255,0.08); padding: 3px; border-radius: 8px; }
-        .lang-btn { background: transparent; border: none; cursor: pointer; font-size: 16px; width: 30px; height: 26px; border-radius: 5px; display: flex; align-items: center; justify-content: center; }
+        .lang-btn { background: transparent; border: none; cursor: pointer; font-size: 15px; width: 28px; height: 24px; border-radius: 5px; display: flex; align-items: center; justify-content: center; }
         .lang-btn-active { background: rgba(255,255,255,0.15); }
-        .content { max-width: 1000px; margin: 0 auto; padding: 40px 28px; }
+        .content { max-width: 1000px; margin: 0 auto; padding: 28px 16px; }
         .page-label { font-size: 10px; color: #1D9E75; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 8px; }
-        .page-title { font-size: 28px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -0.5px; margin-bottom: 6px; }
-        .page-sub { font-size: 14px; color: #5F5E5A; margin-bottom: 28px; }
-        .tabs { display: flex; gap: 2px; background: white; padding: 3px; border-radius: 10px; border: 0.5px solid #D3D1C7; margin-bottom: 20px; width: fit-content; }
-        .tab { padding: 8px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; font-weight: 700; font-family: Arial, sans-serif; background: transparent; color: #888780; }
+        .page-title { font-size: 24px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -0.5px; margin-bottom: 4px; }
+        .page-sub { font-size: 13px; color: #5F5E5A; margin-bottom: 20px; }
+        .tabs { display: flex; gap: 2px; background: white; padding: 3px; border-radius: 10px; border: 0.5px solid #D3D1C7; margin-bottom: 16px; width: 100%; }
+        .tab { flex: 1; padding: 8px 12px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; font-weight: 700; font-family: Arial, sans-serif; background: transparent; color: #888780; text-align: center; }
         .tab-active { background: #0D1B2E; color: white; }
         .tab-count { display: inline-block; background: #1D9E75; color: white; border-radius: 10px; font-size: 10px; padding: 1px 6px; margin-left: 6px; }
-        .toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .search-input { padding: 9px 14px; border: 1.5px solid #D3D1C7; border-radius: 8px; font-size: 13px; color: #0D1B2E; background: white; outline: none; font-family: Arial, sans-serif; min-width: 180px; }
+        .toolbar { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+        .toolbar-row { display: flex; gap: 8px; align-items: center; }
+        .search-input { flex: 1; padding: 9px 14px; border: 1.5px solid #D3D1C7; border-radius: 8px; font-size: 13px; color: #0D1B2E; background: white; outline: none; font-family: Arial, sans-serif; }
         .search-input:focus { border-color: #1D9E75; }
         .search-input::placeholder { color: #B4B2A9; }
-        .filter-select { padding: 9px 14px; border: 1.5px solid #D3D1C7; border-radius: 8px; font-size: 13px; color: #0D1B2E; background: white; outline: none; font-family: Arial, sans-serif; cursor: pointer; }
+        .filter-select { flex: 1; padding: 9px 8px; border: 1.5px solid #D3D1C7; border-radius: 8px; font-size: 12px; color: #0D1B2E; background: white; outline: none; font-family: Arial, sans-serif; cursor: pointer; min-width: 0; }
         .filter-select:focus { border-color: #1D9E75; }
-        .clear-btn { padding: 9px 14px; border: 1.5px solid #D3D1C7; border-radius: 8px; font-size: 13px; color: #888780; background: white; cursor: pointer; font-family: Arial, sans-serif; }
-        .clear-btn:hover { border-color: #1D9E75; color: #1D9E75; }
-        .view-toggle { display: flex; gap: 2px; background: white; padding: 3px; border-radius: 8px; border: 1px solid #D3D1C7; margin-left: auto; }
-        .toggle-btn { padding: 6px 12px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; font-weight: 700; font-family: Arial, sans-serif; background: transparent; color: #888780; }
+        .clear-btn { padding: 9px 12px; border: 1.5px solid #D3D1C7; border-radius: 8px; font-size: 12px; color: #888780; background: white; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; }
+        .view-toggle { display: flex; gap: 2px; background: white; padding: 3px; border-radius: 8px; border: 1px solid #D3D1C7; }
+        .toggle-btn { padding: 6px 10px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; font-weight: 700; font-family: Arial, sans-serif; background: transparent; color: #888780; }
         .toggle-active { background: #0D1B2E; color: white; }
-        .results-count { font-size: 13px; color: #888780; margin-bottom: 16px; }
-        .player-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-        .player-card { background: white; border-radius: 12px; padding: 20px; border: 0.5px solid #D3D1C7; transition: border-color 0.15s; position: relative; }
-        .player-card:hover { border-color: #1D9E75; }
-        .player-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-        .player-avatar { width: 44px; height: 44px; border-radius: 10px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
-        .player-avatar span { color: white; font-size: 16px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; }
+        .results-count { font-size: 13px; color: #888780; margin-bottom: 12px; }
+        .player-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        .player-card { background: white; border-radius: 12px; padding: 16px; border: 0.5px solid #D3D1C7; transition: border-color 0.15s; position: relative; }
+        .player-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .player-avatar { width: 40px; height: 40px; border-radius: 10px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+        .player-avatar span { color: white; font-size: 15px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; }
         .player-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .player-name { font-size: 15px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 3px; }
+        .player-name { font-size: 14px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 2px; }
         .player-meta { font-size: 12px; color: #888780; }
-        .position-badge { display: inline-block; background: #E1F5EE; color: #0F6E56; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.06em; margin-bottom: 12px; }
-        .player-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #F1EFE8; border-radius: 8px; overflow: hidden; margin-bottom: 14px; }
-        .stat-cell { background: white; padding: 10px 8px; text-align: center; }
+        .position-badge { display: inline-block; background: #E1F5EE; color: #0F6E56; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.06em; margin-bottom: 10px; }
+        .player-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #F1EFE8; border-radius: 8px; overflow: hidden; margin-bottom: 12px; }
+        .stat-cell { background: white; padding: 8px; text-align: center; }
         .stat-val { font-size: 14px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; }
         .stat-lbl { font-size: 9px; color: #888780; letter-spacing: 0.08em; margin-top: 2px; }
-        .card-actions { display: flex; gap: 8px; }
+        .card-actions { display: flex; gap: 8px; margin-top: 10px; }
         .cv-btn { flex: 1; padding: 8px; background: #0D1B2E; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 700; font-family: 'Arial Black', Arial, sans-serif; cursor: pointer; text-align: center; text-decoration: none; display: block; }
-        .shortlist-btn { width: 36px; height: 34px; border-radius: 6px; border: 1.5px solid #D3D1C7; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; transition: all 0.15s; }
-        .shortlist-btn:hover { border-color: #1D9E75; }
+        .shortlist-btn { width: 36px; height: 34px; border-radius: 6px; border: 1.5px solid #D3D1C7; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
         .shortlist-btn-active { background: #FFF8E7; border-color: #F0A500; }
-        .note-btn { width: 36px; height: 34px; border-radius: 6px; border: 1.5px solid #D3D1C7; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; transition: all 0.15s; }
-        .note-btn:hover { border-color: #1D9E75; }
+        .note-btn { width: 36px; height: 34px; border-radius: 6px; border: 1.5px solid #D3D1C7; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
         .note-btn-active { background: #EEF4FF; border-color: #4A7FD4; }
-        .note-preview { font-size: 11px; color: #888780; margin-top: 8px; padding: 6px 8px; background: #F8F7F4; border-radius: 6px; line-height: 1.4; font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .note-preview { font-size: 11px; color: #888780; margin-top: 8px; padding: 6px 8px; background: #F8F7F4; border-radius: 6px; line-height: 1.4; font-style: italic; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .note-panel { margin-top: 10px; padding-top: 10px; border-top: 1px solid #F1EFE8; }
         .note-textarea { width: 100%; padding: 8px 10px; border: 1.5px solid #D3D1C7; border-radius: 6px; font-size: 12px; font-family: Arial, sans-serif; resize: none; height: 72px; outline: none; color: #0D1B2E; }
         .note-textarea:focus { border-color: #1D9E75; }
         .note-save-btn { margin-top: 6px; width: 100%; padding: 7px; background: #1D9E75; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; }
-        .note-save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .note-save-btn:disabled { opacity: 0.6; }
         .player-list { display: flex; flex-direction: column; gap: 8px; }
-        .player-row { background: white; border-radius: 10px; padding: 16px 20px; border: 0.5px solid #D3D1C7; display: flex; align-items: center; gap: 16px; transition: border-color 0.15s; flex-wrap: wrap; }
-        .player-row:hover { border-color: #1D9E75; }
-        .player-row-main { display: flex; align-items: center; gap: 16px; flex: 1; min-width: 0; }
-        .row-avatar { width: 38px; height: 38px; border-radius: 8px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
-        .row-avatar span { color: white; font-size: 14px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; }
+        .player-row { background: white; border-radius: 10px; padding: 12px 14px; border: 0.5px solid #D3D1C7; transition: border-color 0.15s; }
+        .player-row-main { display: flex; align-items: center; gap: 10px; }
+        .row-avatar { width: 36px; height: 36px; border-radius: 8px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+        .row-avatar span { color: white; font-size: 13px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; }
         .row-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .row-name { font-size: 14px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; min-width: 160px; }
-        .row-position { font-size: 11px; background: #E1F5EE; color: #0F6E56; padding: 3px 8px; border-radius: 4px; font-weight: 700; letter-spacing: 0.06em; white-space: nowrap; }
-        .row-stats { display: flex; gap: 20px; margin-left: auto; }
-        .row-stat { text-align: center; }
-        .row-stat-val { font-size: 13px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; }
-        .row-stat-lbl { font-size: 9px; color: #888780; letter-spacing: 0.08em; }
-        .row-nationality { font-size: 12px; color: #888780; white-space: nowrap; }
-        .row-cv-btn { background: #0D1B2E; color: white; font-size: 11px; font-weight: 700; padding: 7px 14px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; white-space: nowrap; flex-shrink: 0; }
-        .row-shortlist-btn { width: 32px; height: 32px; border-radius: 6px; border: 1.5px solid #D3D1C7; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
-        .row-shortlist-btn-active { background: #FFF8E7; border-color: #F0A500; }
-        .row-note-btn { width: 32px; height: 32px; border-radius: 6px; border: 1.5px solid #D3D1C7; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+        .row-info { flex: 1; min-width: 0; }
+        .row-name { font-size: 13px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .row-sub { font-size: 11px; color: #888780; margin-top: 2px; }
+        .row-position { display: inline-block; font-size: 10px; background: #E1F5EE; color: #0F6E56; padding: 2px 6px; border-radius: 4px; font-weight: 700; letter-spacing: 0.06em; }
+        .row-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+        .row-cv-btn { background: #0D1B2E; color: white; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; white-space: nowrap; }
+        .row-note-btn { width: 30px; height: 30px; border-radius: 6px; border: 1.5px solid #D3D1C7; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; }
         .row-note-btn-active { background: #EEF4FF; border-color: #4A7FD4; }
-        .row-note-panel { width: 100%; padding-top: 10px; border-top: 1px solid #F1EFE8; display: flex; gap: 8px; align-items: flex-start; }
+        .row-shortlist-btn { width: 30px; height: 30px; border-radius: 6px; border: 1.5px solid #D3D1C7; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+        .row-shortlist-btn-active { background: #FFF8E7; border-color: #F0A500; }
+        .row-note-panel { margin-top: 10px; padding-top: 10px; border-top: 1px solid #F1EFE8; display: flex; gap: 8px; align-items: flex-start; }
         .row-note-textarea { flex: 1; padding: 8px 10px; border: 1.5px solid #D3D1C7; border-radius: 6px; font-size: 12px; font-family: Arial, sans-serif; resize: none; height: 60px; outline: none; color: #0D1B2E; }
         .row-note-textarea:focus { border-color: #1D9E75; }
-        .row-note-save { padding: 8px 14px; background: #1D9E75; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; }
-        .upgrade-banner { background: #0D1B2E; border-radius: 12px; padding: 24px 28px; margin-top: 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-        .upgrade-text h3 { font-size: 16px; font-weight: 900; color: white; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 4px; }
-        .upgrade-text p { font-size: 13px; color: rgba(255,255,255,0.55); }
-        .upgrade-btn { background: #1D9E75; color: white; font-size: 13px; font-weight: 700; padding: 10px 22px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; white-space: nowrap; }
-        .empty-state { text-align: center; padding: 60px 20px; background: white; border-radius: 12px; border: 0.5px solid #D3D1C7; }
-        .empty-state h3 { font-size: 18px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 8px; }
-        .empty-state p { font-size: 14px; color: #888780; }
-        @media (max-width: 768px) {
-          .nav { padding: 0 16px; height: 56px; }
-          .nav-email { display: none; }
-          .nav-logo-text { font-size: 17px; }
-          .content { padding: 24px 16px; }
-          .page-title { font-size: 22px; }
-          .player-grid { grid-template-columns: 1fr; }
-          .toolbar { gap: 8px; }
-          .search-input { width: 100%; }
-          .filter-select { font-size: 12px; padding: 8px 10px; }
-          .view-toggle { margin-left: 0; }
-          .row-stats { display: none; }
-          .upgrade-banner { flex-direction: column; align-items: flex-start; }
-          .upgrade-btn { width: 100%; text-align: center; }
+        .row-note-save { padding: 8px 12px; background: #1D9E75; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; }
+        .row-note-preview { font-size: 11px; color: #888780; font-style: italic; margin-top: 8px; padding-top: 6px; border-top: 1px solid #F1EFE8; }
+        .upgrade-banner { background: #0D1B2E; border-radius: 12px; padding: 20px; margin-top: 20px; }
+        .upgrade-text h3 { font-size: 15px; font-weight: 900; color: white; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 4px; }
+        .upgrade-text p { font-size: 12px; color: rgba(255,255,255,0.55); margin-bottom: 12px; }
+        .upgrade-btn { display: block; background: #1D9E75; color: white; font-size: 13px; font-weight: 700; padding: 10px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; text-align: center; }
+        .empty-state { text-align: center; padding: 40px 20px; background: white; border-radius: 12px; border: 0.5px solid #D3D1C7; }
+        .empty-state h3 { font-size: 16px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 8px; }
+        .empty-state p { font-size: 13px; color: #888780; }
+        @media (min-width: 769px) {
+          .nav { padding: 0 28px; height: 64px; }
+          .nav-logo-text { font-size: 20px; }
+          .signout-btn { padding: 7px 16px; font-size: 13px; }
+          .lang-btn { font-size: 16px; width: 30px; height: 26px; }
+          .content { padding: 40px 28px; }
+          .page-title { font-size: 28px; }
+          .page-sub { font-size: 14px; margin-bottom: 28px; }
+          .tabs { width: fit-content; }
+          .tab { flex: unset; }
+          .toolbar { flex-direction: row; flex-wrap: wrap; }
+          .toolbar-row { display: contents; }
+          .search-input { flex: unset; min-width: 180px; }
+          .filter-select { flex: unset; font-size: 13px; padding: 9px 14px; }
+          .view-toggle { margin-left: auto; }
+          .player-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+          .player-card { padding: 20px; }
+          .player-avatar { width: 44px; height: 44px; }
+          .player-avatar span { font-size: 16px; }
+          .player-name { font-size: 15px; }
+          .upgrade-banner { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 24px 28px; }
+          .upgrade-text p { margin-bottom: 0; }
+          .upgrade-btn { display: inline-block; width: auto; }
+          .nav-email { display: block; color: rgba(255,255,255,0.5); font-size: 13px; }
         }
       `}</style>
 
       <nav className="nav">
         <div className="nav-logo">
-          <svg width="32" height="30" viewBox="0 0 32 30" style={{ display: 'block' }}>
+          <svg width="28" height="26" viewBox="0 0 32 30" style={{ display: 'block' }}>
             <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
             <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
             <line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
@@ -378,33 +376,37 @@ export default function CoachDashboard() {
         </div>
 
         <div className="toolbar">
-          <input
-            className="search-input"
-            type="text"
-            placeholder={lang === 'fr' ? 'Rechercher par nom...' : 'Search by name...'}
-            value={search}
-            onChange={e => { setSearch(e.target.value); fetchPlayers(filters, e.target.value) }}
-          />
-          <select className="filter-select" value={filters.position} onChange={e => handleFilterChange('position', e.target.value)}>
-            <option value="">{T.coach_all_positions}</option>
-            {POSITIONS.map(p => <option key={p} value={p}>{pos(p)}</option>)}
-          </select>
-          <select className="filter-select" value={filters.nationality} onChange={e => handleFilterChange('nationality', e.target.value)}>
-            <option value="">{T.coach_all_nationalities}</option>
-            {NATIONALITIES.map(n => <option key={n} value={n}>{n}</option>)}
-          </select>
-          <select className="filter-select" value={filters.age} onChange={e => handleFilterChange('age', e.target.value)}>
-            <option value="">{T.coach_any_age}</option>
-            <option>Under 18</option>
-            <option>18–21</option>
-            <option>22–25</option>
-            <option>26–30</option>
-            <option>30+</option>
-          </select>
-          {hasFilters && <button className="clear-btn" onClick={clearFilters}>{T.coach_clear}</button>}
-          <div className="view-toggle">
-            <button className={`toggle-btn ${view === 'card' ? 'toggle-active' : ''}`} onClick={() => setView('card')}>{T.coach_cards}</button>
-            <button className={`toggle-btn ${view === 'list' ? 'toggle-active' : ''}`} onClick={() => setView('list')}>{T.coach_list}</button>
+          <div className="toolbar-row">
+            <input
+              className="search-input"
+              type="text"
+              placeholder={lang === 'fr' ? 'Rechercher par nom...' : 'Search by name...'}
+              value={search}
+              onChange={e => { setSearch(e.target.value); fetchPlayers(filters, e.target.value) }}
+            />
+            <div className="view-toggle">
+              <button className={`toggle-btn ${view === 'card' ? 'toggle-active' : ''}`} onClick={() => setView('card')}>{T.coach_cards}</button>
+              <button className={`toggle-btn ${view === 'list' ? 'toggle-active' : ''}`} onClick={() => setView('list')}>{T.coach_list}</button>
+            </div>
+          </div>
+          <div className="toolbar-row">
+            <select className="filter-select" value={filters.position} onChange={e => handleFilterChange('position', e.target.value)}>
+              <option value="">{T.coach_all_positions}</option>
+              {POSITIONS.map(p => <option key={p} value={p}>{pos(p)}</option>)}
+            </select>
+            <select className="filter-select" value={filters.nationality} onChange={e => handleFilterChange('nationality', e.target.value)}>
+              <option value="">{T.coach_all_nationalities}</option>
+              {NATIONALITIES.map(n => <option key={n} value={n}>{n}</option>)}
+            </select>
+            <select className="filter-select" value={filters.age} onChange={e => handleFilterChange('age', e.target.value)}>
+              <option value="">{T.coach_any_age}</option>
+              <option>Under 18</option>
+              <option>18–21</option>
+              <option>22–25</option>
+              <option>26–30</option>
+              <option>30+</option>
+            </select>
+            {hasFilters && <button className="clear-btn" onClick={clearFilters}>{T.coach_clear}</button>}
           </div>
         </div>
 
@@ -441,35 +443,19 @@ export default function CoachDashboard() {
                       <div className="stat-cell"><div className="stat-val">{player.height_cm || '–'}</div><div className="stat-lbl">CM</div></div>
                       <div className="stat-cell"><div className="stat-val">{player.weight_kg || '–'}</div><div className="stat-lbl">KG</div></div>
                     </div>
-                    {hasNote && !isNoteOpen && (
-                      <div className="note-preview">📝 {notes[player.id]}</div>
-                    )}
+                    {hasNote && !isNoteOpen && <div className="note-preview">📝 {notes[player.id]}</div>}
                     {isNoteOpen && (
                       <div className="note-panel">
-                        <textarea
-                          className="note-textarea"
-                          placeholder={lang === 'fr' ? 'Ajouter une note privée...' : 'Add a private note...'}
-                          value={noteText}
-                          onChange={e => setNoteText(e.target.value)}
-                          autoFocus
-                        />
+                        <textarea className="note-textarea" placeholder={lang === 'fr' ? 'Ajouter une note privée...' : 'Add a private note...'} value={noteText} onChange={e => setNoteText(e.target.value)} autoFocus />
                         <button className="note-save-btn" disabled={savingNote} onClick={() => saveNote(player.id)}>
                           {savingNote ? '...' : (lang === 'fr' ? 'Enregistrer' : 'Save note')}
                         </button>
                       </div>
                     )}
-                    <div className="card-actions" style={{ marginTop: '10px' }}>
+                    <div className="card-actions">
                       <a href={`/cv/${player.share_token}`} className="cv-btn" target="_blank" rel="noopener noreferrer">{T.coach_view_cv}</a>
-                      <button
-                        className={`note-btn ${hasNote || isNoteOpen ? 'note-btn-active' : ''}`}
-                        onClick={e => isNoteOpen ? setOpenNoteId(null) : openNote(e, player.id)}
-                        title={lang === 'fr' ? 'Note' : 'Note'}
-                      >📝</button>
-                      <button
-                        className={`shortlist-btn ${isShortlisted ? 'shortlist-btn-active' : ''}`}
-                        onClick={e => toggleShortlist(e, player.id)}
-                        title={isShortlisted ? 'Remove from shortlist' : 'Add to shortlist'}
-                      >{isShortlisted ? '⭐' : '☆'}</button>
+                      <button className={`note-btn ${hasNote || isNoteOpen ? 'note-btn-active' : ''}`} onClick={e => isNoteOpen ? setOpenNoteId(null) : openNote(e, player.id)}>📝</button>
+                      <button className={`shortlist-btn ${isShortlisted ? 'shortlist-btn-active' : ''}`} onClick={e => toggleShortlist(e, player.id)}>{isShortlisted ? '⭐' : '☆'}</button>
                     </div>
                   </div>
                 )
@@ -497,44 +483,26 @@ export default function CoachDashboard() {
                       <div className="row-avatar">
                         {player.avatar_url ? <img src={player.avatar_url} alt={player.first_name} /> : <span>{getInitials(player)}</span>}
                       </div>
-                      <div className="row-name">{player.first_name} {player.last_name}</div>
-                      {player.position_primary && <div className="row-position">{pos(player.position_primary)}</div>}
-                      <div className="row-nationality">{player.nationality_primary || '–'}</div>
-                      <div className="row-stats">
-                        <div className="row-stat"><div className="row-stat-val">{age ?? '–'}</div><div className="row-stat-lbl">AGE</div></div>
-                        <div className="row-stat"><div className="row-stat-val">{player.height_cm || '–'}</div><div className="row-stat-lbl">CM</div></div>
-                        <div className="row-stat"><div className="row-stat-val">{player.weight_kg || '–'}</div><div className="row-stat-lbl">KG</div></div>
+                      <div className="row-info">
+                        <div className="row-name">{player.first_name} {player.last_name}</div>
+                        <div className="row-sub">
+                          <span className="row-position">{pos(player.position_primary)}</span>
+                          {player.nationality_primary && <span style={{ marginLeft: '6px', color: '#888780' }}>{player.nationality_primary}</span>}
+                        </div>
                       </div>
-                      <a href={`/cv/${player.share_token}`} className="row-cv-btn" target="_blank" rel="noopener noreferrer">{T.coach_view_cv_short}</a>
-                      <button
-                        className={`row-note-btn ${hasNote || isNoteOpen ? 'row-note-btn-active' : ''}`}
-                        onClick={e => { e.stopPropagation(); isNoteOpen ? setOpenNoteId(null) : openNote(e, player.id) }}
-                        title="Note"
-                      >📝</button>
-                      <button
-                        className={`row-shortlist-btn ${isShortlisted ? 'row-shortlist-btn-active' : ''}`}
-                        onClick={e => toggleShortlist(e, player.id)}
-                      >{isShortlisted ? '⭐' : '☆'}</button>
+                      <div className="row-actions">
+                        <a href={`/cv/${player.share_token}`} className="row-cv-btn" target="_blank" rel="noopener noreferrer">{T.coach_view_cv_short}</a>
+                        <button className={`row-note-btn ${hasNote || isNoteOpen ? 'row-note-btn-active' : ''}`} onClick={e => { e.stopPropagation(); isNoteOpen ? setOpenNoteId(null) : openNote(e, player.id) }}>📝</button>
+                        <button className={`row-shortlist-btn ${isShortlisted ? 'row-shortlist-btn-active' : ''}`} onClick={e => toggleShortlist(e, player.id)}>{isShortlisted ? '⭐' : '☆'}</button>
+                      </div>
                     </div>
                     {isNoteOpen && (
                       <div className="row-note-panel">
-                        <textarea
-                          className="row-note-textarea"
-                          placeholder={lang === 'fr' ? 'Ajouter une note privée...' : 'Add a private note...'}
-                          value={noteText}
-                          onChange={e => setNoteText(e.target.value)}
-                          autoFocus
-                        />
-                        <button className="row-note-save" disabled={savingNote} onClick={() => saveNote(player.id)}>
-                          {savingNote ? '...' : (lang === 'fr' ? 'Enregistrer' : 'Save')}
-                        </button>
+                        <textarea className="row-note-textarea" placeholder={lang === 'fr' ? 'Ajouter une note privée...' : 'Add a private note...'} value={noteText} onChange={e => setNoteText(e.target.value)} autoFocus />
+                        <button className="row-note-save" disabled={savingNote} onClick={() => saveNote(player.id)}>{savingNote ? '...' : (lang === 'fr' ? 'Enregistrer' : 'Save')}</button>
                       </div>
                     )}
-                    {hasNote && !isNoteOpen && (
-                      <div style={{ width: '100%', fontSize: '11px', color: '#888780', fontStyle: 'italic', paddingTop: '6px', borderTop: '1px solid #F1EFE8' }}>
-                        📝 {notes[player.id]}
-                      </div>
-                    )}
+                    {hasNote && !isNoteOpen && <div className="row-note-preview">📝 {notes[player.id]}</div>}
                   </div>
                 )
               })}
@@ -553,9 +521,7 @@ export default function CoachDashboard() {
               <h3>{T.coach_upgrade_title}</h3>
               <p>{T.coach_upgrade_sub}</p>
             </div>
-            <a href="mailto:bruce@necta.co.za?subject=Gainline Full Access Request" className="upgrade-btn">
-              {T.coach_upgrade_btn}
-            </a>
+            <a href="mailto:bruce@necta.co.za?subject=Gainline Full Access Request" className="upgrade-btn">{T.coach_upgrade_btn}</a>
           </div>
         )}
       </div>
