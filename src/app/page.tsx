@@ -171,7 +171,7 @@ export default function Home() {
           <p>{T.hero_sub}</p>
           <div className="hero-btns">
             <a href="/login" className="btn-primary">{T.hero_btn_player}</a>
-            <a href="/login" className="btn-ghost">{T.hero_btn_agent}</a>
+            <a href="/register/coach" className="btn-ghost">{T.hero_btn_agent}</a>
           </div>
           <p className="hero-note">{T.hero_note}</p>
         </div>
@@ -250,7 +250,7 @@ export default function Home() {
               <p className="cta-label">{T.for_agents}</p>
               <h3>{T.cta_agent_title}</h3>
               <p>{T.cta_agent_sub}</p>
-              <a href="/login" className="btn-dark">{T.cta_agent_btn}</a>
+              <a href="/register/coach" className="btn-dark">{T.cta_agent_btn}</a>
             </div>
           </div>
         </div>
