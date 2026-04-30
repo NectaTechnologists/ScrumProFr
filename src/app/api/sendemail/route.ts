@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     await resend.emails.send({
       from: 'Gainline <noreply@gainline.pro>',
       to: 'brucekay@outlook.com',
-      subject: `New coach registration — ${fullName}`,
+      subject: `New coach joined — ${fullName}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background: #0D1B2E; padding: 24px 28px; border-radius: 8px 8px 0 0;">
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
               ${message ? `<tr><td style="padding: 8px 0; color: #888780; vertical-align: top;">Message</td><td style="padding: 8px 0; color: #0D1B2E;">${message}</td></tr>` : ''}
             </table>
             <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid #D3D1C7;">
-              <a href="https://supabase.com/dashboard/project/vsfnjjxmkftdmcyygjca/editor/17739?schema=public&table=profiles&filter=approved%3Aeq%3Afalse" style="background: #1D9E75; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 13px;">Review in Supabase →</a>
+              <a href="https://supabase.com/dashboard/project/vsfnjjxmkftdmcyygjca/editor/17739?schema=public&table=profiles" style="background: #1D9E75; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 13px;">View in Supabase →</a>
             </div>
           </div>
         </div>

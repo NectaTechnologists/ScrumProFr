@@ -51,7 +51,7 @@ export default function CoachRegisterPage() {
           org_type: form.org_type,
           role_title: form.role_title,
           country: form.country,
-          approved: false,
+          approved: true,
         }
       }
     })
