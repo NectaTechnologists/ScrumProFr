@@ -313,7 +313,7 @@ export default function CoachRegisterPage() {
             {message && <div className="error-box">{message}</div>}
 
             <button type="submit" disabled={loading} className="submit-btn">
-              {loading ? 'Submitting...' : 'Submit application'}
+              {loading ? 'Registering...' : 'Register'}
             </button>
 
           </form>
