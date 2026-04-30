@@ -395,7 +395,12 @@ export default function ProfilePage() {
             </div>
             <div className="form-row">
               <div className="form-field"><label className="form-label">{T.profile_dob}</label><input className="form-input" type="date" value={form.date_of_birth} onChange={e => setForm({ ...form, date_of_birth: e.target.value })} required/></div>
-              <div className="form-field"><label className="form-label">{T.profile_nationality}</label><input className="form-input" value={form.nationality_primary} onChange={e => setForm({ ...form, nationality_primary: e.target.value })} placeholder="South African"/></div>
+              <div className="form-field"><label className="form-label">{T.profile_nationality}</label>
+                <select className="form-input" value={form.nationality_primary} onChange={e => setForm({ ...form, nationality_primary: e.target.value })}>
+                  <option value="">— Select —</option>
+                  <option>Afghan</option><option>Albanian</option><option>Algerian</option><option>Argentinian</option><option>Australian</option><option>Austrian</option><option>Belgian</option><option>Brazilian</option><option>British</option><option>Bulgarian</option><option>Canadian</option><option>Chilean</option><option>Chinese</option><option>Colombian</option><option>Croatian</option><option>Czech</option><option>Danish</option><option>Dutch</option><option>Egyptian</option><option>English</option><option>Estonian</option><option>Fijian</option><option>Finnish</option><option>French</option><option>Georgian</option><option>German</option><option>Ghanaian</option><option>Greek</option><option>Hungarian</option><option>Indian</option><option>Irish</option><option>Italian</option><option>Ivorian</option><option>Japanese</option><option>Kenyan</option><option>Korean</option><option>Latvian</option><option>Lithuanian</option><option>Malagasy</option><option>Malaysian</option><option>Namibian</option><option>New Zealander</option><option>Nigerian</option><option>Norwegian</option><option>Pakistani</option><option>Polish</option><option>Portuguese</option><option>Romanian</option><option>Russian</option><option>Samoan</option><option>Scottish</option><option>Senegalese</option><option>Serbian</option><option>Slovak</option><option>South African</option><option>Spanish</option><option>Swedish</option><option>Swiss</option><option>Tongan</option><option>Ugandan</option><option>Ukrainian</option><option>Uruguayan</option><option>Welsh</option><option>Zimbabwean</option>
+                </select>
+              </div>
             </div>
             <div className="form-row">
               <div className="form-field"><label className="form-label">{T.profile_position_primary}</label>
