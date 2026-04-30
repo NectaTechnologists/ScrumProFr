@@ -20,6 +20,14 @@ const NATIONALITIES = [
   'Georgian','Italian','Japanese','Fijian','Samoan','Tongan'
 ]
 
+const CATEGORIES = ['Contracted', 'Negotiating', 'Interested']
+
+const CATEGORY_COLORS: Record<string, { bg: string, color: string, border: string }> = {
+  'Contracted':  { bg: '#E1F5EE', color: '#0F6E56', border: 'rgba(29,158,117,0.3)' },
+  'Negotiating': { bg: '#FFF3CD', color: '#856404', border: 'rgba(240,165,0,0.3)' },
+  'Interested':  { bg: '#E8F0FE', color: '#1A56DB', border: 'rgba(74,127,212,0.3)' },
+}
+
 export default function CoachDashboard() {
   const supabase = createClient()
   const router = useRouter()
@@ -28,6 +36,7 @@ export default function CoachDashboard() {
   const [profile, setProfile] = useState<any>(null)
   const [players, setPlayers] = useState<any[]>([])
   const [shortlistedIds, setShortlistedIds] = useState<Set<string>>(new Set())
+  const [categories, setCategories] = useState<Record<string, string>>({})
   const [notes, setNotes] = useState<Record<string, string>>({})
   const [openNoteId, setOpenNoteId] = useState<string | null>(null)
   const [noteText, setNoteText] = useState('')
@@ -39,11 +48,7 @@ export default function CoachDashboard() {
   const [lang, setLang] = useState<Lang>('en')
   const [search, setSearch] = useState('')
 
-  const [filters, setFilters] = useState({
-    position: '',
-    nationality: '',
-    age: '',
-  })
+  const [filters, setFilters] = useState({ position: '', nationality: '', age: '' })
 
   useEffect(() => {
     const saved = localStorage.getItem('gainline_lang') as Lang
@@ -54,28 +59,26 @@ export default function CoachDashboard() {
       if (!user) { router.push('/login'); return }
       setUser(user)
 
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
-        .single()
-
+      const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single()
       setProfile(profile)
 
       if (profile?.role === 'player') { router.push('/dashboard'); return }
 
       if (profile?.approved) {
         await fetchPlayers({ position: '', nationality: '', age: '' }, '')
+
         const { data: sl } = await supabase
           .from('shortlists')
-          .select('player_id')
+          .select('player_id, category')
           .eq('coach_id', user.id)
-        if (sl) setShortlistedIds(new Set(sl.map((s: any) => s.player_id)))
+        if (sl) {
+          setShortlistedIds(new Set(sl.map((s: any) => s.player_id)))
+          const catMap: Record<string, string> = {}
+          sl.forEach((s: any) => { if (s.category) catMap[s.player_id] = s.category })
+          setCategories(catMap)
+        }
 
-        const { data: nn } = await supabase
-          .from('coach_notes')
-          .select('player_id, note')
-          .eq('coach_id', user.id)
+        const { data: nn } = await supabase.from('coach_notes').select('player_id, note').eq('coach_id', user.id)
         if (nn) {
           const map: Record<string, string> = {}
           nn.forEach((n: any) => { map[n.player_id] = n.note })
@@ -95,46 +98,18 @@ export default function CoachDashboard() {
 
   async function fetchPlayers(f: { position: string, nationality: string, age: string }, nameSearch: string) {
     setSearching(true)
-
-    let query = supabase
-      .from('players')
-      .select('*')
-      .eq('profile_visibility', 'PUBLIC')
-      .limit(10)
-      .order('created_at', { ascending: false })
-
-    if (nameSearch) {
-      query = query.or(`first_name.ilike.%${nameSearch}%,last_name.ilike.%${nameSearch}%`)
-    }
-    if (f.position) {
-      query = query.or(`position_primary.eq.${f.position},position_secondary.eq.${f.position}`)
-    }
-    if (f.nationality) {
-      query = query.ilike('nationality_primary', `%${f.nationality}%`)
-    }
+    let query = supabase.from('players').select('*').eq('profile_visibility', 'PUBLIC').limit(10).order('created_at', { ascending: false })
+    if (nameSearch) query = query.or(`first_name.ilike.%${nameSearch}%,last_name.ilike.%${nameSearch}%`)
+    if (f.position) query = query.or(`position_primary.eq.${f.position},position_secondary.eq.${f.position}`)
+    if (f.nationality) query = query.ilike('nationality_primary', `%${f.nationality}%`)
     if (f.age) {
       const now = new Date()
-      if (f.age === 'Under 18') {
-        const minDob = new Date(now.getFullYear() - 18, now.getMonth(), now.getDate()).toISOString().split('T')[0]
-        query = query.gte('date_of_birth', minDob)
-      } else if (f.age === '18–21') {
-        const maxDob = new Date(now.getFullYear() - 18, now.getMonth(), now.getDate()).toISOString().split('T')[0]
-        const minDob = new Date(now.getFullYear() - 22, now.getMonth(), now.getDate()).toISOString().split('T')[0]
-        query = query.lte('date_of_birth', maxDob).gte('date_of_birth', minDob)
-      } else if (f.age === '22–25') {
-        const maxDob = new Date(now.getFullYear() - 22, now.getMonth(), now.getDate()).toISOString().split('T')[0]
-        const minDob = new Date(now.getFullYear() - 26, now.getMonth(), now.getDate()).toISOString().split('T')[0]
-        query = query.lte('date_of_birth', maxDob).gte('date_of_birth', minDob)
-      } else if (f.age === '26–30') {
-        const maxDob = new Date(now.getFullYear() - 26, now.getMonth(), now.getDate()).toISOString().split('T')[0]
-        const minDob = new Date(now.getFullYear() - 31, now.getMonth(), now.getDate()).toISOString().split('T')[0]
-        query = query.lte('date_of_birth', maxDob).gte('date_of_birth', minDob)
-      } else if (f.age === '30+') {
-        const maxDob = new Date(now.getFullYear() - 30, now.getMonth(), now.getDate()).toISOString().split('T')[0]
-        query = query.lte('date_of_birth', maxDob)
-      }
+      if (f.age === 'Under 18') { const minDob = new Date(now.getFullYear() - 18, now.getMonth(), now.getDate()).toISOString().split('T')[0]; query = query.gte('date_of_birth', minDob) }
+      else if (f.age === '18–21') { const maxDob = new Date(now.getFullYear() - 18, now.getMonth(), now.getDate()).toISOString().split('T')[0]; const minDob = new Date(now.getFullYear() - 22, now.getMonth(), now.getDate()).toISOString().split('T')[0]; query = query.lte('date_of_birth', maxDob).gte('date_of_birth', minDob) }
+      else if (f.age === '22–25') { const maxDob = new Date(now.getFullYear() - 22, now.getMonth(), now.getDate()).toISOString().split('T')[0]; const minDob = new Date(now.getFullYear() - 26, now.getMonth(), now.getDate()).toISOString().split('T')[0]; query = query.lte('date_of_birth', maxDob).gte('date_of_birth', minDob) }
+      else if (f.age === '26–30') { const maxDob = new Date(now.getFullYear() - 26, now.getMonth(), now.getDate()).toISOString().split('T')[0]; const minDob = new Date(now.getFullYear() - 31, now.getMonth(), now.getDate()).toISOString().split('T')[0]; query = query.lte('date_of_birth', maxDob).gte('date_of_birth', minDob) }
+      else if (f.age === '30+') { const maxDob = new Date(now.getFullYear() - 30, now.getMonth(), now.getDate()).toISOString().split('T')[0]; query = query.lte('date_of_birth', maxDob) }
     }
-
     const { data } = await query
     setPlayers(data || [])
     setSearching(false)
@@ -144,14 +119,29 @@ export default function CoachDashboard() {
     e.preventDefault()
     e.stopPropagation()
     if (!user) return
-
     if (shortlistedIds.has(playerId)) {
       await supabase.from('shortlists').delete().eq('coach_id', user.id).eq('player_id', playerId)
       setShortlistedIds(prev => { const n = new Set(prev); n.delete(playerId); return n })
+      setCategories(prev => { const n = { ...prev }; delete n[playerId]; return n })
     } else {
       await supabase.from('shortlists').insert({ coach_id: user.id, player_id: playerId })
       setShortlistedIds(prev => new Set(prev).add(playerId))
     }
+  }
+
+  async function updateCategory(playerId: string, category: string) {
+    if (!user) return
+    const value = category || null
+    await supabase.from('shortlists')
+      .update({ category: value })
+      .eq('coach_id', user.id)
+      .eq('player_id', playerId)
+    setCategories(prev => {
+      const n = { ...prev }
+      if (value) n[playerId] = value
+      else delete n[playerId]
+      return n
+    })
   }
 
   function openNote(e: React.MouseEvent, playerId: string) {
@@ -164,12 +154,7 @@ export default function CoachDashboard() {
   async function saveNote(playerId: string) {
     if (!user) return
     setSavingNote(true)
-    await supabase.from('coach_notes').upsert({
-      coach_id: user.id,
-      player_id: playerId,
-      note: noteText,
-      updated_at: new Date().toISOString(),
-    }, { onConflict: 'coach_id,player_id' })
+    await supabase.from('coach_notes').upsert({ coach_id: user.id, player_id: playerId, note: noteText, updated_at: new Date().toISOString() }, { onConflict: 'coach_id,player_id' })
     setNotes(prev => ({ ...prev, [playerId]: noteText }))
     setSavingNote(false)
     setOpenNoteId(null)
@@ -272,6 +257,11 @@ export default function CoachDashboard() {
         .stat-cell { background: white; padding: 8px; text-align: center; }
         .stat-val { font-size: 14px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; }
         .stat-lbl { font-size: 9px; color: #888780; letter-spacing: 0.08em; margin-top: 2px; }
+        .category-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .category-label { font-size: 11px; color: #888780; white-space: nowrap; }
+        .category-select { flex: 1; padding: 5px 8px; border: 1.5px solid #D3D1C7; border-radius: 6px; font-size: 12px; font-family: Arial, sans-serif; outline: none; cursor: pointer; color: #0D1B2E; background: white; }
+        .category-select:focus { border-color: #1D9E75; }
+        .category-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; border: 1px solid; }
         .card-actions { display: flex; gap: 8px; margin-top: 10px; }
         .cv-btn { flex: 1; padding: 8px; background: #0D1B2E; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 700; font-family: 'Arial Black', Arial, sans-serif; cursor: pointer; text-align: center; text-decoration: none; display: block; }
         .shortlist-btn { width: 36px; height: 34px; border-radius: 6px; border: 1.5px solid #D3D1C7; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
@@ -292,7 +282,7 @@ export default function CoachDashboard() {
         .row-avatar img { width: 100%; height: 100%; object-fit: cover; }
         .row-info { flex: 1; min-width: 0; }
         .row-name { font-size: 13px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .row-sub { font-size: 11px; color: #888780; margin-top: 2px; }
+        .row-sub { font-size: 11px; color: #888780; margin-top: 2px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
         .row-position { display: inline-block; font-size: 10px; background: #E1F5EE; color: #0F6E56; padding: 2px 6px; border-radius: 4px; font-weight: 700; letter-spacing: 0.06em; }
         .row-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
         .row-cv-btn { background: #0D1B2E; color: white; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; white-space: nowrap; }
@@ -305,6 +295,9 @@ export default function CoachDashboard() {
         .row-note-textarea:focus { border-color: #1D9E75; }
         .row-note-save { padding: 8px 12px; background: #1D9E75; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; }
         .row-note-preview { font-size: 11px; color: #888780; font-style: italic; margin-top: 8px; padding-top: 6px; border-top: 1px solid #F1EFE8; }
+        .row-category { margin-top: 8px; padding-top: 8px; border-top: 1px solid #F1EFE8; display: flex; align-items: center; gap: 8px; }
+        .row-category-label { font-size: 11px; color: #888780; white-space: nowrap; }
+        .row-category-select { flex: 1; padding: 4px 8px; border: 1.5px solid #D3D1C7; border-radius: 6px; font-size: 12px; font-family: Arial, sans-serif; outline: none; cursor: pointer; color: #0D1B2E; background: white; }
         .upgrade-banner { background: #0D1B2E; border-radius: 12px; padding: 20px; margin-top: 20px; }
         .upgrade-text h3 { font-size: 15px; font-weight: 900; color: white; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 4px; }
         .upgrade-text p { font-size: 12px; color: rgba(255,255,255,0.55); margin-bottom: 12px; }
@@ -430,6 +423,8 @@ export default function CoachDashboard() {
                 const isShortlisted = shortlistedIds.has(player.id)
                 const hasNote = !!notes[player.id]
                 const isNoteOpen = openNoteId === player.id
+                const category = categories[player.id]
+                const catStyle = category ? CATEGORY_COLORS[category] : null
                 return (
                   <div key={player.id} className="player-card">
                     <div className="player-header">
@@ -447,6 +442,25 @@ export default function CoachDashboard() {
                       <div className="stat-cell"><div className="stat-val">{player.height_cm || '–'}</div><div className="stat-lbl">CM</div></div>
                       <div className="stat-cell"><div className="stat-val">{player.weight_kg || '–'}</div><div className="stat-lbl">KG</div></div>
                     </div>
+                    {isShortlisted && (
+                      <div className="category-row">
+                        <span className="category-label">{lang === 'fr' ? 'Statut:' : 'Status:'}</span>
+                        {catStyle ? (
+                          <span className="category-badge" style={{ background: catStyle.bg, color: catStyle.color, borderColor: catStyle.border }}>
+                            {category}
+                          </span>
+                        ) : null}
+                        <select
+                          className="category-select"
+                          value={category || ''}
+                          onChange={e => updateCategory(player.id, e.target.value)}
+                          style={{ flex: catStyle ? '0 0 auto' : '1' }}
+                        >
+                          <option value="">{lang === 'fr' ? '— Choisir —' : '— Set status —'}</option>
+                          {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                        </select>
+                      </div>
+                    )}
                     {hasNote && !isNoteOpen && <div className="note-preview">📝 {notes[player.id]}</div>}
                     {isNoteOpen && (
                       <div className="note-panel">
@@ -481,6 +495,8 @@ export default function CoachDashboard() {
                 const isShortlisted = shortlistedIds.has(player.id)
                 const hasNote = !!notes[player.id]
                 const isNoteOpen = openNoteId === player.id
+                const category = categories[player.id]
+                const catStyle = category ? CATEGORY_COLORS[category] : null
                 return (
                   <div key={player.id} className="player-row">
                     <div className="player-row-main">
@@ -491,7 +507,8 @@ export default function CoachDashboard() {
                         <div className="row-name">{player.first_name} {player.last_name}</div>
                         <div className="row-sub">
                           <span className="row-position">{pos(player.position_primary)}</span>
-                          {player.nationality_primary && <span style={{ marginLeft: '6px', color: '#888780' }}>{player.nationality_primary}</span>}
+                          {player.nationality_primary && <span style={{ color: '#888780' }}>{player.nationality_primary}</span>}
+                          {catStyle && <span className="category-badge" style={{ background: catStyle.bg, color: catStyle.color, borderColor: catStyle.border, fontSize: '10px', padding: '1px 7px' }}>{category}</span>}
                         </div>
                       </div>
                       <div className="row-actions">
@@ -500,6 +517,19 @@ export default function CoachDashboard() {
                         <button className={`row-shortlist-btn ${isShortlisted ? 'row-shortlist-btn-active' : ''}`} onClick={e => toggleShortlist(e, player.id)}>{isShortlisted ? '⭐' : '☆'}</button>
                       </div>
                     </div>
+                    {isShortlisted && (
+                      <div className="row-category">
+                        <span className="row-category-label">{lang === 'fr' ? 'Statut:' : 'Status:'}</span>
+                        <select
+                          className="row-category-select"
+                          value={category || ''}
+                          onChange={e => updateCategory(player.id, e.target.value)}
+                        >
+                          <option value="">{lang === 'fr' ? '— Choisir —' : '— Set status —'}</option>
+                          {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                        </select>
+                      </div>
+                    )}
                     {isNoteOpen && (
                       <div className="row-note-panel">
                         <textarea className="row-note-textarea" placeholder={lang === 'fr' ? 'Ajouter une note privée...' : 'Add a private note...'} value={noteText} onChange={e => setNoteText(e.target.value)} autoFocus />
