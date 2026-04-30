@@ -224,7 +224,7 @@ export default function CoachDashboard() {
         .lang-toggle { display: flex; gap: 2px; background: rgba(255,255,255,0.08); padding: 3px; border-radius: 8px; }
         .lang-btn { background: transparent; border: none; cursor: pointer; font-size: 15px; width: 28px; height: 24px; border-radius: 5px; display: flex; align-items: center; justify-content: center; }
         .lang-btn-active { background: rgba(255,255,255,0.15); }
-        .page-header { max-width: 1200px; margin: 0 auto; padding: 24px 16px 0; }
+        .page-header { max-width: 1400px; margin: 0 auto; padding: 24px 16px 0; }
         .page-label { font-size: 10px; color: #1D9E75; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 6px; }
         .page-title { font-size: 22px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -0.5px; margin-bottom: 2px; }
         .page-sub { font-size: 12px; color: #888780; margin-bottom: 16px; }
@@ -232,8 +232,8 @@ export default function CoachDashboard() {
         .tab { padding: 7px 14px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; font-weight: 700; font-family: Arial, sans-serif; background: transparent; color: #888780; }
         .tab-active { background: #0D1B2E; color: white; }
         .tab-count { display: inline-block; background: #1D9E75; color: white; border-radius: 10px; font-size: 10px; padding: 1px 6px; margin-left: 5px; }
-        .main-layout { max-width: 1200px; margin: 0 auto; padding: 16px; display: flex; gap: 16px; align-items: flex-start; }
-        .filter-panel { width: 220px; flex-shrink: 0; background: white; border-radius: 12px; border: 0.5px solid #D3D1C7; overflow: hidden; display: none; }
+        .main-layout { max-width: 1400px; margin: 0 auto; padding: 16px; display: flex; gap: 16px; align-items: flex-start; }
+        .filter-panel { width: 180px; flex-shrink: 0; background: white; border-radius: 12px; border: 0.5px solid #D3D1C7; overflow: hidden; display: none; }
         .filter-panel-header { padding: 12px 16px; border-bottom: 0.5px solid #D3D1C7; display: flex; justify-content: space-between; align-items: center; }
         .filter-panel-title { font-size: 13px; font-weight: 700; color: #0D1B2E; }
         .filter-clear-all { font-size: 12px; color: #1D9E75; cursor: pointer; background: none; border: none; font-family: Arial, sans-serif; }
@@ -330,7 +330,7 @@ export default function CoachDashboard() {
           .main-layout { padding: 16px 28px 40px; }
           .filter-panel { display: block; }
           .mobile-filter-btn { display: none; }
-          .player-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+          .player-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
           .upgrade-banner { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px 24px; }
           .upgrade-text p { margin-bottom: 0; }
           .upgrade-btn { display: inline-block; width: auto; }
