@@ -14,23 +14,60 @@ export default function DashboardPage() {
   const [user, setUser] = useState<any>(null)
   const [lang, setLang] = useState<Lang>('en')
   const [loading, setLoading] = useState(true)
+  const [viewCount, setViewCount] = useState<number>(0)
+  const [recentViews, setRecentViews] = useState<any[]>([])
 
   useEffect(() => {
     const saved = localStorage.getItem('gainline_lang') as Lang
     if (saved === 'en' || saved === 'fr') setLang(saved)
-
-    async function load() {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) { router.push('/login'); return }
-      setUser(user)
-      setLoading(false)
-    }
     load()
   }, [])
+
+  async function load() {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) { router.push('/login'); return }
+    setUser(user)
+
+    // Get player record
+    const { data: player } = await supabase
+      .from('players')
+      .select('id')
+      .eq('profile_id', user.id)
+      .single()
+
+    if (player) {
+      // Get total view count
+      const { count } = await supabase
+        .from('cv_views')
+        .select('*', { count: 'exact', head: true })
+        .eq('player_id', player.id)
+      setViewCount(count || 0)
+
+      // Get recent views
+      const { data: views } = await supabase
+        .from('cv_views')
+        .select('organisation_name, viewed_at')
+        .eq('player_id', player.id)
+        .order('viewed_at', { ascending: false })
+        .limit(10)
+      setRecentViews(views || [])
+    }
+
+    setLoading(false)
+  }
 
   function toggleLang(l: Lang) {
     setLang(l)
     localStorage.setItem('gainline_lang', l)
+  }
+
+  function timeAgo(dateStr: string) {
+    const diff = Math.floor((new Date().getTime() - new Date(dateStr).getTime()) / 1000)
+    if (diff < 60) return 'Just now'
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`
+    if (diff < 604800) return `${Math.floor(diff / 86400)}d ago`
+    return new Date(dateStr).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
   }
 
   const T = t[lang]
@@ -64,13 +101,28 @@ export default function DashboardPage() {
         .dash-content { padding: 48px 28px; max-width: 900px; margin: 0 auto; }
         .dash-title { font-size: 28px; font-weight: 900; color: #0D1B2E; margin-bottom: 8px; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -0.5px; }
         .dash-subtitle { color: #5F5E5A; margin-bottom: 36px; font-size: 15px; }
-        .dash-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .dash-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
         .dash-card { background: white; border-radius: 12px; padding: 28px; border: 0.5px solid #D3D1C7; text-decoration: none; display: block; }
         .dash-card:hover { border-color: #1D9E75; }
         .dash-card-icon { width: 40px; height: 40px; border-radius: 8px; background: #E1F5EE; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
         .dash-card-title { font-size: 15px; font-weight: 700; color: #0D1B2E; margin-bottom: 6px; font-family: 'Arial Black', Arial, sans-serif; }
         .dash-card-desc { font-size: 13px; color: #888780; line-height: 1.5; margin-bottom: 20px; }
         .dash-card-btn { display: inline-block; padding: 7px 16px; border-radius: 6px; color: white; font-size: 12px; font-weight: 700; font-family: 'Arial Black', Arial, sans-serif; }
+        .views-section { background: #0D1B2E; border-radius: 12px; padding: 28px; }
+        .views-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+        .views-label { font-size: 10px; color: #5DCAA5; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 4px; }
+        .views-title { font-size: 18px; font-weight: 900; color: white; font-family: 'Arial Black', Arial, sans-serif; }
+        .views-count-box { text-align: right; }
+        .views-count { font-size: 36px; font-weight: 900; color: white; font-family: 'Arial Black', Arial, sans-serif; line-height: 1; }
+        .views-count-label { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+        .views-list { display: flex; flex-direction: column; gap: 8px; }
+        .view-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: rgba(255,255,255,0.06); border-radius: 8px; border: 0.5px solid rgba(255,255,255,0.08); }
+        .view-icon { width: 32px; height: 32px; border-radius: 6px; background: rgba(29,158,117,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
+        .view-org { font-size: 13px; font-weight: 700; color: white; }
+        .view-time { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 2px; }
+        .view-time-right { font-size: 11px; color: rgba(255,255,255,0.35); margin-left: auto; white-space: nowrap; }
+        .views-empty { text-align: center; padding: 24px; color: rgba(255,255,255,0.35); font-size: 13px; }
+        .views-tip { margin-top: 16px; padding-top: 16px; border-top: 0.5px solid rgba(255,255,255,0.08); font-size: 12px; color: rgba(255,255,255,0.3); line-height: 1.6; }
         @media (max-width: 768px) {
           .dash-nav { padding: 0 16px; height: 56px; }
           .dash-logo-text { font-size: 17px; }
@@ -84,6 +136,8 @@ export default function DashboardPage() {
           .dash-card-icon { flex-shrink: 0; margin-bottom: 0; }
           .dash-card-title { font-size: 14px; margin-bottom: 4px; }
           .dash-card-desc { font-size: 12px; margin-bottom: 12px; }
+          .views-section { padding: 20px; }
+          .views-count { font-size: 28px; }
         }
       `}</style>
 
@@ -111,6 +165,7 @@ export default function DashboardPage() {
       <div className="dash-content">
         <h1 className="dash-title">{T.dashboard_welcome}</h1>
         <p className="dash-subtitle">{T.dashboard_logged_in} <strong>{user?.email}</strong></p>
+
         <div className="dash-grid">
           {cards.map(card => (
             <a key={card.title} href={card.href} className="dash-card">
@@ -128,6 +183,52 @@ export default function DashboardPage() {
               </div>
             </a>
           ))}
+        </div>
+
+        <div className="views-section">
+          <div className="views-header">
+            <div>
+              <div className="views-label">PROFILE VISIBILITY</div>
+              <div className="views-title">{lang === 'fr' ? 'Qui a vu votre CV' : 'Who viewed your CV'}</div>
+            </div>
+            <div className="views-count-box">
+              <div className="views-count">{viewCount}</div>
+              <div className="views-count-label">{lang === 'fr' ? 'vues totales' : 'total views'}</div>
+            </div>
+          </div>
+
+          {recentViews.length > 0 ? (
+            <div className="views-list">
+              {recentViews.map((view, i) => (
+                <div key={i} className="view-item">
+                  <div className="view-icon">👁</div>
+                  <div>
+                    <div className="view-org">
+                      {view.organisation_name || (lang === 'fr' ? 'Visiteur anonyme' : 'Anonymous viewer')}
+                    </div>
+                    <div className="view-time">
+                      {lang === 'fr' ? 'A consulté votre CV' : 'Viewed your CV'}
+                    </div>
+                  </div>
+                  <div className="view-time-right">{timeAgo(view.viewed_at)}</div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="views-empty">
+              {lang === 'fr'
+                ? 'Personne n\'a encore consulté votre CV. Partagez votre lien pour gagner en visibilité !'
+                : 'No one has viewed your CV yet. Share your link to get noticed!'
+              }
+            </div>
+          )}
+
+          <div className="views-tip">
+            {lang === 'fr'
+              ? 'Conseil : un profil complet avec photo et vidéos reçoit 3× plus de vues.'
+              : 'Tip: a complete profile with a photo and video highlights gets 3× more views.'
+            }
+          </div>
         </div>
       </div>
     </>
