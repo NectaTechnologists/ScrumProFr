@@ -182,7 +182,7 @@ export default function DashboardPage() {
                 <div className="dash-card-title">{card.title}</div>
                 <div className="dash-card-desc">{card.desc}</div>
                 <span className="dash-card-btn" style={{ background: card.color }}>
-                  {T.dashboard_open} <ArrowIcon />
+                  {T.dashboard_open}
                 </span>
               </div>
             </a>
