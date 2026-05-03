@@ -21,7 +21,6 @@ const NATIONALITIES = [
 ]
 
 const AGE_GROUPS = ['Under 18','18–21','22–25','26–30','30+']
-
 const CATEGORIES = ['Contracted','Negotiating','Interested']
 
 const CATEGORY_COLORS: Record<string, { bg: string, color: string, border: string }> = {
@@ -29,6 +28,21 @@ const CATEGORY_COLORS: Record<string, { bg: string, color: string, border: strin
   'Negotiating': { bg: '#FFF3CD', color: '#856404', border: 'rgba(240,165,0,0.3)' },
   'Interested':  { bg: '#E8F0FE', color: '#1A56DB', border: 'rgba(74,127,212,0.3)' },
 }
+
+const StarIcon = ({ filled }: { filled: boolean }) => (
+  <svg width="13" height="13" viewBox="0 0 16 16" fill={filled ? '#F0A500' : 'none'} stroke={filled ? '#F0A500' : 'currentColor'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M8 2L9.8 6.2L14 6.6L11 9.4L11.8 13.6L8 11.4L4.2 13.6L5 9.4L2 6.6L6.2 6.2Z"/>
+  </svg>
+)
+
+const NoteIcon = ({ filled }: { filled: boolean }) => (
+  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke={filled ? '#4A7FD4' : 'currentColor'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="2" width="12" height="12" rx="2"/>
+    <line x1="5" y1="5.5" x2="11" y2="5.5"/>
+    <line x1="5" y1="8" x2="11" y2="8"/>
+    <line x1="5" y1="10.5" x2="8" y2="10.5"/>
+  </svg>
+)
 
 export default function CoachDashboard() {
   const supabase = createClient()
@@ -244,7 +258,6 @@ export default function CoachDashboard() {
         .filter-option:last-child { margin-bottom: 0; }
         .filter-option input[type="checkbox"] { accent-color: #1D9E75; width: 14px; height: 14px; flex-shrink: 0; cursor: pointer; }
         .filter-option-label { font-size: 13px; color: #0D1B2E; flex: 1; cursor: pointer; }
-        .filter-option-count { font-size: 11px; color: #B4B2A9; }
         .nat-search { width: 100%; padding: 6px 10px; border: 1.5px solid #E8E4F0; border-radius: 6px; font-size: 12px; outline: none; font-family: Arial, sans-serif; margin-bottom: 8px; color: #0D1B2E; }
         .nat-search:focus { border-color: #1D9E75; }
         .results-area { flex: 1; min-width: 0; }
@@ -261,6 +274,13 @@ export default function CoachDashboard() {
         .active-tag { display: flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; background: #E1F5EE; color: #0F6E56; border: 1px solid rgba(29,158,117,0.2); }
         .active-tag-x { cursor: pointer; opacity: 0.6; font-size: 13px; line-height: 1; }
         .results-count { font-size: 12px; color: #888780; margin-bottom: 10px; }
+
+        /* Pill buttons */
+        .pill-btn { height: 28px; padding: 0 10px; border-radius: 20px; border: 1.5px solid #D3D1C7; background: white; cursor: pointer; display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: #5F5E5A; font-family: Arial, sans-serif; white-space: nowrap; transition: all 0.1s; }
+        .pill-btn:hover { border-color: #888780; }
+        .pill-btn-save-active { border-color: #F0A500; background: #FFF8E7; color: #856404; }
+        .pill-btn-note-active { border-color: #4A7FD4; background: #EEF4FF; color: #185FA5; }
+
         .player-list { display: flex; flex-direction: column; gap: 8px; }
         .player-row { background: white; border-radius: 10px; padding: 12px 14px; border: 0.5px solid #D3D1C7; }
         .player-row-main { display: flex; align-items: center; gap: 10px; }
@@ -273,10 +293,6 @@ export default function CoachDashboard() {
         .row-position { display: inline-block; font-size: 10px; background: #E1F5EE; color: #0F6E56; padding: 2px 6px; border-radius: 4px; font-weight: 700; letter-spacing: 0.06em; }
         .row-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
         .row-cv-btn { background: #0D1B2E; color: white; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; white-space: nowrap; }
-        .row-note-btn { width: 30px; height: 30px; border-radius: 6px; border: 1.5px solid #D3D1C7; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; }
-        .row-note-btn-active { background: #EEF4FF; border-color: #4A7FD4; }
-        .row-shortlist-btn { width: 30px; height: 30px; border-radius: 6px; border: 1.5px solid #D3D1C7; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-        .row-shortlist-btn-active { background: #FFF8E7; border-color: #F0A500; }
         .row-extras { padding-top: 8px; margin-top: 8px; border-top: 1px solid #F1EFE8; display: flex; flex-direction: column; gap: 6px; }
         .row-category { display: flex; align-items: center; gap: 8px; }
         .row-category-label { font-size: 11px; color: #888780; white-space: nowrap; }
@@ -286,7 +302,7 @@ export default function CoachDashboard() {
         .row-note-textarea { flex: 1; padding: 7px 10px; border: 1.5px solid #D3D1C7; border-radius: 6px; font-size: 12px; font-family: Arial, sans-serif; resize: none; height: 56px; outline: none; color: #0D1B2E; }
         .row-note-textarea:focus { border-color: #1D9E75; }
         .row-note-save { padding: 7px 12px; background: #1D9E75; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; align-self: flex-end; }
-        .row-note-preview { font-size: 11px; color: #888780; font-style: italic; }
+        .row-note-preview { font-size: 11px; color: #5F5E5A; font-style: italic; background: #F8F7F4; padding: 5px 8px; border-radius: 6px; }
         .player-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
         .player-card { background: white; border-radius: 12px; padding: 14px; border: 0.5px solid #D3D1C7; }
         .player-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
@@ -300,13 +316,9 @@ export default function CoachDashboard() {
         .stat-cell { background: white; padding: 6px; text-align: center; }
         .stat-val { font-size: 13px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; }
         .stat-lbl { font-size: 9px; color: #888780; letter-spacing: 0.08em; margin-top: 1px; }
-        .card-actions { display: flex; gap: 6px; }
+        .card-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
         .cv-btn { flex: 1; padding: 7px; background: #0D1B2E; color: white; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; font-family: 'Arial Black', Arial, sans-serif; cursor: pointer; text-align: center; text-decoration: none; display: block; }
-        .shortlist-btn { width: 32px; height: 30px; border-radius: 6px; border: 1.5px solid #D3D1C7; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
-        .shortlist-btn-active { background: #FFF8E7; border-color: #F0A500; }
-        .note-btn { width: 32px; height: 30px; border-radius: 6px; border: 1.5px solid #D3D1C7; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
-        .note-btn-active { background: #EEF4FF; border-color: #4A7FD4; }
-        .note-preview { font-size: 11px; color: #888780; margin-top: 6px; padding: 5px 7px; background: #F8F7F4; border-radius: 5px; font-style: italic; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .note-preview { font-size: 11px; color: #5F5E5A; margin-top: 6px; padding: 5px 7px; background: #F8F7F4; border-radius: 5px; font-style: italic; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .note-panel { margin-top: 8px; padding-top: 8px; border-top: 1px solid #F1EFE8; }
         .note-textarea { width: 100%; padding: 7px 9px; border: 1.5px solid #D3D1C7; border-radius: 6px; font-size: 12px; font-family: Arial, sans-serif; resize: none; height: 64px; outline: none; color: #0D1B2E; }
         .note-textarea:focus { border-color: #1D9E75; }
@@ -318,7 +330,6 @@ export default function CoachDashboard() {
         .empty-state { text-align: center; padding: 40px 20px; background: white; border-radius: 12px; border: 0.5px solid #D3D1C7; }
         .empty-state h3 { font-size: 15px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 6px; }
         .empty-state p { font-size: 13px; color: #888780; }
-        .mobile-filter-overlay { display: none; }
         @media (min-width: 769px) {
           .nav { padding: 0 28px; height: 64px; }
           .nav-logo-text { display: inline; color: white; font-weight: 900; font-size: 20px; letter-spacing: -1px; font-family: 'Arial Black', Arial, sans-serif; }
@@ -378,14 +389,11 @@ export default function CoachDashboard() {
       </div>
 
       <div className="main-layout">
-
-        {/* LEFT FILTER PANEL */}
         <div className="filter-panel">
           <div className="filter-panel-header">
             <span className="filter-panel-title">{lang === 'fr' ? 'Filtres' : 'Filters'}</span>
             {totalActiveFilters > 0 && <button className="filter-clear-all" onClick={clearAllFilters}>{lang === 'fr' ? 'Tout effacer' : 'Clear all'}</button>}
           </div>
-
           <div className="filter-section">
             <div className="filter-section-title">{lang === 'fr' ? 'Statut' : 'Status'}</div>
             {CATEGORIES.map(cat => {
@@ -400,7 +408,6 @@ export default function CoachDashboard() {
               )
             })}
           </div>
-
           <div className="filter-section">
             <div className="filter-section-title">{lang === 'fr' ? 'Tranche d\'âge' : 'Age group'}</div>
             {AGE_GROUPS.map(age => (
@@ -410,7 +417,6 @@ export default function CoachDashboard() {
               </label>
             ))}
           </div>
-
           <div className="filter-section">
             <div className="filter-section-title">{lang === 'fr' ? 'Nationalité' : 'Nationality'}</div>
             <input className="nat-search" type="text" placeholder={lang === 'fr' ? 'Rechercher...' : 'Search...'} value={natSearch} onChange={e => setNatSearch(e.target.value)} />
@@ -421,7 +427,6 @@ export default function CoachDashboard() {
               </label>
             ))}
           </div>
-
           <div className="filter-section">
             <div className="filter-section-title">{lang === 'fr' ? 'Poste' : 'Position'}</div>
             {POSITIONS.map(p => (
@@ -433,16 +438,9 @@ export default function CoachDashboard() {
           </div>
         </div>
 
-        {/* RESULTS AREA */}
         <div className="results-area">
           <div className="results-toolbar">
-            <input
-              className="search-input"
-              type="text"
-              placeholder={lang === 'fr' ? 'Rechercher par nom...' : 'Search by name...'}
-              value={search}
-              onChange={e => { setSearch(e.target.value); fetchPlayers(activeFilters, e.target.value) }}
-            />
+            <input className="search-input" type="text" placeholder={lang === 'fr' ? 'Rechercher par nom...' : 'Search by name...'} value={search} onChange={e => { setSearch(e.target.value); fetchPlayers(activeFilters, e.target.value) }} />
             <button className="mobile-filter-btn" onClick={() => setShowMobileFilters(true)}>
               {lang === 'fr' ? 'Filtres' : 'Filters'}
               {totalActiveFilters > 0 && <span className="mobile-filter-badge">{totalActiveFilters}</span>}
@@ -496,8 +494,20 @@ export default function CoachDashboard() {
                         </div>
                         <div className="row-actions">
                           <a href={`/cv/${player.share_token}`} className="row-cv-btn" target="_blank" rel="noopener noreferrer">{T.coach_view_cv_short}</a>
-                          <button className={`row-note-btn ${hasNote || isNoteOpen ? 'row-note-btn-active' : ''}`} onClick={e => { e.stopPropagation(); isNoteOpen ? setOpenNoteId(null) : openNote(e, player.id) }}>📝</button>
-                          <button className={`row-shortlist-btn ${isShortlisted ? 'row-shortlist-btn-active' : ''}`} onClick={e => toggleShortlist(e, player.id)}>{isShortlisted ? '⭐' : '☆'}</button>
+                          <button
+                            className={`pill-btn ${hasNote || isNoteOpen ? 'pill-btn-note-active' : ''}`}
+                            onClick={e => { e.stopPropagation(); isNoteOpen ? setOpenNoteId(null) : openNote(e, player.id) }}
+                          >
+                            <NoteIcon filled={hasNote || isNoteOpen} />
+                            {isNoteOpen ? (lang === 'fr' ? 'Modifier' : 'Edit note') : hasNote ? (lang === 'fr' ? 'Modifier' : 'Edit note') : (lang === 'fr' ? 'Ajouter' : 'Add note')}
+                          </button>
+                          <button
+                            className={`pill-btn ${isShortlisted ? 'pill-btn-save-active' : ''}`}
+                            onClick={e => toggleShortlist(e, player.id)}
+                          >
+                            <StarIcon filled={isShortlisted} />
+                            {isShortlisted ? (lang === 'fr' ? 'Sauvegardé' : 'Saved') : (lang === 'fr' ? 'Sauvegarder' : 'Save')}
+                          </button>
                         </div>
                       </div>
                       {(isShortlisted || isNoteOpen || hasNote) && (
@@ -517,7 +527,7 @@ export default function CoachDashboard() {
                               <button className="row-note-save" disabled={savingNote} onClick={() => saveNote(player.id)}>{savingNote ? '...' : (lang === 'fr' ? 'Sauver' : 'Save')}</button>
                             </div>
                           )}
-                          {hasNote && !isNoteOpen && <div className="row-note-preview">📝 {notes[player.id]}</div>}
+                          {hasNote && !isNoteOpen && <div className="row-note-preview">{notes[player.id]}</div>}
                         </div>
                       )}
                     </div>
@@ -527,7 +537,7 @@ export default function CoachDashboard() {
             ) : (
               <div className="empty-state">
                 <h3>{tab === 'shortlist' ? (lang === 'fr' ? 'Aucune sélection' : 'No shortlist yet') : (lang === 'fr' ? 'Aucun joueur trouvé' : 'No players found')}</h3>
-                <p>{tab === 'shortlist' ? (lang === 'fr' ? 'Cliquez sur ☆ pour ajouter des joueurs.' : 'Click ☆ on any player to add them.') : (lang === 'fr' ? 'Ajustez vos filtres.' : 'Try adjusting your filters.')}</p>
+                <p>{tab === 'shortlist' ? (lang === 'fr' ? 'Cliquez sur Save pour ajouter des joueurs.' : 'Click Save on any player to add them.') : (lang === 'fr' ? 'Ajustez vos filtres.' : 'Try adjusting your filters.')}</p>
               </div>
             )
           )}
@@ -568,17 +578,23 @@ export default function CoachDashboard() {
                           </select>
                         </div>
                       )}
-                      {hasNote && !isNoteOpen && <div className="note-preview">📝 {notes[player.id]}</div>}
+                      {hasNote && !isNoteOpen && <div className="note-preview">{notes[player.id]}</div>}
                       {isNoteOpen && (
                         <div className="note-panel">
                           <textarea className="note-textarea" placeholder={lang === 'fr' ? 'Note privée...' : 'Private note...'} value={noteText} onChange={e => setNoteText(e.target.value)} autoFocus />
                           <button className="note-save-btn" disabled={savingNote} onClick={() => saveNote(player.id)}>{savingNote ? '...' : (lang === 'fr' ? 'Sauver' : 'Save note')}</button>
                         </div>
                       )}
-                      <div className="card-actions" style={{ marginTop: '8px' }}>
+                      <div className="card-actions">
                         <a href={`/cv/${player.share_token}`} className="cv-btn" target="_blank" rel="noopener noreferrer">{T.coach_view_cv}</a>
-                        <button className={`note-btn ${hasNote || isNoteOpen ? 'note-btn-active' : ''}`} onClick={e => isNoteOpen ? setOpenNoteId(null) : openNote(e, player.id)}>📝</button>
-                        <button className={`shortlist-btn ${isShortlisted ? 'shortlist-btn-active' : ''}`} onClick={e => toggleShortlist(e, player.id)}>{isShortlisted ? '⭐' : '☆'}</button>
+                        <button className={`pill-btn ${hasNote || isNoteOpen ? 'pill-btn-note-active' : ''}`} onClick={e => isNoteOpen ? setOpenNoteId(null) : openNote(e, player.id)}>
+                          <NoteIcon filled={hasNote || isNoteOpen} />
+                          {isNoteOpen ? (lang === 'fr' ? 'Modifier' : 'Edit note') : hasNote ? (lang === 'fr' ? 'Modifier' : 'Edit note') : (lang === 'fr' ? 'Ajouter' : 'Add note')}
+                        </button>
+                        <button className={`pill-btn ${isShortlisted ? 'pill-btn-save-active' : ''}`} onClick={e => toggleShortlist(e, player.id)}>
+                          <StarIcon filled={isShortlisted} />
+                          {isShortlisted ? (lang === 'fr' ? 'Sauvegardé' : 'Saved') : (lang === 'fr' ? 'Sauvegarder' : 'Save')}
+                        </button>
                       </div>
                     </div>
                   )
@@ -587,7 +603,7 @@ export default function CoachDashboard() {
             ) : (
               <div className="empty-state">
                 <h3>{tab === 'shortlist' ? (lang === 'fr' ? 'Aucune sélection' : 'No shortlist yet') : (lang === 'fr' ? 'Aucun joueur trouvé' : 'No players found')}</h3>
-                <p>{tab === 'shortlist' ? (lang === 'fr' ? 'Cliquez sur ☆ pour ajouter des joueurs.' : 'Click ☆ on any player to add them.') : (lang === 'fr' ? 'Ajustez vos filtres.' : 'Try adjusting your filters.')}</p>
+                <p>{tab === 'shortlist' ? (lang === 'fr' ? 'Cliquez sur Save pour ajouter des joueurs.' : 'Click Save on any player to add them.') : (lang === 'fr' ? 'Ajustez vos filtres.' : 'Try adjusting your filters.')}</p>
               </div>
             )
           )}
