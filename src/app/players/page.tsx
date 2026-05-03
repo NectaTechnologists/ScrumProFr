@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 async function getPlayers() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL + '/rest/v1/players?select=first_name,last_name,position_primary,position_secondary,nationality_primary,date_of_birth,height_cm,weight_kg,avatar_url,share_token,id&profile_visibility=eq.PUBLIC&is_test=eq.false&avatar_url=not.is.null&first_name=not.is.null&last_name=not.is.null&nationality_primary=not.is.null&position_primary=not.is.null&date_of_birth=not.is.null&order=created_at.desc'
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL + '/rest/v1/players?select=first_name,last_name,position_primary,position_secondary,nationality_primary,date_of_birth,height_cm,weight_kg,avatar_url,share_token,id&profile_visibility=eq.PUBLIC&is_test=eq.false&first_name=not.is.null&last_name=not.is.null&nationality_primary=not.is.null&position_primary=not.is.null&order=created_at.desc'
   const res = await fetch(url, {
     headers: {
       'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
