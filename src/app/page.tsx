@@ -44,7 +44,7 @@ export default function Home() {
         .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
         .btn-primary { background: #1D9E75; color: white; font-size: 15px; font-weight: 700; padding: 14px 28px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; }
         .btn-ghost { background: transparent; color: white; font-size: 14px; padding: 13px 22px; border-radius: 6px; text-decoration: none; border: 1.5px solid rgba(255,255,255,0.25); }
-        .hero-note { margin-top: 16px; font-size: 11px; color: rgba(255,255,255,0.26); letter-spacing: 0.06em; }
+        .hero-note { margin-top: 32px; font-size: 11px; color: rgba(255,255,255,0.26); letter-spacing: 0.06em; }
 
         .badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(29,158,117,0.14); border: 1px solid rgba(29,158,117,0.3); border-radius: 20px; padding: 5px 14px; margin-bottom: 26px; }
         .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #1D9E75; flex-shrink: 0; }
@@ -182,6 +182,17 @@ export default function Home() {
         <p>&ldquo;{T.quote.replace(/^["«»]|["«»]$/g, '').trim().replace(T.quote_highlight, `\u200B${T.quote_highlight}\u200B`)}&rdquo;</p>
       </div>
 
+      <section style={{ background: '#F1EFE8', padding: '64px 40px', textAlign: 'center' }}>
+  <div style={{ maxWidth: '860px', margin: '0 auto' }}>
+    <p style={{ fontSize: '10px', color: '#0F6E56', letterSpacing: '0.16em', marginBottom: '10px', fontWeight: '700' }}>PLAYER DIRECTORY</p>
+    <h2 style={{ fontSize: '32px', fontWeight: '900', color: '#0D1B2E', letterSpacing: '-1px', fontFamily: 'Arial Black, Arial, sans-serif', marginBottom: '12px' }}>Browse rugby talent from around the world</h2>
+    <p style={{ fontSize: '14px', color: '#5F5E5A', lineHeight: '1.75', maxWidth: '520px', margin: '0 auto 32px' }}>Coaches and recruiters can browse verified player profiles sorted by views — no account needed.</p>
+    <a href="/players" style={{ display: 'inline-flex', alignItems: 'center', gap: '7px', background: '#0D1B2E', color: 'white', fontSize: '14px', fontWeight: '700', padding: '13px 28px', borderRadius: '20px', textDecoration: 'none', fontFamily: 'Arial, sans-serif' }}>
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      View all players
+    </a>
+  </div>
+</section>
       {/* SPLIT */}
       <div className="split">
         <div className="split-player">
@@ -210,7 +221,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <a href="/login" className="btn-dark">{T.agent_cta}</a>
+          <a href="/register/coach" className="btn-dark">{T.agent_cta}</a>
         </div>
       </div>
 
