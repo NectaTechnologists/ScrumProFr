@@ -13,6 +13,23 @@ async function getPlayer(token: string) {
   return data?.[0] || null
 }
 
+async function logView(playerId: string) {
+  try {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL + '/rest/v1/cv_views'
+    await fetch(url, {
+      method: 'POST',
+      headers: {
+        'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
+        'Authorization': 'Bearer ' + process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal',
+      },
+      body: JSON.stringify({ player_id: playerId }),
+      cache: 'no-store',
+    })
+  } catch {}
+}
+
 export default async function CVPage(props: any) {
   const params = await props.params
   const token = params.token
@@ -28,7 +45,7 @@ export default async function CVPage(props: any) {
     </div>
   )
 
-  // Log the view
+  await logView(player.id)
 
   const age = player.date_of_birth
     ? Math.floor((new Date().getTime() - new Date(player.date_of_birth).getTime()) / 31557600000)
@@ -446,10 +463,6 @@ export default async function CVPage(props: any) {
             var btnFr = document.getElementById('btn-fr');
             if (btnEn) btnEn.addEventListener('click', function() { applyLang('en'); });
             if (btnFr) btnFr.addEventListener('click', function() { applyLang('fr'); });
-            fetch('/api/log-view', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ player_id: '` + player.id + `' })
           });
         })();
       `}} />
