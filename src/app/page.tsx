@@ -44,8 +44,7 @@ export default function Home() {
         .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
         .btn-primary { background: #1D9E75; color: white; font-size: 15px; font-weight: 700; padding: 14px 28px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; }
         .btn-ghost { background: transparent; color: white; font-size: 14px; padding: 13px 22px; border-radius: 6px; text-decoration: none; border: 1.5px solid rgba(255,255,255,0.25); }
-        .hero-note { margin-top: 32px; font-size: 11px; color: rgba(255,255,255,0.26); letter-spacing: 0.06em; }
-
+        .hero-note { margin-top: 40px; font-size: 11px; color: rgba(255,255,255,0.26); letter-spacing: 0.06em; }
         .badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(29,158,117,0.14); border: 1px solid rgba(29,158,117,0.3); border-radius: 20px; padding: 5px 14px; margin-bottom: 26px; }
         .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #1D9E75; flex-shrink: 0; }
         .badge-text { font-size: 11px; color: #5DCAA5; letter-spacing: 0.12em; }
