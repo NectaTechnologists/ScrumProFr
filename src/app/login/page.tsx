@@ -36,9 +36,9 @@ export default function LoginPage() {
     setLoading(true)
     setMessage('')
     if (isSignUp) {
-      const { error } = await supabase.auth.signUp({ email, password })
-      if (error) { setMessage(error.message) } else { setMessage(T.toggle_to_login) }
-    } else {
+      const { data, error } = await supabase.auth.signUp({ email, password })
+      if (error) { setMessage(error.message) } else { router.push('/onboarding') }
+      } else {
       const { error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) {
         setMessage(error.message)
