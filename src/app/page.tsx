@@ -149,7 +149,7 @@ export default function Home() {
           </span>
         </a>
         <div className="nav-links">
-          <a href="/login" className="nav-link">{T.nav_players}</a>
+          <a href="/players" className="nav-link">Browse players</a>
           <a href="/register/coach" className="nav-link">{T.nav_agents}</a>
           <a href="/login" className="nav-link">{T.nav_pricing}</a>
           <div className="lang-toggle">
