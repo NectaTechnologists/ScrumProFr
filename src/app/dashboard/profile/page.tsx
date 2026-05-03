@@ -8,6 +8,35 @@ import { t, Lang } from '@/lib/translations'
 const FLAG_EN = '🇬🇧'
 const FLAG_FR = '🇫🇷'
 
+const SaveIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M13 13H3a1 1 0 01-1-1V3l3-1h7l2 2v8a1 1 0 01-1 1z"/>
+    <rect x="5" y="8" width="6" height="5" rx="0.5"/>
+    <rect x="5" y="2" width="4" height="3" rx="0.5"/>
+  </svg>
+)
+
+const UploadIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M8 10V3M5 6l3-3 3 3"/>
+    <path d="M3 11v2a1 1 0 001 1h8a1 1 0 001-1v-2"/>
+  </svg>
+)
+
+const TrashIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M2 4h12M5 4V2h6v2M6 7v5M10 7v5M3 4l1 9a1 1 0 001 1h6a1 1 0 001-1l1-9"/>
+  </svg>
+)
+
+const PhotoIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="1" y="3" width="14" height="10" rx="2"/>
+    <circle cx="8" cy="8" r="2.5"/>
+    <circle cx="12" cy="5" r="0.5" fill="currentColor"/>
+  </svg>
+)
+
 const positions = [
   'LOOSEHEAD_PROP','HOOKER','TIGHTHEAD_PROP',
   'LEFT_LOCK','RIGHT_LOCK',
@@ -263,7 +292,7 @@ export default function ProfilePage() {
         .form-textarea { width: 100%; padding: 10px 14px; border: 1.5px solid #E8E4F0; border-radius: 8px; font-size: 14px; outline: none; font-family: system-ui; height: 100px; resize: none; color: #0D1B2E; }
         .form-textarea:focus { border-color: #1D9E75; }
         .form-textarea::placeholder { color: #B4B2A9; }
-        .save-btn { width: 100%; padding: 13px; background: #1D9E75; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Arial Black', Arial, sans-serif; margin-top: 8px; }
+        .save-btn { width: 100%; padding: 11px; background: #1D9E75; color: white; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 7px; }
         .save-btn:disabled { opacity: 0.7; cursor: not-allowed; }
         .section-title { font-size: 11px; color: #1D9E75; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 16px; margin-top: 8px; }
         .section-divider { border: none; border-top: 1px solid #F1EFE8; margin: 24px 0; }
@@ -275,11 +304,12 @@ export default function ProfilePage() {
         .avatar-upload-area { flex: 1; }
         .avatar-upload-label { font-size: 13px; font-weight: 600; color: #0D1B2E; margin-bottom: 6px; display: block; }
         .avatar-upload-hint { font-size: 12px; color: #888780; margin-bottom: 10px; }
-        .avatar-upload-btn { background: #F1EFE8; border: 1.5px solid #D3D1C7; color: #0D1B2E; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: Arial, sans-serif; display: inline-block; }
+        .avatar-upload-btn { background: white; border: 1.5px solid #D3D1C7; color: #0D1B2E; font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 20px; cursor: pointer; font-family: Arial, sans-serif; display: inline-flex; align-items: center; gap: 6px; }
+        .avatar-upload-btn:hover { border-color: #1D9E75; }
         .doc-upload-area { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #F1EFE8; }
         .doc-type-row { display: flex; gap: 10px; margin-bottom: 12px; align-items: flex-end; flex-wrap: wrap; }
         .doc-type-select { flex: 1; padding: 10px 14px; border: 1.5px solid #E8E4F0; border-radius: 8px; font-size: 14px; outline: none; font-family: system-ui; background: white; color: #0D1B2E; min-width: 160px; }
-        .doc-upload-btn { background: #1D9E75; color: white; border: none; border-radius: 8px; padding: 10px 18px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; flex-shrink: 0; }
+        .doc-upload-btn { background: #1D9E75; color: white; border: none; border-radius: 20px; padding: 9px 16px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; }
         .doc-upload-btn:disabled { opacity: 0.6; cursor: not-allowed; }
         .doc-hint { font-size: 12px; color: #888780; }
         .doc-list { display: flex; flex-direction: column; gap: 10px; }
@@ -288,7 +318,8 @@ export default function ProfilePage() {
         .doc-info { flex: 1; min-width: 0; }
         .doc-name { font-size: 13px; font-weight: 700; color: #0D1B2E; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .doc-meta { font-size: 11px; color: #888780; margin-top: 2px; }
-        .doc-delete { background: none; border: none; color: #C4C2BA; cursor: pointer; font-size: 18px; flex-shrink: 0; padding: 4px; }
+        .doc-delete { background: none; border: 1.5px solid #D3D1C7; color: #888780; cursor: pointer; border-radius: 20px; padding: 4px 8px; display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; font-family: Arial, sans-serif; }
+        .doc-delete:hover { border-color: #E05555; color: #E05555; }
         .doc-empty { text-align: center; padding: 32px 20px; color: #888780; font-size: 14px; }
         .doc-count { font-size: 12px; color: #888780; margin-bottom: 12px; }
         .doc-private-note { background: #F1EFE8; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 10px; }
@@ -383,7 +414,7 @@ export default function ProfilePage() {
                 <p className="avatar-upload-hint">{lang === 'fr' ? 'JPG ou PNG, max 5MB' : 'JPG or PNG, max 5MB'}</p>
                 {avatarUploading
                   ? <span style={{ fontSize: '13px', color: '#1D9E75' }}>{lang === 'fr' ? 'Téléversement...' : 'Uploading...'}</span>
-                  : <button type="button" className="avatar-upload-btn" onClick={() => fileInputRef.current?.click()}>{form.avatar_url ? (lang === 'fr' ? 'Changer la photo' : 'Change photo') : (lang === 'fr' ? 'Ajouter une photo' : 'Add photo')}</button>
+                  : <button type="button" className="avatar-upload-btn" onClick={() => fileInputRef.current?.click()}><PhotoIcon />{form.avatar_url ? (lang === 'fr' ? 'Changer la photo' : 'Change photo') : (lang === 'fr' ? 'Ajouter une photo' : 'Add photo')}</button>
                 }
                 <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleAvatarUpload} />
               </div>
@@ -424,6 +455,7 @@ export default function ProfilePage() {
               <textarea className="form-textarea" value={form.bio} onChange={e => setForm({ ...form, bio: e.target.value })} placeholder="Experienced front-row forward..."/>
             </div>
             <button type="submit" disabled={loading} className="save-btn">
+              <SaveIcon />
               {loading ? T.profile_saving : saved ? T.profile_saved : T.profile_save}
             </button>
           </form>
@@ -498,6 +530,7 @@ export default function ProfilePage() {
             </div>
 
             <button type="submit" disabled={loading} className="save-btn">
+              <SaveIcon />
               {loading ? T.profile_saving : saved ? T.profile_saved : T.profile_save}
             </button>
           </form>
@@ -510,7 +543,7 @@ export default function ProfilePage() {
             <div className="form-full"><label className="form-label">{T.profile_video_1}</label><input className="form-input" type="url" value={form.video_url} onChange={e => setForm({ ...form, video_url: e.target.value })} placeholder="https://youtube.com/watch?v=..."/><p className="video-hint">{T.profile_video_1_hint}</p></div>
             <div className="form-full"><label className="form-label">{T.profile_video_2}</label><input className="form-input" type="url" value={form.video_url_2} onChange={e => setForm({ ...form, video_url_2: e.target.value })} placeholder="https://youtube.com/watch?v=..."/></div>
             <div className="form-full"><label className="form-label">{T.profile_video_3}</label><input className="form-input" type="url" value={form.video_url_3} onChange={e => setForm({ ...form, video_url_3: e.target.value })} placeholder="https://vimeo.com/..."/></div>
-            <button type="submit" disabled={loading} className="save-btn">{loading ? T.profile_saving : saved ? T.profile_saved : T.profile_video_save}</button>
+            <button type="submit" disabled={loading} className="save-btn"><SaveIcon />{loading ? T.profile_saving : saved ? T.profile_saved : T.profile_video_save}</button>
           </form>
         )}
 
@@ -530,7 +563,7 @@ export default function ProfilePage() {
                   {DOCUMENT_TYPES.map(dt => <option key={dt} value={dt}>{dt}</option>)}
                 </select>
                 <button type="button" className="doc-upload-btn" disabled={docUploading || documents.length >= 5} onClick={() => docInputRef.current?.click()}>
-                  {docUploading ? (lang === 'fr' ? 'Téléversement...' : 'Uploading...') : (lang === 'fr' ? '+ Ajouter un fichier' : '+ Add file')}
+                  <UploadIcon />{docUploading ? (lang === 'fr' ? 'Téléversement...' : 'Uploading...') : (lang === 'fr' ? 'Ajouter un fichier' : 'Add file')}
                 </button>
                 <input ref={docInputRef} type="file" accept=".pdf,image/*" style={{ display: 'none' }} onChange={handleDocumentUpload} />
               </div>
@@ -553,7 +586,7 @@ export default function ProfilePage() {
                       <div className="doc-name">{doc.file_name}</div>
                       <div className="doc-meta">{doc.document_type} · {doc.file_size_kb ? formatFileSize(doc.file_size_kb) : '–'}</div>
                     </div>
-                    <button className="doc-delete" onClick={() => handleDeleteDocument(doc)} title={lang === 'fr' ? 'Supprimer' : 'Delete'}>×</button>
+                    <button className="doc-delete" onClick={() => handleDeleteDocument(doc)}><TrashIcon />{lang === 'fr' ? 'Supprimer' : 'Remove'}</button>
                   </div>
                 ))}
               </div>
