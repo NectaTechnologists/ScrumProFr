@@ -56,8 +56,7 @@ export default async function PlayersPage() {
         .dir-cta { display: inline-flex; align-items: center; gap: 7px; background: #1D9E75; color: white; border: none; border-radius: 20px; padding: 12px 28px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; text-decoration: none; }
         .dir-content { max-width: 1300px; margin: 0 auto; padding: 32px 28px 60px; }
         .dir-section-title { font-size: 10px; color: #888780; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 16px; }
-        .dir-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
-        .dir-card { background: white; border-radius: 12px; border: 0.5px solid #D3D1C7; overflow: hidden; text-decoration: none; display: block; transition: border-color 0.15s; }
+        .dir-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }        .dir-card { background: white; border-radius: 12px; border: 0.5px solid #D3D1C7; overflow: hidden; text-decoration: none; display: block; transition: border-color 0.15s; }
         .dir-card:hover { border-color: #1D9E75; }
         .dir-card-hero { background: #0D1B2E; padding: 20px; display: flex; flex-direction: column; align-items: center; }
         .dir-avatar { width: 64px; height: 64px; border-radius: 12px; background: #1D9E75; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 10px; border: 2px solid rgba(255,255,255,0.1); }
