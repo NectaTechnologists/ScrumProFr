@@ -8,6 +8,19 @@ import { t, Lang } from '@/lib/translations'
 const FLAG_EN = '🇬🇧'
 const FLAG_FR = '🇫🇷'
 
+const ArrowIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M3 8h10M9 4l4 4-4 4"/>
+  </svg>
+)
+
+const EyeIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#5DCAA5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/>
+    <circle cx="8" cy="8" r="2"/>
+  </svg>
+)
+
 export default function DashboardPage() {
   const supabase = createClient()
   const router = useRouter()
@@ -28,28 +41,17 @@ export default function DashboardPage() {
     if (!user) { router.push('/login'); return }
     setUser(user)
 
-    // Get player record
     const { data: player } = await supabase
-      .from('players')
-      .select('id')
-      .eq('profile_id', user.id)
-      .single()
+      .from('players').select('id').eq('profile_id', user.id).single()
 
     if (player) {
-      // Get total view count
       const { count } = await supabase
-        .from('cv_views')
-        .select('*', { count: 'exact', head: true })
-        .eq('player_id', player.id)
+        .from('cv_views').select('*', { count: 'exact', head: true }).eq('player_id', player.id)
       setViewCount(count || 0)
 
-      // Get recent views
       const { data: views } = await supabase
-        .from('cv_views')
-        .select('organisation_name, viewed_at')
-        .eq('player_id', player.id)
-        .order('viewed_at', { ascending: false })
-        .limit(10)
+        .from('cv_views').select('organisation_name, viewed_at')
+        .eq('player_id', player.id).order('viewed_at', { ascending: false }).limit(10)
       setRecentViews(views || [])
     }
 
@@ -102,12 +104,12 @@ export default function DashboardPage() {
         .dash-title { font-size: 28px; font-weight: 900; color: #0D1B2E; margin-bottom: 8px; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -0.5px; }
         .dash-subtitle { color: #5F5E5A; margin-bottom: 36px; font-size: 15px; }
         .dash-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
-        .dash-card { background: white; border-radius: 12px; padding: 28px; border: 0.5px solid #D3D1C7; text-decoration: none; display: block; }
+        .dash-card { background: white; border-radius: 12px; padding: 28px; border: 0.5px solid #D3D1C7; text-decoration: none; display: block; transition: border-color 0.15s; }
         .dash-card:hover { border-color: #1D9E75; }
         .dash-card-icon { width: 40px; height: 40px; border-radius: 8px; background: #E1F5EE; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
         .dash-card-title { font-size: 15px; font-weight: 700; color: #0D1B2E; margin-bottom: 6px; font-family: 'Arial Black', Arial, sans-serif; }
         .dash-card-desc { font-size: 13px; color: #888780; line-height: 1.5; margin-bottom: 20px; }
-        .dash-card-btn { display: inline-block; padding: 7px 16px; border-radius: 6px; color: white; font-size: 12px; font-weight: 700; font-family: 'Arial Black', Arial, sans-serif; }
+        .dash-card-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 20px; color: white; font-size: 12px; font-weight: 700; font-family: Arial, sans-serif; }
         .views-section { background: #0D1B2E; border-radius: 12px; padding: 28px; }
         .views-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
         .views-label { font-size: 10px; color: #5DCAA5; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 4px; }
@@ -117,7 +119,7 @@ export default function DashboardPage() {
         .views-count-label { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; }
         .views-list { display: flex; flex-direction: column; gap: 8px; }
         .view-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: rgba(255,255,255,0.06); border-radius: 8px; border: 0.5px solid rgba(255,255,255,0.08); }
-        .view-icon { width: 32px; height: 32px; border-radius: 6px; background: rgba(29,158,117,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
+        .view-icon { width: 32px; height: 32px; border-radius: 6px; background: rgba(29,158,117,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .view-org { font-size: 13px; font-weight: 700; color: white; }
         .view-time { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 2px; }
         .view-time-right { font-size: 11px; color: rgba(255,255,255,0.35); margin-left: auto; white-space: nowrap; }
@@ -179,7 +181,9 @@ export default function DashboardPage() {
               <div>
                 <div className="dash-card-title">{card.title}</div>
                 <div className="dash-card-desc">{card.desc}</div>
-                <span className="dash-card-btn" style={{ background: card.color }}>{T.dashboard_open}</span>
+                <span className="dash-card-btn" style={{ background: card.color }}>
+                  {T.dashboard_open} <ArrowIcon />
+                </span>
               </div>
             </a>
           ))}
@@ -201,7 +205,7 @@ export default function DashboardPage() {
             <div className="views-list">
               {recentViews.map((view, i) => (
                 <div key={i} className="view-item">
-                  <div className="view-icon">👁</div>
+                  <div className="view-icon"><EyeIcon /></div>
                   <div>
                     <div className="view-org">
                       {view.organisation_name || (lang === 'fr' ? 'Visiteur anonyme' : 'Anonymous viewer')}
