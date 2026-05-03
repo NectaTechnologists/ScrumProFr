@@ -13,19 +13,32 @@ async function getPlayer(token: string) {
   return data?.[0] || null
 }
 
-async function logView(playerId: string) {
+async function logView(playerId: string, request?: Request) {
   try {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL + '/rest/v1/cv_views'
-    await fetch(url, {
-      method: 'POST',
-      headers: {
-        'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
-        'Authorization': 'Bearer ' + process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=minimal',
-      },
-      body: JSON.stringify({ player_id: playerId }),
-      cache: 'no-store',
+    const { createClient } = await import('@/lib/supabase/server')
+    const supabase = await createClient()
+
+    const { data: { user } } = await supabase.auth.getUser()
+    let organisation_name = null
+    let coach_id = null
+
+    if (user) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('organisation_name, role')
+        .eq('id', user.id)
+        .single()
+
+      if (profile?.role === 'org_user') {
+        organisation_name = profile.organisation_name
+        coach_id = user.id
+      }
+    }
+
+    await supabase.from('cv_views').insert({
+      player_id: playerId,
+      coach_id,
+      organisation_name,
     })
   } catch {}
 }
