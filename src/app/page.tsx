@@ -41,7 +41,7 @@ export default function Home() {
         .hero-inner { max-width: 820px; margin: 0 auto; }
         .hero h1 { font-size: 52px; font-weight: 900; color: white; letter-spacing: -2px; line-height: 1.06; margin-bottom: 18px; font-family: 'Arial Black', Arial, sans-serif; }
         .hero p { font-size: 17px; color: rgba(255,255,255,0.56); line-height: 1.75; max-width: 520px; margin: 0 auto 32px; }
-        .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+        .hero p.hero-note { margin-top: 40px; }        .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
         .btn-primary { background: #1D9E75; color: white; font-size: 15px; font-weight: 700; padding: 14px 28px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; }
         .btn-ghost { background: transparent; color: white; font-size: 14px; padding: 13px 22px; border-radius: 6px; text-decoration: none; border: 1.5px solid rgba(255,255,255,0.25); }
         .hero-note { margin-top: 40px; font-size: 11px; color: rgba(255,255,255,0.26); letter-spacing: 0.06em; }
