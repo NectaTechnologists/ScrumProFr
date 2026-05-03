@@ -449,7 +449,7 @@ export default async function CVPage(props: any) {
             fetch('/api/log-view', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ player_id: '${player.id}' })
+            body: JSON.stringify({ player_id: '` + player.id + `' })
           });
         })();
       `}} />
