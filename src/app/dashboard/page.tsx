@@ -29,6 +29,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true)
   const [viewCount, setViewCount] = useState<number>(0)
   const [recentViews, setRecentViews] = useState<any[]>([])
+  const [showOnboardingBanner, setShowOnboardingBanner] = useState(false)
 
   useEffect(() => {
     const saved = localStorage.getItem('gainline_lang') as Lang
@@ -42,9 +43,15 @@ export default function DashboardPage() {
     setUser(user)
 
     const { data: player } = await supabase
-      .from('players').select('id').eq('profile_id', user.id).single()
+      .from('players')
+      .select('id, first_name, avatar_url, bio')
+      .eq('profile_id', user.id)
+      .single()
 
     if (player) {
+      const incomplete = !player.first_name || !player.avatar_url || !player.bio
+      setShowOnboardingBanner(incomplete)
+
       const { count } = await supabase
         .from('cv_views').select('*', { count: 'exact', head: true }).eq('player_id', player.id)
       setViewCount(count || 0)
@@ -53,6 +60,8 @@ export default function DashboardPage() {
         .from('cv_views').select('organisation_name, viewed_at')
         .eq('player_id', player.id).order('viewed_at', { ascending: false }).limit(10)
       setRecentViews(views || [])
+    } else {
+      setShowOnboardingBanner(true)
     }
 
     setLoading(false)
@@ -110,6 +119,7 @@ export default function DashboardPage() {
         .dash-card-title { font-size: 15px; font-weight: 700; color: #0D1B2E; margin-bottom: 6px; font-family: 'Arial Black', Arial, sans-serif; }
         .dash-card-desc { font-size: 13px; color: #888780; line-height: 1.5; margin-bottom: 20px; }
         .dash-card-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 20px; color: white; font-size: 12px; font-weight: 700; font-family: Arial, sans-serif; }
+        .ob-banner { background: #0D1B2E; border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 14px; }
         .views-section { background: #0D1B2E; border-radius: 12px; padding: 28px; }
         .views-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
         .views-label { font-size: 10px; color: #5DCAA5; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 4px; }
@@ -167,6 +177,24 @@ export default function DashboardPage() {
       <div className="dash-content">
         <h1 className="dash-title">{T.dashboard_welcome}</h1>
         <p className="dash-subtitle">{T.dashboard_logged_in} <strong>{user?.email}</strong></p>
+
+        {showOnboardingBanner && (
+          <div className="ob-banner">
+            <div style={{ width: '40px', height: '40px', borderRadius: '8px', background: 'rgba(29,158,117,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round">
+                <circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/>
+              </svg>
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: '13px', fontWeight: '700', color: 'white', marginBottom: '2px' }}>Complete your profile to get noticed</div>
+              <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>Takes 2 minutes — coaches are already browsing Gainline.</div>
+            </div>
+            <a href="/onboarding" style={{ height: '30px', padding: '0 14px', borderRadius: '20px', border: 'none', background: '#1D9E75', color: 'white', fontSize: '12px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Arial, sans-serif', textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+              Continue
+            </a>
+            <button onClick={() => setShowOnboardingBanner(false)} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', fontSize: '18px', padding: '0 4px', flexShrink: 0 }}>×</button>
+          </div>
+        )}
 
         <div className="dash-grid">
           {cards.map(card => (
