@@ -84,14 +84,14 @@ export default function ProfilePage() {
   const [shareUrl, setShareUrl] = useState('')
   const [completion, setCompletion] = useState(0)
   const [missingKeys, setMissingKeys] = useState<string[]>([])
-  const [activeTab, setActiveTab] = useState<'profile' | 'career' | 'media' | 'documents'>('profile')
-  const [lang, setLang] = useState<Lang>('en')
+  const [activeTab, setActiveTab] = useState<'profile' | 'career' | 'media' | 'documents' | 'references'>('profile')  const [lang, setLang] = useState<Lang>('en')
   const [avatarUploading, setAvatarUploading] = useState(false)
   const [userId, setUserId] = useState<string>('')
   const [playerId, setPlayerId] = useState<string>('')
   const [documents, setDocuments] = useState<any[]>([])
   const [docUploading, setDocUploading] = useState(false)
   const [selectedDocType, setSelectedDocType] = useState('Fitness Report')
+  const [references, setReferences] = useState<any[]>([])
 
   const [form, setForm] = useState({
     first_name: '', last_name: '', date_of_birth: '', nationality_primary: '',
@@ -137,6 +137,11 @@ export default function ProfilePage() {
           .from('player_documents').select('*').eq('player_id', player.id)
           .order('created_at', { ascending: false })
         setDocuments(docs || [])
+
+        const { data: refs } = await supabase
+          .from('references').select('*').eq('player_id', player.id)
+          .order('created_at', { ascending: false })
+        setReferences(refs || [])
       }
     }
     loadProfile()
@@ -401,6 +406,9 @@ export default function ProfilePage() {
           <button className={`tab ${activeTab === 'career' ? 'tab-active' : ''}`} onClick={() => setActiveTab('career')}>{lang === 'fr' ? 'Carrière' : 'Career'}</button>
           <button className={`tab ${activeTab === 'media' ? 'tab-active' : ''}`} onClick={() => setActiveTab('media')}>{T.profile_tab_media}</button>
           <button className={`tab ${activeTab === 'documents' ? 'tab-active' : ''}`} onClick={() => setActiveTab('documents')}>{T.profile_tab_docs}</button>
+          <button className={`tab ${activeTab === 'references' ? 'tab-active' : ''}`} onClick={() => setActiveTab('references')}>
+            References {references.filter(r => r.status === 'pending').length > 0 && <span style={{ background: '#F0A500', color: 'white', borderRadius: '10px', fontSize: '10px', padding: '1px 6px', marginLeft: '4px' }}>{references.filter(r => r.status === 'pending').length}</span>}
+        </button>
         </div>
 
         {activeTab === 'profile' && (
@@ -597,6 +605,83 @@ export default function ProfilePage() {
             )}
           </div>
         )}
+
+        {activeTab === ('references') && (
+  <div className="prof-form">
+    <p className="section-title">REFERENCES FROM COACHES</p>
+    {references.length === 0 ? (
+      <div className="doc-empty">
+        <p>No references yet. Share your CV link with coaches to get started.</p>
+      </div>
+    ) : (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        {references.filter((r: any) => r.status === 'pending').length > 0 && (
+          <>
+            <p style={{ fontSize: '11px', color: '#F0A500', letterSpacing: '0.12em', fontWeight: '700', marginBottom: '4px' }}>PENDING APPROVAL</p>
+            {references.filter((r: any) => r.status === 'pending').map((ref: any) => (
+              <div key={ref.id} style={{ background: '#FFFBF0', border: '1px solid rgba(240,165,0,0.3)', borderRadius: '10px', padding: '16px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+                  <div>
+                    <div style={{ fontSize: '13px', fontWeight: '700', color: '#0D1B2E' }}>{ref.coach_name}</div>
+                    <div style={{ fontSize: '11px', color: '#888780' }}>{ref.organisation_name}</div>
+                  </div>
+                  <div style={{ display: 'flex', gap: '6px' }}>
+                    <button onClick={async () => {
+                      await supabase.from('references').update({ status: 'approved' }).eq('id', ref.id)
+                      setReferences(prev => prev.map(r => r.id === ref.id ? { ...r, status: 'approved' } : r))
+                    }} style={{ height: '28px', padding: '0 12px', borderRadius: '20px', border: 'none', background: '#1D9E75', color: 'white', fontSize: '12px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Arial, sans-serif' }}>
+                      Approve
+                    </button>
+                    <button onClick={async () => {
+                      await supabase.from('references').update({ status: 'declined' }).eq('id', ref.id)
+                      setReferences(prev => prev.map(r => r.id === ref.id ? { ...r, status: 'declined' } : r))
+                    }} style={{ height: '28px', padding: '0 12px', borderRadius: '20px', border: '1.5px solid #D3D1C7', background: 'white', color: '#888780', fontSize: '12px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Arial, sans-serif' }}>
+                      Decline
+                    </button>
+                  </div>
+                </div>
+                <p style={{ fontSize: '13px', color: '#5F5E5A', lineHeight: '1.6', fontStyle: 'italic' }}>"{ref.content}"</p>
+              </div>
+            ))}
+          </>
+        )}
+        {references.filter((r: any) => r.status === 'approved').length > 0 && (
+          <>
+            <p style={{ fontSize: '11px', color: '#1D9E75', letterSpacing: '0.12em', fontWeight: '700', marginTop: '8px', marginBottom: '4px' }}>APPROVED — SHOWING ON YOUR CV</p>
+            {references.filter((r: any) => r.status === 'approved').map((ref: any) => (
+              <div key={ref.id} style={{ background: '#E1F5EE', border: '1px solid rgba(29,158,117,0.2)', borderRadius: '10px', padding: '16px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+                  <div>
+                    <div style={{ fontSize: '13px', fontWeight: '700', color: '#0D1B2E' }}>{ref.coach_name}</div>
+                    <div style={{ fontSize: '11px', color: '#888780' }}>{ref.organisation_name}</div>
+                  </div>
+                  <button onClick={async () => {
+                    await supabase.from('references').update({ status: 'declined' }).eq('id', ref.id)
+                    setReferences(prev => prev.map(r => r.id === ref.id ? { ...r, status: 'declined' } : r))
+                  }} style={{ height: '28px', padding: '0 12px', borderRadius: '20px', border: '1.5px solid rgba(29,158,117,0.3)', background: 'transparent', color: '#0F6E56', fontSize: '12px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Arial, sans-serif' }}>
+                    Remove
+                  </button>
+                </div>
+                <p style={{ fontSize: '13px', color: '#0F6E56', lineHeight: '1.6', fontStyle: 'italic' }}>"{ref.content}"</p>
+              </div>
+            ))}
+          </>
+        )}
+        {references.filter((r: any) => r.status === 'declined').length > 0 && (
+          <>
+            <p style={{ fontSize: '11px', color: '#888780', letterSpacing: '0.12em', fontWeight: '700', marginTop: '8px', marginBottom: '4px' }}>DECLINED</p>
+            {references.filter((r: any) => r.status === 'declined').map((ref: any) => (
+              <div key={ref.id} style={{ background: '#F8F7F4', border: '0.5px solid #D3D1C7', borderRadius: '10px', padding: '16px', opacity: 0.6 }}>
+                <div style={{ fontSize: '13px', fontWeight: '700', color: '#0D1B2E', marginBottom: '4px' }}>{ref.coach_name} · {ref.organisation_name}</div>
+                <p style={{ fontSize: '13px', color: '#888780', lineHeight: '1.6', fontStyle: 'italic' }}>"{ref.content}"</p>
+              </div>
+            ))}
+          </>
+        )}
+      </div>
+    )}
+  </div>
+)}
       </div>
     </>
   )
