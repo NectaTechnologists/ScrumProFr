@@ -56,10 +56,17 @@ export default function CoachRegisterPage() {
       }
     })
 
-    if (error) {
+  if (error) {
       setMessage(error.message)
       setLoading(false)
       return
+    }
+
+    if (data.user) {
+      await supabase
+        .from('profiles')
+        .update({ approved: true })
+        .eq('id', data.user.id)
     }
 
     // Send notification email
@@ -77,7 +84,6 @@ export default function CoachRegisterPage() {
 
     setSubmitted(true)
     setLoading(false)
-  }
 
   if (submitted) {
     return (
