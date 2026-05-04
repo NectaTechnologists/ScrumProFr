@@ -224,18 +224,65 @@ export default function CoachDashboard() {
     </>
   )
 
+  const FilterContent = () => (
+    <>
+      <div className="filter-section">
+        <div className="filter-section-title">{lang === 'fr' ? 'Statut' : 'Status'}</div>
+        {CATEGORIES.map(cat => {
+          const cs = CATEGORY_COLORS[cat]
+          return (
+            <label key={cat} className="filter-option">
+              <input type="checkbox" checked={activeFilters.categories.includes(cat)} onChange={() => toggleFilter('categories', cat)} />
+              <span className="filter-option-label">
+                <span style={{ background: cs.bg, color: cs.color, border: `1px solid ${cs.border}`, fontSize: '10px', fontWeight: '700', padding: '1px 7px', borderRadius: '20px' }}>{cat}</span>
+              </span>
+            </label>
+          )
+        })}
+      </div>
+      <div className="filter-section">
+        <div className="filter-section-title">{lang === 'fr' ? 'Tranche d\'âge' : 'Age group'}</div>
+        {AGE_GROUPS.map(age => (
+          <label key={age} className="filter-option">
+            <input type="checkbox" checked={activeFilters.ages.includes(age)} onChange={() => toggleFilter('ages', age)} />
+            <span className="filter-option-label">{age}</span>
+          </label>
+        ))}
+      </div>
+      <div className="filter-section">
+        <div className="filter-section-title">{lang === 'fr' ? 'Nationalité' : 'Nationality'}</div>
+        <input className="nat-search" type="text" placeholder={lang === 'fr' ? 'Rechercher...' : 'Search...'} value={natSearch} onChange={e => setNatSearch(e.target.value)} />
+        {filteredNats.map(nat => (
+          <label key={nat} className="filter-option">
+            <input type="checkbox" checked={activeFilters.nationalities.includes(nat)} onChange={() => toggleFilter('nationalities', nat)} />
+            <span className="filter-option-label">{nat}</span>
+          </label>
+        ))}
+      </div>
+      <div className="filter-section">
+        <div className="filter-section-title">{lang === 'fr' ? 'Poste' : 'Position'}</div>
+        {POSITIONS.map(p => (
+          <label key={p} className="filter-option">
+            <input type="checkbox" checked={activeFilters.positions.includes(p)} onChange={() => toggleFilter('positions', p)} />
+            <span className="filter-option-label" style={{ fontSize: '12px' }}>{pos(p)}</span>
+          </label>
+        ))}
+      </div>
+    </>
+  )
+
   return (
     <>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: Arial, sans-serif; background: #F1EFE8; }
         .nav { background: #0D1B2E; padding: 0 16px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
-        .nav-logo { display: flex; align-items: center; gap: 8px; }
+        .nav-logo { display: flex; align-items: center; gap: 8px; min-width: 0; }
         .nav-logo-text { display: none; }
         .nav-email { display: none; }
-        .nav-right { display: flex; align-items: center; gap: 8px; }
-        .signout-btn { background: transparent; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; font-family: Arial, sans-serif; }
-        .lang-toggle { display: flex; gap: 2px; background: rgba(255,255,255,0.08); padding: 3px; border-radius: 8px; }
+        .nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        .signout-btn { background: transparent; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; }
+        .lang-toggle { display: flex; gap: 2px; background: rgba(255,255,255,0.08); padding: 3px; border-radius: 8px; flex-shrink: 0; }
         .lang-btn { background: transparent; border: none; cursor: pointer; font-size: 15px; width: 28px; height: 24px; border-radius: 5px; display: flex; align-items: center; justify-content: center; }
         .lang-btn-active { background: rgba(255,255,255,0.15); }
         .page-header { max-width: 1400px; margin: 0 auto; padding: 24px 16px 0; }
@@ -262,7 +309,7 @@ export default function CoachDashboard() {
         .nat-search:focus { border-color: #1D9E75; }
         .results-area { flex: 1; min-width: 0; }
         .results-toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
-        .search-input { flex: 1; padding: 8px 14px; border: 1.5px solid #D3D1C7; border-radius: 8px; font-size: 13px; color: #0D1B2E; background: white; outline: none; font-family: Arial, sans-serif; }
+        .search-input { flex: 1; min-width: 0; padding: 8px 14px; border: 1.5px solid #D3D1C7; border-radius: 8px; font-size: 13px; color: #0D1B2E; background: white; outline: none; font-family: Arial, sans-serif; }
         .search-input:focus { border-color: #1D9E75; }
         .search-input::placeholder { color: #B4B2A9; }
         .view-toggle { display: flex; gap: 2px; background: white; padding: 3px; border-radius: 8px; border: 1px solid #D3D1C7; flex-shrink: 0; }
@@ -274,24 +321,21 @@ export default function CoachDashboard() {
         .active-tag { display: flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; background: #E1F5EE; color: #0F6E56; border: 1px solid rgba(29,158,117,0.2); }
         .active-tag-x { cursor: pointer; opacity: 0.6; font-size: 13px; line-height: 1; }
         .results-count { font-size: 12px; color: #888780; margin-bottom: 10px; }
-
-        /* Pill buttons */
         .pill-btn { height: 28px; padding: 0 10px; border-radius: 20px; border: 1.5px solid #D3D1C7; background: white; cursor: pointer; display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: #5F5E5A; font-family: Arial, sans-serif; white-space: nowrap; transition: all 0.1s; }
         .pill-btn:hover { border-color: #888780; }
         .pill-btn-save-active { border-color: #F0A500; background: #FFF8E7; color: #856404; }
         .pill-btn-note-active { border-color: #4A7FD4; background: #EEF4FF; color: #185FA5; }
-
         .player-list { display: flex; flex-direction: column; gap: 8px; }
         .player-row { background: white; border-radius: 10px; padding: 12px 14px; border: 0.5px solid #D3D1C7; }
-        .player-row-main { display: flex; align-items: center; gap: 10px; }
+        .player-row-main { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
         .row-avatar { width: 36px; height: 36px; border-radius: 8px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
         .row-avatar span { color: white; font-size: 13px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; }
         .row-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .row-info { flex: 1; min-width: 0; }
+        .row-info { flex: 1; min-width: 120px; }
         .row-name { font-size: 13px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .row-sub { font-size: 11px; color: #888780; margin-top: 3px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
         .row-position { display: inline-block; font-size: 10px; background: #E1F5EE; color: #0F6E56; padding: 2px 6px; border-radius: 4px; font-weight: 700; letter-spacing: 0.06em; }
-        .row-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+        .row-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; width: 100%; padding-top: 8px; }
         .row-cv-btn { background: #0D1B2E; color: white; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; white-space: nowrap; }
         .row-extras { padding-top: 8px; margin-top: 8px; border-top: 1px solid #F1EFE8; display: flex; flex-direction: column; gap: 6px; }
         .row-category { display: flex; align-items: center; gap: 8px; }
@@ -330,6 +374,13 @@ export default function CoachDashboard() {
         .empty-state { text-align: center; padding: 40px 20px; background: white; border-radius: 12px; border: 0.5px solid #D3D1C7; }
         .empty-state h3 { font-size: 15px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 6px; }
         .empty-state p { font-size: 13px; color: #888780; }
+        .mobile-filter-overlay { position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; background: white; overflow-y: auto; }
+        .mobile-filter-overlay-header { padding: 16px; border-bottom: 0.5px solid #D3D1C7; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: white; z-index: 1; }
+        .mobile-filter-overlay-title { font-size: 16px; font-weight: 700; color: #0D1B2E; }
+        .mobile-filter-close { background: none; border: none; font-size: 24px; color: #888780; cursor: pointer; line-height: 1; padding: 0 4px; }
+        .mobile-filter-footer { padding: 16px; border-top: 0.5px solid #D3D1C7; display: flex; gap: 8px; position: sticky; bottom: 0; background: white; }
+        .mobile-filter-apply { flex: 1; padding: 12px; background: #1D9E75; color: white; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; }
+        .mobile-filter-clear { padding: 12px 16px; background: white; color: #0D1B2E; border: 1.5px solid #D3D1C7; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; }
         @media (min-width: 769px) {
           .nav { padding: 0 28px; height: 64px; }
           .nav-logo-text { display: inline; color: white; font-weight: 900; font-size: 20px; letter-spacing: -1px; font-family: 'Arial Black', Arial, sans-serif; }
@@ -341,12 +392,38 @@ export default function CoachDashboard() {
           .main-layout { padding: 16px 28px 40px; }
           .filter-panel { display: block; }
           .mobile-filter-btn { display: none; }
+          .mobile-filter-overlay { display: none !important; }
           .player-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+          .row-actions { width: auto; padding-top: 0; flex-wrap: nowrap; }
+          .player-row-main { flex-wrap: nowrap; align-items: center; }
           .upgrade-banner { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px 24px; }
           .upgrade-text p { margin-bottom: 0; }
           .upgrade-btn { display: inline-block; width: auto; }
         }
       `}</style>
+
+      {/* MOBILE FILTER OVERLAY */}
+      {showMobileFilters && (
+        <div className="mobile-filter-overlay">
+          <div className="mobile-filter-overlay-header">
+            <span className="mobile-filter-overlay-title">{lang === 'fr' ? 'Filtres' : 'Filters'}</span>
+            <button className="mobile-filter-close" onClick={() => setShowMobileFilters(false)}>×</button>
+          </div>
+          <div style={{ flex: 1 }}>
+            <FilterContent />
+          </div>
+          <div className="mobile-filter-footer">
+            {totalActiveFilters > 0 && (
+              <button className="mobile-filter-clear" onClick={() => { clearAllFilters(); setShowMobileFilters(false) }}>
+                {lang === 'fr' ? 'Tout effacer' : 'Clear all'}
+              </button>
+            )}
+            <button className="mobile-filter-apply" onClick={() => setShowMobileFilters(false)}>
+              {lang === 'fr' ? `Voir les joueurs` : `Show players`}{totalActiveFilters > 0 ? ` (${totalActiveFilters})` : ''}
+            </button>
+          </div>
+        </div>
+      )}
 
       <nav className="nav">
         <div className="nav-logo">
@@ -394,48 +471,7 @@ export default function CoachDashboard() {
             <span className="filter-panel-title">{lang === 'fr' ? 'Filtres' : 'Filters'}</span>
             {totalActiveFilters > 0 && <button className="filter-clear-all" onClick={clearAllFilters}>{lang === 'fr' ? 'Tout effacer' : 'Clear all'}</button>}
           </div>
-          <div className="filter-section">
-            <div className="filter-section-title">{lang === 'fr' ? 'Statut' : 'Status'}</div>
-            {CATEGORIES.map(cat => {
-              const cs = CATEGORY_COLORS[cat]
-              return (
-                <label key={cat} className="filter-option">
-                  <input type="checkbox" checked={activeFilters.categories.includes(cat)} onChange={() => toggleFilter('categories', cat)} />
-                  <span className="filter-option-label">
-                    <span style={{ background: cs.bg, color: cs.color, border: `1px solid ${cs.border}`, fontSize: '10px', fontWeight: '700', padding: '1px 7px', borderRadius: '20px' }}>{cat}</span>
-                  </span>
-                </label>
-              )
-            })}
-          </div>
-          <div className="filter-section">
-            <div className="filter-section-title">{lang === 'fr' ? 'Tranche d\'âge' : 'Age group'}</div>
-            {AGE_GROUPS.map(age => (
-              <label key={age} className="filter-option">
-                <input type="checkbox" checked={activeFilters.ages.includes(age)} onChange={() => toggleFilter('ages', age)} />
-                <span className="filter-option-label">{age}</span>
-              </label>
-            ))}
-          </div>
-          <div className="filter-section">
-            <div className="filter-section-title">{lang === 'fr' ? 'Nationalité' : 'Nationality'}</div>
-            <input className="nat-search" type="text" placeholder={lang === 'fr' ? 'Rechercher...' : 'Search...'} value={natSearch} onChange={e => setNatSearch(e.target.value)} />
-            {filteredNats.map(nat => (
-              <label key={nat} className="filter-option">
-                <input type="checkbox" checked={activeFilters.nationalities.includes(nat)} onChange={() => toggleFilter('nationalities', nat)} />
-                <span className="filter-option-label">{nat}</span>
-              </label>
-            ))}
-          </div>
-          <div className="filter-section">
-            <div className="filter-section-title">{lang === 'fr' ? 'Poste' : 'Position'}</div>
-            {POSITIONS.map(p => (
-              <label key={p} className="filter-option">
-                <input type="checkbox" checked={activeFilters.positions.includes(p)} onChange={() => toggleFilter('positions', p)} />
-                <span className="filter-option-label" style={{ fontSize: '12px' }}>{pos(p)}</span>
-              </label>
-            ))}
-          </div>
+          <FilterContent />
         </div>
 
         <div className="results-area">
@@ -494,17 +530,11 @@ export default function CoachDashboard() {
                         </div>
                         <div className="row-actions">
                           <a href={`/cv/${player.share_token}`} className="row-cv-btn" target="_blank" rel="noopener noreferrer">{T.coach_view_cv_short}</a>
-                          <button
-                            className={`pill-btn ${hasNote || isNoteOpen ? 'pill-btn-note-active' : ''}`}
-                            onClick={e => { e.stopPropagation(); isNoteOpen ? setOpenNoteId(null) : openNote(e, player.id) }}
-                          >
+                          <button className={`pill-btn ${hasNote || isNoteOpen ? 'pill-btn-note-active' : ''}`} onClick={e => { e.stopPropagation(); isNoteOpen ? setOpenNoteId(null) : openNote(e, player.id) }}>
                             <NoteIcon filled={hasNote || isNoteOpen} />
                             {isNoteOpen ? (lang === 'fr' ? 'Modifier' : 'Edit note') : hasNote ? (lang === 'fr' ? 'Modifier' : 'Edit note') : (lang === 'fr' ? 'Ajouter' : 'Add note')}
                           </button>
-                          <button
-                            className={`pill-btn ${isShortlisted ? 'pill-btn-save-active' : ''}`}
-                            onClick={e => toggleShortlist(e, player.id)}
-                          >
+                          <button className={`pill-btn ${isShortlisted ? 'pill-btn-save-active' : ''}`} onClick={e => toggleShortlist(e, player.id)}>
                             <StarIcon filled={isShortlisted} />
                             {isShortlisted ? (lang === 'fr' ? 'Sauvegardé' : 'Saved') : (lang === 'fr' ? 'Sauvegarder' : 'Save')}
                           </button>
