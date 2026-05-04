@@ -36,6 +36,17 @@ async function logView(playerId: string, request?: Request) {
         coach_id = user.id
       }
     }
+    async function getReferences(playerId: string) {
+      const url = process.env.NEXT_PUBLIC_SUPABASE_URL + '/rest/v1/references?player_id=eq.' + playerId + '&status=eq.approved&select=*'
+      const res = await fetch(url, {
+        headers: {
+          'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
+          'Authorization': 'Bearer ' + process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+        },
+        cache: 'no-store'
+      })
+      return res.json()
+    }
 
     await supabase.from('cv_views').insert({
       player_id: playerId,
@@ -62,6 +73,7 @@ export default async function CVPage(props: any) {
 
   await logView(player.id)
 
+  const references = await getReferences(player.id)
   const age = player.date_of_birth
     ? Math.floor((new Date().getTime() - new Date(player.date_of_birth).getTime()) / 31557600000)
     : null
@@ -322,7 +334,30 @@ export default async function CVPage(props: any) {
             ))}
           </div>
         )}
-
+        {references && references.length > 0 && (
+  <div className="cv-card">
+    <p className="cv-card-label">REFERENCES</p>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      {references.map((ref: any) => (
+        <div key={ref.id} style={{ paddingBottom: '16px', borderBottom: '0.5px solid #F1EFE8' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+            <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#E1F5EE', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 8l3 3 7-7"/>
+              </svg>
+            </div>
+            <div>
+              <div style={{ fontSize: '13px', fontWeight: '700', color: '#0D1B2E' }}>{ref.coach_name}</div>
+              <div style={{ fontSize: '11px', color: '#888780' }}>{ref.organisation_name}</div>
+            </div>
+          </div>
+          <p style={{ fontSize: '13px', color: '#5F5E5A', lineHeight: '1.7', fontStyle: 'italic' }}>"{ref.content}"</p>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+        
         {(player.agent_name || player.agent_email || player.agent_phone) && (
           <div className="cv-card">
             <p className="cv-card-label" id="label-agent">AGENT / CONTACT</p>
