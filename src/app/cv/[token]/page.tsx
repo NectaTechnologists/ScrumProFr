@@ -1,3 +1,5 @@
+import ReferenceButton from './ReferenceButton'
+
 export const dynamic = 'force-dynamic'
 
 async function getPlayer(token: string) {
@@ -187,6 +189,7 @@ export default async function CVPage(props: any) {
                 {player.nationality_primary && player.school_attended && <span className="cv-meta-dot"></span>}
                 {player.school_attended && <span className="cv-meta-item">{player.school_attended}</span>}
               </div>
+              <ReferenceButton playerId={player.id} />
             </div>
           </div>
 
