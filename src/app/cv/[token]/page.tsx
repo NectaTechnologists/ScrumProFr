@@ -129,8 +129,7 @@ export default async function CVPage(props: any) {
         .cv-video-icon { width: 32px; height: 32px; border-radius: 6px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .cv-video-title { font-size: 13px; font-weight: 700; color: #0D1B2E; margin-bottom: 2px; }
         .cv-video-source { font-size: 11px; color: #888780; }
-        .cv-video-watch { font-size: 12px; color: #1D9E75; font-weight: 700; margin-left: auto; white-space: nowrap; }
-        .cv-agent-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 0.5px solid #F1EFE8; }
+        .cv-video-watch { font-size: 11px; color: #1D9E75; font-weight: 700; margin-left: auto; white-space: nowrap; border: 1.5px solid #1D9E75; border-radius: 20px; padding: 4px 12px; display: flex; align-items: center; gap: 5px; }        .cv-agent-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 0.5px solid #F1EFE8; }
         .cv-agent-row:last-child { border-bottom: none; }
         .cv-agent-icon { width: 32px; height: 32px; border-radius: 6px; background: #F1EFE8; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
         .cv-agent-label { font-size: 11px; color: #888780; margin-bottom: 2px; }
@@ -365,7 +364,10 @@ export default async function CVPage(props: any) {
                     <div className="cv-video-title" id="vid-1-label">Highlight reel</div>
                     <div className="cv-video-source">{player.video_url.includes('youtube') ? 'YouTube' : 'Vimeo'}</div>
                   </div>
-                  <div className="cv-video-watch" id="vid-watch-1">Watch →</div>
+                  <div className="cv-video-watch" id="vid-watch-1">
+                    Watch
+                    <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                  </div>
                 </a>
               )}
               {player.video_url_2 && (
@@ -375,7 +377,10 @@ export default async function CVPage(props: any) {
                     <div className="cv-video-title" id="vid-2-label">Match footage</div>
                     <div className="cv-video-source">{player.video_url_2.includes('youtube') ? 'YouTube' : 'Vimeo'}</div>
                   </div>
-                  <div className="cv-video-watch" id="vid-watch-2">Watch →</div>
+                  <div className="cv-video-watch" id="vid-watch-2">
+                    Watch
+                    <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                  </div>
                 </a>
               )}
               {player.video_url_3 && (
@@ -385,7 +390,10 @@ export default async function CVPage(props: any) {
                     <div className="cv-video-title" id="vid-3-label">Additional footage</div>
                     <div className="cv-video-source">{player.video_url_3.includes('youtube') ? 'YouTube' : 'Vimeo'}</div>
                   </div>
-                  <div className="cv-video-watch" id="vid-watch-3">Watch →</div>
+                  <div className="cv-video-watch" id="vid-watch-3">
+                    Watch
+                    <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                  </div>
                 </a>
               )}
             </div>
