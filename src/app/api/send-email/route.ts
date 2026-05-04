@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     // Email to you (admin notification)
     await resend.emails.send({
       from: 'Gainline <noreply@gainline.pro>',
-      to: 'brucekay@outlook.com',
+      to: 'bruce@necta.co.za',
       subject: `New coach joined — ${fullName}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
