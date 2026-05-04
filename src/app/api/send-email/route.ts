@@ -47,10 +47,10 @@ export async function POST(req: Request) {
           </div>
           <div style="background: #F1EFE8; padding: 28px; border-radius: 0 0 8px 8px;">
             <p style="font-size: 14px; color: #5F5E5A; line-height: 1.7; margin-bottom: 16px;">
-              We've received your application to join Gainline as a coach or recruiter. Our team will review your details and get back to you within 1–2 business days.
+              Your Gainline coach account is now active. You can log in straight away and start browsing players.
             </p>
             <p style="font-size: 14px; color: #5F5E5A; line-height: 1.7; margin-bottom: 16px;">
-              Once approved, you'll be able to log in and access the full player browser, shortlist players, and view their documents.
+              Your Gainline coach account is now active. You can log in straight away and start browsing players.
             </p>
             <p style="font-size: 14px; color: #5F5E5A; line-height: 1.7;">
               In the meantime, if you have any questions feel free to reply to this email.

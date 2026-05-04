@@ -94,10 +94,9 @@ export default function CoachRegisterPage() {
               <line x1="20" y1="22" x2="25" y2="0" stroke="#1D9E75" strokeWidth="3.5" strokeLinecap="round"/>
             </svg>
           </div>
-          <h1 style={{ fontSize: '22px', fontWeight: '900', color: '#0D1B2E', fontFamily: 'Arial Black, Arial, sans-serif', marginBottom: '12px' }}>Application received</h1>
-          <p style={{ fontSize: '14px', color: '#5F5E5A', lineHeight: '1.7', marginBottom: '12px' }}>Thanks for registering on Gainline. Your account is pending approval — we&apos;ll review your details and be in touch within 24 hours.</p>
-          <p style={{ fontSize: '14px', color: '#5F5E5A', lineHeight: '1.7', marginBottom: '28px' }}>Please check your email to confirm your address in the meantime.</p>
-          <a href="/" style={{ background: '#1D9E75', color: 'white', fontSize: '13px', fontWeight: '700', padding: '11px 24px', borderRadius: '6px', textDecoration: 'none', fontFamily: 'Arial Black, Arial, sans-serif' }}>Back to Gainline</a>
+          <h1 style={{ fontSize: '22px', fontWeight: '900', color: '#0D1B2E', fontFamily: 'Arial Black, Arial, sans-serif', marginBottom: '12px' }}>You're in!</h1>
+          <p style={{ fontSize: '14px', color: '#5F5E5A', lineHeight: '1.7', marginBottom: '28px' }}>Your Gainline coach account is ready. Sign in now to start browsing players.</p>
+          <a href="/login" style={{ background: '#1D9E75', color: 'white', fontSize: '13px', fontWeight: '700', padding: '11px 24px', borderRadius: '20px', textDecoration: 'none', fontFamily: 'Arial, sans-serif' }}>Sign in now →</a>
         </div>
       </>
     )
