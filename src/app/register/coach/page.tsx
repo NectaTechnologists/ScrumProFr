@@ -62,6 +62,19 @@ export default function CoachRegisterPage() {
       return
     }
 
+    // Send notification email
+    await fetch('/api/send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        fullName: form.full_name,
+        email: form.email,
+        organisation: form.organisation,
+        role: form.role_title,
+        country: form.country,
+      }),
+    })
+
     setSubmitted(true)
     setLoading(false)
   }
