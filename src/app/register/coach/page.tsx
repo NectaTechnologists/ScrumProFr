@@ -39,7 +39,6 @@ export default function CoachRegisterPage() {
     setLoading(true)
     setMessage('')
 
-    // Sign up with Supabase auth
     const { data, error } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
@@ -56,7 +55,7 @@ export default function CoachRegisterPage() {
       }
     })
 
-  if (error) {
+    if (error) {
       setMessage(error.message)
       setLoading(false)
       return
@@ -69,7 +68,6 @@ export default function CoachRegisterPage() {
         .eq('id', data.user.id)
     }
 
-    // Send notification email
     await fetch('/api/send-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -84,6 +82,7 @@ export default function CoachRegisterPage() {
 
     setSubmitted(true)
     setLoading(false)
+  }
 
   if (submitted) {
     return (
@@ -113,148 +112,25 @@ export default function CoachRegisterPage() {
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: Arial, sans-serif; background: #0D1B2E; }
-
-        .reg-wrap {
-          min-height: 100vh;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          padding: 40px 20px;
-        }
-
-        .reg-logo {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 32px;
-          text-decoration: none;
-        }
-
-        .reg-logo-text {
-          color: white;
-          font-weight: 900;
-          font-size: 24px;
-          letter-spacing: -1px;
-          font-family: 'Arial Black', Arial, sans-serif;
-        }
-
-        .reg-card {
-          background: white;
-          border-radius: 16px;
-          padding: 40px;
-          width: 100%;
-          max-width: 520px;
-        }
-
-        .reg-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          background: #E1F5EE;
-          border-radius: 20px;
-          padding: 4px 12px;
-          margin-bottom: 16px;
-        }
-
-        .reg-badge span {
-          font-size: 11px;
-          color: #0F6E56;
-          font-weight: 700;
-          letter-spacing: 0.1em;
-        }
-
-        .reg-card h1 {
-          font-size: 24px;
-          font-weight: 900;
-          color: #0D1B2E;
-          font-family: 'Arial Black', Arial, sans-serif;
-          letter-spacing: -0.5px;
-          margin-bottom: 6px;
-        }
-
-        .reg-card .subtitle {
-          font-size: 13px;
-          color: #888780;
-          margin-bottom: 28px;
-          line-height: 1.6;
-        }
-
-        .form-row {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 14px;
-          margin-bottom: 14px;
-        }
-
+        .reg-wrap { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; }
+        .reg-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; text-decoration: none; }
+        .reg-logo-text { color: white; font-weight: 900; font-size: 24px; letter-spacing: -1px; font-family: 'Arial Black', Arial, sans-serif; }
+        .reg-card { background: white; border-radius: 16px; padding: 40px; width: 100%; max-width: 520px; }
+        .reg-badge { display: inline-flex; align-items: center; gap: 6px; background: #E1F5EE; border-radius: 20px; padding: 4px 12px; margin-bottom: 16px; }
+        .reg-badge span { font-size: 11px; color: #0F6E56; font-weight: 700; letter-spacing: 0.1em; }
+        .reg-card h1 { font-size: 24px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -0.5px; margin-bottom: 6px; }
+        .reg-card .subtitle { font-size: 13px; color: #888780; margin-bottom: 28px; line-height: 1.6; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
         .form-field { display: flex; flex-direction: column; gap: 6px; }
-
-        .form-label {
-          font-size: 12px;
-          font-weight: 700;
-          color: #0D1B2E;
-          letter-spacing: 0.04em;
-        }
-
-        .form-input {
-          padding: 10px 14px;
-          border: 1.5px solid #E8E4F0;
-          border-radius: 8px;
-          font-size: 14px;
-          outline: none;
-          font-family: Arial, sans-serif;
-          color: #0D1B2E;
-          background: white;
-          width: 100%;
-        }
-
+        .form-label { font-size: 12px; font-weight: 700; color: #0D1B2E; letter-spacing: 0.04em; }
+        .form-input { padding: 10px 14px; border: 1.5px solid #E8E4F0; border-radius: 8px; font-size: 14px; outline: none; font-family: Arial, sans-serif; color: #0D1B2E; background: white; width: 100%; }
         .form-input:focus { border-color: #1D9E75; }
-
         .form-full { margin-bottom: 14px; }
-
-        .divider {
-          border: none;
-          border-top: 1px solid #F1EFE8;
-          margin: 20px 0;
-        }
-
-        .submit-btn {
-          width: 100%;
-          padding: 13px;
-          background: #1D9E75;
-          color: white;
-          border: none;
-          border-radius: 20px;
-          font-size: 14px;
-          font-weight: 700;
-          font-family: Arial, sans-serif;
-          cursor: pointer;
-          margin-top: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 7px;
-        }
+        .divider { border: none; border-top: 1px solid #F1EFE8; margin: 20px 0; }
+        .submit-btn { width: 100%; padding: 13px; background: #1D9E75; color: white; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; font-family: Arial, sans-serif; cursor: pointer; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 7px; }
         .submit-btn:disabled { opacity: 0.65; cursor: not-allowed; }
-
-        .error-box {
-          background: #FCEBEB;
-          border: 1px solid #F09595;
-          border-radius: 8px;
-          padding: 12px 14px;
-          font-size: 13px;
-          color: #A32D2D;
-          margin-bottom: 16px;
-        }
-
-        .reg-note {
-          font-size: 12px;
-          color: #B4B2A9;
-          text-align: center;
-          margin-top: 16px;
-          line-height: 1.6;
-        }
-
+        .error-box { background: #FCEBEB; border: 1px solid #F09595; border-radius: 8px; padding: 12px 14px; font-size: 13px; color: #A32D2D; margin-bottom: 16px; }
+        .reg-note { font-size: 12px; color: #B4B2A9; text-align: center; margin-top: 16px; line-height: 1.6; }
         @media (max-width: 560px) {
           .reg-card { padding: 28px 20px; border-radius: 12px; }
           .form-row { grid-template-columns: 1fr; }
@@ -278,11 +154,9 @@ export default function CoachRegisterPage() {
             <span>COACHES & RECRUITERS</span>
           </div>
           <h1>Join Gainline</h1>
-          <p className="subtitle">Register your details below. All accounts are manually reviewed — you&apos;ll hear from us within 24 hours of submitting.</p>
+          <p className="subtitle">Register your details below and get instant access to the player browser.</p>
 
           <form onSubmit={handleSubmit}>
-
-            {/* Account */}
             <p style={{ fontSize: '11px', color: '#1D9E75', letterSpacing: '0.12em', fontWeight: '700', marginBottom: '12px' }}>YOUR ACCOUNT</p>
 
             <div className="form-full form-field">
@@ -303,7 +177,6 @@ export default function CoachRegisterPage() {
 
             <hr className="divider" />
 
-            {/* Organisation */}
             <p style={{ fontSize: '11px', color: '#1D9E75', letterSpacing: '0.12em', fontWeight: '700', marginBottom: '12px' }}>YOUR ORGANISATION</p>
 
             <div className="form-row">
@@ -341,16 +214,13 @@ export default function CoachRegisterPage() {
                 </>
               )}
             </button>
-
           </form>
 
           <p className="reg-note">
-            This registration is by invitation only. If you received this link in error, please disregard it.<br/>
-            Already approved? <a href="/login" style={{ color: '#1D9E75' }}>Sign in here</a>
+            Already have an account? <a href="/login" style={{ color: '#1D9E75' }}>Sign in here</a>
           </p>
         </div>
       </div>
     </>
   )
 }
-
