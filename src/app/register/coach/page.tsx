@@ -202,18 +202,21 @@ export default function CoachRegisterPage() {
 
         .submit-btn {
           width: 100%;
-          padding: 14px;
+          padding: 13px;
           background: #1D9E75;
           color: white;
           border: none;
-          border-radius: 8px;
-          font-size: 15px;
-          font-weight: 900;
-          font-family: 'Arial Black', Arial, sans-serif;
+          border-radius: 20px;
+          font-size: 14px;
+          font-weight: 700;
+          font-family: Arial, sans-serif;
           cursor: pointer;
           margin-top: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 7px;
         }
-
         .submit-btn:disabled { opacity: 0.65; cursor: not-allowed; }
 
         .error-box {
@@ -313,7 +316,12 @@ export default function CoachRegisterPage() {
             {message && <div className="error-box">{message}</div>}
 
             <button type="submit" disabled={loading} className="submit-btn">
-              {loading ? 'Registering...' : 'Register'}
+              {loading ? 'Registering...' : (
+                <>
+                  Register
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                </>
+              )}
             </button>
 
           </form>
