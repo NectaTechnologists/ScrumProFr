@@ -1,0 +1,190 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap');
+
+/* ============================================================
+   GAINLINE — Phase 2 Design Tokens
+   ============================================================ */
+
+:root {
+  /* Backgrounds */
+  --gl-bg:           #0C0F16;
+  --gl-s1:           #111520;
+  --gl-s2:           #161C2A;
+  --gl-s3:           #1C2338;
+
+  /* Gold accent */
+  --gl-gold:         #D4A843;
+  --gl-gold-dim:     #8A6620;
+  --gl-gold-bg:      rgba(212, 168, 67, 0.10);
+  --gl-gold-border:  rgba(212, 168, 67, 0.20);
+
+  /* Text */
+  --gl-t1:           #F0EDE4;
+  --gl-t2:           #A8A398;
+  --gl-t3:           #5A564F;
+  --gl-t4:           #2E2C27;
+
+  /* Borders */
+  --gl-border:       rgba(255, 255, 255, 0.07);
+  --gl-border-light: rgba(255, 255, 255, 0.04);
+
+  /* Semantic colours */
+  --gl-green:        #3DBE72;
+  --gl-green-bg:     rgba(61, 190, 114, 0.10);
+  --gl-red:          #E05252;
+  --gl-red-bg:       rgba(224, 82, 82, 0.10);
+  --gl-blue:         #4A90D9;
+  --gl-blue-bg:      rgba(74, 144, 217, 0.10);
+
+  /* Typography */
+  --font-display:    'Bebas Neue', sans-serif;
+  --font-body:       'DM Sans', sans-serif;
+
+  /* Existing Tailwind defaults — keep these */
+  --background:      #ffffff;
+  --foreground:      #171717;
+}
+
+/* ============================================================
+   Dashboard dark shell
+   ============================================================ */
+
+.gl-dashboard {
+  background: var(--gl-bg);
+  color: var(--gl-t1);
+  font-family: var(--font-body);
+  font-weight: 300;
+  min-height: 100vh;
+}
+
+/* ============================================================
+   Reusable utility classes
+   ============================================================ */
+
+.gl-card {
+  background: var(--gl-s2);
+  border: 1px solid var(--gl-border);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.gl-card-inset {
+  background: var(--gl-s3);
+  border: 1px solid var(--gl-border-light);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.gl-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.5px;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.gl-eyebrow {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gl-t3);
+}
+
+.gl-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 6px;
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.gl-badge-gold    { background: var(--gl-gold-bg);   border: 1px solid var(--gl-gold-border);        color: var(--gl-gold); }
+.gl-badge-green   { background: var(--gl-green-bg);  border: 1px solid rgba(61,190,114,0.2);         color: var(--gl-green); }
+.gl-badge-blue    { background: var(--gl-blue-bg);   border: 1px solid rgba(74,144,217,0.2);         color: var(--gl-blue); }
+.gl-badge-neutral { background: var(--gl-border-light); border: 1px solid var(--gl-border);          color: var(--gl-t2); }
+
+.gl-btn-primary {
+  padding: 9px 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background: var(--gl-gold);
+  color: #0C0F16;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font-body);
+  transition: opacity 0.15s;
+}
+.gl-btn-primary:hover { opacity: 0.88; }
+
+.gl-btn-ghost {
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--gl-border);
+  color: var(--gl-t2);
+  font-size: 12px;
+  font-family: var(--font-body);
+  transition: border-color 0.15s, color 0.15s;
+}
+.gl-btn-ghost:hover { border-color: var(--gl-gold-border); color: var(--gl-t1); }
+
+.gl-stat-bar {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.gl-stat-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+}
+
+/* ============================================================
+   Coming soon / feature preview blocks
+   ============================================================ */
+
+.gl-future-block {
+  border-radius: 14px;
+  border: 1px dashed var(--gl-gold-border);
+  background: rgba(212, 168, 67, 0.02);
+  overflow: hidden;
+}
+
+.gl-future-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px dashed rgba(212, 168, 67, 0.10);
+  background: rgba(212, 168, 67, 0.03);
+}
+
+.gl-coming-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--gl-gold-bg);
+  border: 1px solid var(--gl-gold-border);
+  border-radius: 20px;
+  padding: 2px 9px;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--gl-gold);
+}
+
+.gl-coming-pill-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gl-gold);
+  animation: gl-pulse 2s ease-in-out infinite;
+}
+
+@keyframes gl-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}

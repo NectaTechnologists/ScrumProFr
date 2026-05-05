@@ -116,7 +116,7 @@ export default function OnboardingPage() {
     <>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: Arial, sans-serif; background: #F1EFE8; min-height: 100vh; }
+        body { font-family: Arial, sans-serif; background: #161C2A; min-height: 100vh; }
         .ob-wrap { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; }
         .ob-card { width: 100%; max-width: 460px; }
         .ob-hero { background: #0D1B2E; border-radius: 16px; padding: 36px 32px; color: white; }

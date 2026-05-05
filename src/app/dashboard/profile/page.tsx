@@ -266,7 +266,7 @@ export default function ProfilePage() {
     <>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: system-ui, Arial, sans-serif; background: #F1EFE8; }
+        body { font-family: system-ui, Arial, sans-serif; background: #161C2A; }
         .prof-nav { background: #0D1B2E; padding: 0 28px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
         .prof-logo { display: flex; align-items: center; gap: 10px; }
         .prof-logo-text { color: white; font-weight: 900; font-size: 18px; letter-spacing: -0.5px; font-family: 'Arial Black', Arial, sans-serif; }
@@ -301,9 +301,9 @@ export default function ProfilePage() {
         .save-btn { width: 100%; padding: 11px; background: #1D9E75; color: white; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 7px; }
         .save-btn:disabled { opacity: 0.7; cursor: not-allowed; }
         .section-title { font-size: 11px; color: #1D9E75; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 16px; margin-top: 8px; }
-        .section-divider { border: none; border-top: 1px solid #F1EFE8; margin: 24px 0; }
+        .section-divider { border: none; border-top: 1px solid #161C2A; margin: 24px 0; }
         .video-hint { font-size: 12px; color: #888780; margin-top: 6px; }
-        .avatar-section { display: flex; align-items: center; gap: 20px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #F1EFE8; }
+        .avatar-section { display: flex; align-items: center; gap: 20px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #161C2A; }
         .avatar-preview { width: 80px; height: 80px; border-radius: 16px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
         .avatar-preview img { width: 100%; height: 100%; object-fit: cover; }
         .avatar-initials { color: white; font-size: 26px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; }
@@ -312,7 +312,7 @@ export default function ProfilePage() {
         .avatar-upload-hint { font-size: 12px; color: #888780; margin-bottom: 10px; }
         .avatar-upload-btn { background: white; border: 1.5px solid #D3D1C7; color: #0D1B2E; font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 20px; cursor: pointer; font-family: Arial, sans-serif; display: inline-flex; align-items: center; gap: 6px; }
         .avatar-upload-btn:hover { border-color: #1D9E75; }
-        .doc-upload-area { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #F1EFE8; }
+        .doc-upload-area { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #161C2A; }
         .doc-type-row { display: flex; gap: 10px; margin-bottom: 12px; align-items: flex-end; flex-wrap: wrap; }
         .doc-type-select { flex: 1; padding: 10px 14px; border: 1.5px solid #E8E4F0; border-radius: 8px; font-size: 14px; outline: none; font-family: system-ui; background: white; color: #0D1B2E; min-width: 160px; }
         .doc-upload-btn { background: #1D9E75; color: white; border: none; border-radius: 20px; padding: 9px 16px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; }
@@ -328,7 +328,7 @@ export default function ProfilePage() {
         .doc-delete:hover { border-color: #E05555; color: #E05555; }
         .doc-empty { text-align: center; padding: 32px 20px; color: #888780; font-size: 14px; }
         .doc-count { font-size: 12px; color: #888780; margin-bottom: 12px; }
-        .doc-private-note { background: #F1EFE8; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 10px; }
+        .doc-private-note { background: #161C2A; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 10px; }
         .doc-private-note p { font-size: 12px; color: #5F5E5A; line-height: 1.6; }
         @media (max-width: 768px) {
           .prof-nav { padding: 0 16px; height: 56px; }
@@ -371,7 +371,7 @@ export default function ProfilePage() {
         <div style={{ background: 'white', borderRadius: '12px', padding: '20px 24px', border: '0.5px solid #D3D1C7', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '20px' }}>
           <div style={{ position: 'relative', width: '88px', height: '88px', flexShrink: 0 }}>
             <svg width="88" height="88" viewBox="0 0 88 88">
-              <circle cx="44" cy="44" r={r} fill="none" stroke="#F1EFE8" strokeWidth="8"/>
+              <circle cx="44" cy="44" r={r} fill="none" stroke="#161C2A" strokeWidth="8"/>
               <circle cx="44" cy="44" r={r} fill="none" stroke={ringColor} strokeWidth="8"
                 strokeDasharray={circ} strokeDashoffset={offset}
                 strokeLinecap="round" transform="rotate(-90 44 44)"

@@ -18,7 +18,7 @@ export async function POST(req: Request) {
           <div style="background: #0D1B2E; padding: 24px 28px; border-radius: 8px 8px 0 0;">
             <h1 style="color: white; font-size: 20px; margin: 0;">New coach registration</h1>
           </div>
-          <div style="background: #F1EFE8; padding: 28px; border-radius: 0 0 8px 8px;">
+          <div style="background: #161C2A; padding: 28px; border-radius: 0 0 8px 8px;">
             <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
               <tr><td style="padding: 8px 0; color: #888780; width: 140px;">Name</td><td style="padding: 8px 0; color: #0D1B2E; font-weight: bold;">${fullName}</td></tr>
               <tr><td style="padding: 8px 0; color: #888780;">Email</td><td style="padding: 8px 0; color: #0D1B2E;">${email}</td></tr>
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
           <div style="background: #0D1B2E; padding: 24px 28px; border-radius: 8px 8px 0 0;">
             <h1 style="color: white; font-size: 20px; margin: 0;">Thanks for registering, ${fullName.split(' ')[0]}!</h1>
           </div>
-          <div style="background: #F1EFE8; padding: 28px; border-radius: 0 0 8px 8px;">
+          <div style="background: #161C2A; padding: 28px; border-radius: 0 0 8px 8px;">
             <p style="font-size: 14px; color: #5F5E5A; line-height: 1.7; margin-bottom: 16px;">
               Your Gainline coach account is now active. You can log in straight away and start browsing players.
             </p>

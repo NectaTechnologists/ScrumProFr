@@ -84,23 +84,23 @@ export default function DashboardPage() {
   const T = t[lang]
 
   if (loading) return (
-    <div style={{ minHeight: '100vh', background: '#F1EFE8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div style={{ fontFamily: 'Arial', color: '#888780', fontSize: '14px' }}>Loading...</div>
+    <div style={{ minHeight: '100vh', background: '#0C0F16', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ fontFamily: 'Arial', color: '#A8A398', fontSize: '14px' }}>Loading...</div>
     </div>
   )
 
   const cards = [
     { title: T.dashboard_card_profile, desc: T.dashboard_card_profile_desc, color: '#1D9E75', href: '/dashboard/profile' },
     { title: T.dashboard_card_docs, desc: T.dashboard_card_docs_desc, color: '#0F6E56', href: '/dashboard/profile' },
-    { title: T.dashboard_card_media, desc: T.dashboard_card_media_desc, color: '#0D1B2E', href: '/dashboard/profile' },
+    { title: T.dashboard_card_media, desc: T.dashboard_card_media_desc, color: '#1D9E75', href: '/dashboard/profile' },
   ]
 
   return (
     <>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: Arial, sans-serif; background: #F1EFE8; }
-        .dash-nav { background: #0D1B2E; padding: 0 28px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+        body { font-family: 'DM Sans', sans-serif; background: #0C0F16; color: #F0EDE4; }
+        .dash-nav { background: #111520; padding: 0 28px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
         .dash-logo { display: flex; align-items: center; gap: 10px; }
         .dash-logo-text { color: white; font-weight: 900; font-size: 20px; letter-spacing: -0.5px; font-family: 'Arial Black', Arial, sans-serif; }
         .dash-nav-right { display: flex; align-items: center; gap: 12px; }
@@ -108,19 +108,19 @@ export default function DashboardPage() {
         .lang-toggle { display: flex; gap: 2px; background: rgba(255,255,255,0.08); padding: 3px; border-radius: 8px; }
         .lang-btn { background: transparent; border: none; cursor: pointer; font-size: 16px; width: 30px; height: 26px; border-radius: 5px; display: flex; align-items: center; justify-content: center; }
         .lang-btn-active { background: rgba(255,255,255,0.15); }
-        .signout-btn { background: transparent; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); padding: 7px 16px; border-radius: 6px; font-size: 13px; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; }
+        .signout-btn { background: transparent; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); padding: 7px 16px; border-radius: 6px; font-size: 13px; cursor: pointer; font-family: Arial, sans-serif; #161C2A-space: nowrap; }
         .dash-content { padding: 48px 28px; max-width: 900px; margin: 0 auto; }
-        .dash-title { font-size: 28px; font-weight: 900; color: #0D1B2E; margin-bottom: 8px; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -0.5px; }
+        .dash-title { font-size: 28px; font-weight: 900; color: #F0EDE4; margin-bottom: 8px; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -0.5px; }
         .dash-subtitle { color: #5F5E5A; margin-bottom: 36px; font-size: 15px; }
         .dash-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
-        .dash-card { background: white; border-radius: 12px; padding: 28px; border: 0.5px solid #D3D1C7; text-decoration: none; display: block; transition: border-color 0.15s; }
+        .dash-card { background: #161C2A; border-radius: 12px; padding: 28px; border: 0.5px solid #D3D1C7; text-decoration: none; display: block; transition: border-color 0.15s; }
         .dash-card:hover { border-color: #1D9E75; }
         .dash-card-icon { width: 40px; height: 40px; border-radius: 8px; background: #E1F5EE; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
-        .dash-card-title { font-size: 15px; font-weight: 700; color: #0D1B2E; margin-bottom: 6px; font-family: 'Arial Black', Arial, sans-serif; }
-        .dash-card-desc { font-size: 13px; color: #888780; line-height: 1.5; margin-bottom: 20px; }
+        .dash-card-title { font-size: 15px; font-weight: 700; color: #F0EDE4; margin-bottom: 6px; font-family: 'Arial Black', Arial, sans-serif; }
+        .dash-card-desc { font-size: 13px; color: #A8A398; line-height: 1.5; margin-bottom: 20px; }
         .dash-card-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 20px; color: white; font-size: 12px; font-weight: 700; font-family: Arial, sans-serif; }
-        .ob-banner { background: #0D1B2E; border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 14px; }
-        .views-section { background: #0D1B2E; border-radius: 12px; padding: 28px; }
+        .ob-banner { background: #111520; border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 14px; }
+        .views-section { background: #111520; border-radius: 12px; padding: 28px; }
         .views-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
         .views-label { font-size: 10px; color: #5DCAA5; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 4px; }
         .views-title { font-size: 18px; font-weight: 900; color: white; font-family: 'Arial Black', Arial, sans-serif; }
@@ -130,7 +130,7 @@ export default function DashboardPage() {
         .views-list { display: flex; flex-direction: column; gap: 8px; }
         .view-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: rgba(255,255,255,0.06); border-radius: 8px; border: 0.5px solid rgba(255,255,255,0.08); }
         .view-icon { width: 32px; height: 32px; border-radius: 6px; background: rgba(29,158,117,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .view-org { font-size: 13px; font-weight: 700; color: white; }
+        .view-org { font-size: 13px; font-weight: 700; color: #F0EDE4; }
         .view-time { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 2px; }
         .view-time-right { font-size: 11px; color: rgba(255,255,255,0.35); margin-left: auto; white-space: nowrap; }
         .views-empty { text-align: center; padding: 24px; color: rgba(255,255,255,0.35); font-size: 13px; }

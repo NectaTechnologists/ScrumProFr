@@ -207,11 +207,11 @@ export default function CoachDashboard() {
 
   const filteredNats = NATIONALITIES.filter(n => n.toLowerCase().includes(natSearch.toLowerCase()))
 
-  if (loading) return <div style={{ minHeight: '100vh', background: '#F1EFE8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ fontFamily: 'Arial', color: '#888780', fontSize: '14px' }}>Loading...</div></div>
+  if (loading) return <div style={{ minHeight: '100vh', background: '#161C2A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ fontFamily: 'Arial', color: '#888780', fontSize: '14px' }}>Loading...</div></div>
 
   if (profile && !profile.approved) return (
     <>
-      <style>{`* { box-sizing: border-box; margin: 0; padding: 0; } body { font-family: Arial, sans-serif; background: #F1EFE8; }`}</style>
+      <style>{`* { box-sizing: border-box; margin: 0; padding: 0; } body { font-family: Arial, sans-serif; background: #161C2A; }`}</style>
       <nav style={{ background: '#0D1B2E', padding: '0 16px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <svg width="28" height="26" viewBox="0 0 32 30"><line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/><line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/><line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/></svg>
         <form action="/auth/signout" method="post"><button type="submit" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.7)', padding: '6px 14px', borderRadius: '6px', fontSize: '13px', cursor: 'pointer' }}>Sign out</button></form>
@@ -275,7 +275,7 @@ export default function CoachDashboard() {
     <>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: Arial, sans-serif; background: #F1EFE8; }
+        body { font-family: Arial, sans-serif; background: #161C2A; }
         .nav { background: #0D1B2E; padding: 0 16px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
         .nav-logo { display: flex; align-items: center; gap: 8px; min-width: 0; }
         .nav-logo-text { display: none; }
@@ -337,7 +337,7 @@ export default function CoachDashboard() {
         .row-position { display: inline-block; font-size: 10px; background: #E1F5EE; color: #0F6E56; padding: 2px 6px; border-radius: 4px; font-weight: 700; letter-spacing: 0.06em; }
         .row-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; width: 100%; padding-top: 8px; }
         .row-cv-btn { background: #0D1B2E; color: white; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; white-space: nowrap; }
-        .row-extras { padding-top: 8px; margin-top: 8px; border-top: 1px solid #F1EFE8; display: flex; flex-direction: column; gap: 6px; }
+        .row-extras { padding-top: 8px; margin-top: 8px; border-top: 1px solid #161C2A; display: flex; flex-direction: column; gap: 6px; }
         .row-category { display: flex; align-items: center; gap: 8px; }
         .row-category-label { font-size: 11px; color: #888780; white-space: nowrap; }
         .row-category-select { flex: 1; padding: 4px 8px; border: 1.5px solid #D3D1C7; border-radius: 6px; font-size: 12px; font-family: Arial, sans-serif; outline: none; cursor: pointer; color: #0D1B2E; background: white; }
@@ -356,14 +356,14 @@ export default function CoachDashboard() {
         .player-name { font-size: 13px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 2px; }
         .player-meta { font-size: 11px; color: #888780; }
         .position-badge { display: inline-block; background: #E1F5EE; color: #0F6E56; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.06em; margin-bottom: 8px; }
-        .player-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #F1EFE8; border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
+        .player-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #161C2A; border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
         .stat-cell { background: white; padding: 6px; text-align: center; }
         .stat-val { font-size: 13px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; }
         .stat-lbl { font-size: 9px; color: #888780; letter-spacing: 0.08em; margin-top: 1px; }
         .card-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
         .cv-btn { flex: 1; padding: 7px; background: #0D1B2E; color: white; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; font-family: 'Arial Black', Arial, sans-serif; cursor: pointer; text-align: center; text-decoration: none; display: block; }
         .note-preview { font-size: 11px; color: #5F5E5A; margin-top: 6px; padding: 5px 7px; background: #F8F7F4; border-radius: 5px; font-style: italic; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .note-panel { margin-top: 8px; padding-top: 8px; border-top: 1px solid #F1EFE8; }
+        .note-panel { margin-top: 8px; padding-top: 8px; border-top: 1px solid #161C2A; }
         .note-textarea { width: 100%; padding: 7px 9px; border: 1.5px solid #D3D1C7; border-radius: 6px; font-size: 12px; font-family: Arial, sans-serif; resize: none; height: 64px; outline: none; color: #0D1B2E; }
         .note-textarea:focus { border-color: #1D9E75; }
         .note-save-btn { margin-top: 5px; width: 100%; padding: 6px; background: #1D9E75; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; }

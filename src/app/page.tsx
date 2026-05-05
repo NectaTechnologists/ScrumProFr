@@ -73,7 +73,7 @@ export default function Home() {
         .btn-teal { background: #1D9E75; color: white; font-size: 12px; padding: 11px 22px; border-radius: 6px; text-decoration: none; font-weight: 700; font-family: 'Arial Black', Arial, sans-serif; display: inline-block; }
         .btn-dark { background: #0D1B2E; color: white; font-size: 12px; padding: 11px 22px; border-radius: 6px; text-decoration: none; font-weight: 700; font-family: 'Arial Black', Arial, sans-serif; display: inline-block; }
 
-        .pathway { background: #F1EFE8; padding: 72px 40px; }
+        .pathway { background: #161C2A; padding: 72px 40px; }
         .pathway-inner { max-width: 860px; margin: 0 auto; }
         .section-label { font-size: 10px; letter-spacing: 0.16em; color: #0F6E56; margin-bottom: 10px; }
         .section-title { font-size: 32px; font-weight: 900; color: #0D1B2E; letter-spacing: -1px; line-height: 1.15; font-family: 'Arial Black', Arial, sans-serif; }
@@ -84,7 +84,7 @@ export default function Home() {
         .card h3 { font-size: 14px; font-weight: 900; color: #0D1B2E; margin-bottom: 8px; font-family: 'Arial Black', Arial, sans-serif; }
         .card p { font-size: 13px; color: #5F5E5A; line-height: 1.65; }
 
-        .cta-section { background: #F1EFE8; padding: 0 40px 72px; }
+        .cta-section { background: #161C2A; padding: 0 40px 72px; }
         .cta-inner { max-width: 860px; margin: 0 auto; }
         .cta-title { font-size: 32px; font-weight: 900; color: #0D1B2E; letter-spacing: -1px; font-family: 'Arial Black', Arial, sans-serif; text-align: center; }
         .cta-sub { font-size: 14px; color: #5F5E5A; margin-top: 10px; line-height: 1.7; text-align: center; margin-bottom: 32px; }
@@ -181,7 +181,7 @@ export default function Home() {
         <p>&ldquo;{T.quote.replace(/^["«»]|["«»]$/g, '').trim().replace(T.quote_highlight, `\u200B${T.quote_highlight}\u200B`)}&rdquo;</p>
       </div>
 
-      <section style={{ background: '#F1EFE8', padding: '64px 40px', textAlign: 'center' }}>
+      <section style={{ background: '#161C2A', padding: '64px 40px', textAlign: 'center' }}>
   <div style={{ maxWidth: '860px', margin: '0 auto' }}>
     <p style={{ fontSize: '10px', color: '#0F6E56', letterSpacing: '0.16em', marginBottom: '10px', fontWeight: '700' }}>PLAYER DIRECTORY</p>
     <h2 style={{ fontSize: '32px', fontWeight: '900', color: '#0D1B2E', letterSpacing: '-1px', fontFamily: 'Arial Black, Arial, sans-serif', marginBottom: '12px' }}>Browse rugby talent from around the world</h2>
