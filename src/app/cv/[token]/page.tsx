@@ -1,5 +1,3 @@
-import ReferenceButton from './ReferenceButton'
-
 export const dynamic = 'force-dynamic'
 
 async function getPlayer(token: string) {
