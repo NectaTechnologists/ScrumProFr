@@ -602,7 +602,6 @@ export default function CoachDashboard() {
                       </div>
                       {isShortlisted && (
                         <div style={{ marginBottom: '8px' }}>
-                          {catStyle && <span className="category-badge" style={{ background: catStyle.bg, color: catStyle.color, borderColor: catStyle.border, marginBottom: '6px', display: 'inline-block' }}>{category}</span>}
                           <select style={{ width: '100%', padding: '5px 8px', border: '1.5px solid #D3D1C7', borderRadius: '6px', fontSize: '12px', fontFamily: 'Arial, sans-serif', outline: 'none', cursor: 'pointer', color: '#0D1B2E', background: 'white' }} value={category || ''} onChange={e => updateCategory(player.id, e.target.value)}>
                             <option value="">{lang === 'fr' ? '— Choisir —' : '— Set status —'}</option>
                             {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
