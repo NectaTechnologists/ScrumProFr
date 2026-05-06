@@ -441,6 +441,7 @@ export default function CoachDashboard() {
             <button className={`lang-btn ${lang === 'fr' ? 'lang-btn-active' : ''}`} onClick={() => toggleLang('fr')}>{FLAG_FR}</button>
           </div>
           <form action="/auth/signout" method="post">
+            <a href="/dashboard/settings" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', textDecoration: 'none', marginRight: '8px' }}>Settings</a>
             <button type="submit" className="signout-btn">{T.nav_sign_out}</button>
           </form>
         </div>

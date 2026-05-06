@@ -359,6 +359,7 @@ export default function ProfilePage() {
             <button className={`lang-btn ${lang === 'en' ? 'lang-btn-active' : ''}`} onClick={() => toggleLang('en')}>{FLAG_EN}</button>
             <button className={`lang-btn ${lang === 'fr' ? 'lang-btn-active' : ''}`} onClick={() => toggleLang('fr')}>{FLAG_FR}</button>
           </div>
+          <a href="/dashboard/settings" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', textDecoration: 'none', marginRight: '8px' }}>Settings</a>
           <button onClick={() => router.push('/dashboard')} className="prof-back">{T.nav_back_dashboard}</button>
         </div>
       </nav>
