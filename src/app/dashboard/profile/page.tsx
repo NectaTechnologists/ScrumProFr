@@ -266,7 +266,7 @@ export default function ProfilePage() {
     <>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: system-ui, Arial, sans-serif; background: #161C2A; }
+        body { font-family: 'DM Sans', sans-serif; background: #0C0F16; color: #F0EDE4; }
         .prof-nav { background: #0D1B2E; padding: 0 28px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
         .prof-logo { display: flex; align-items: center; gap: 10px; }
         .prof-logo-text { color: white; font-weight: 900; font-size: 18px; letter-spacing: -0.5px; font-family: 'Arial Black', Arial, sans-serif; }
@@ -276,34 +276,34 @@ export default function ProfilePage() {
         .lang-btn-active { background: rgba(255,255,255,0.15); }
         .prof-back { background: none; border: none; color: rgba(255,255,255,0.6); cursor: pointer; font-size: 14px; font-family: system-ui; white-space: nowrap; }
         .prof-content { max-width: 700px; margin: 0 auto; padding: 32px 20px; }
-        .prof-title { font-size: 24px; font-weight: 700; color: #0D1B2E; margin-bottom: 6px; font-family: 'Arial Black', Arial, sans-serif; }
+        .prof-title { font-size: 24px; font-weight: 700; color: #F0EDE4; margin-bottom: 6px; font-family: 'Arial Black', Arial, sans-serif; }
         .prof-subtitle { color: #888780; margin-bottom: 20px; font-size: 14px; }
         .share-box { background: rgba(29,158,117,0.08); border: 1px solid rgba(29,158,117,0.3); border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
         .share-box-inner { flex: 1; min-width: 0; }
         .share-label { font-size: 12px; font-weight: 700; color: #1D9E75; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
         .share-url { font-size: 13px; color: #0D1B2E; font-family: monospace; word-break: break-all; }
         .copy-btn { background: #1D9E75; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
-        .tabs { display: flex; gap: 2px; background: white; padding: 3px; border-radius: 10px; border: 0.5px solid #D3D1C7; margin-bottom: 20px; overflow-x: auto; }
+        .tabs { display: flex; gap: 2px; background: #111520; padding: 3px; border-radius: 10px; border: 0.5px solid #D3D1C7; margin-bottom: 20px; overflow-x: auto; }
         .tab { flex: 1; padding: 10px 8px; border-radius: 8px; border: none; cursor: pointer; font-size: 12px; font-weight: 700; font-family: Arial, sans-serif; background: transparent; color: #888780; text-align: center; white-space: nowrap; }
-        .tab-active { background: #0D1B2E; color: white; }
-        .prof-form { background: white; border-radius: 12px; padding: 28px; border: 1px solid #E8E4F0; }
+        .tab-active { background: #D4A843; color: #0C0F16; }
+        .prof-form { background: #161C2A; border-radius: 12px; padding: 28px; border: 1px solid rgba(255,255,255,0.07); }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
         .form-field { display: flex; flex-direction: column; gap: 6px; }
-        .form-label { font-size: 13px; font-weight: 600; color: #0D1B2E; }
+        .form-label { font-size: 13px; font-weight: 600; color: #F0EDE4; }
         .form-hint { font-size: 11px; color: #888780; margin-top: 4px; }
-        .form-input { width: 100%; padding: 10px 14px; border: 1.5px solid #E8E4F0; border-radius: 8px; font-size: 14px; outline: none; font-family: system-ui; background: white; color: #0D1B2E; }
+        .form-input { width: 100%; padding: 10px 14px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: 14px; outline: none; font-family: system-ui; background: #1C2338; color: #F0EDE4; }
         .form-input:focus { border-color: #1D9E75; }
         .form-input::placeholder { color: #B4B2A9; }
         .form-full { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
-        .form-textarea { width: 100%; padding: 10px 14px; border: 1.5px solid #E8E4F0; border-radius: 8px; font-size: 14px; outline: none; font-family: system-ui; height: 100px; resize: none; color: #0D1B2E; }
+        .form-textarea { width: 100%; padding: 10px 14px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: 14px; outline: none; font-family: system-ui; height: 100px; resize: none; color: #F0EDE4; background: #1C2338; }
         .form-textarea:focus { border-color: #1D9E75; }
         .form-textarea::placeholder { color: #B4B2A9; }
         .save-btn { width: 100%; padding: 11px; background: #1D9E75; color: white; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 7px; }
         .save-btn:disabled { opacity: 0.7; cursor: not-allowed; }
         .section-title { font-size: 11px; color: #1D9E75; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 16px; margin-top: 8px; }
-        .section-divider { border: none; border-top: 1px solid #161C2A; margin: 24px 0; }
+        .section-divider { border: none; border-top: 1px solid #F1EFE8; margin: 24px 0; }
         .video-hint { font-size: 12px; color: #888780; margin-top: 6px; }
-        .avatar-section { display: flex; align-items: center; gap: 20px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #161C2A; }
+        .avatar-section { display: flex; align-items: center; gap: 20px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #F1EFE8; }
         .avatar-preview { width: 80px; height: 80px; border-radius: 16px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
         .avatar-preview img { width: 100%; height: 100%; object-fit: cover; }
         .avatar-initials { color: white; font-size: 26px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; }
@@ -312,14 +312,14 @@ export default function ProfilePage() {
         .avatar-upload-hint { font-size: 12px; color: #888780; margin-bottom: 10px; }
         .avatar-upload-btn { background: white; border: 1.5px solid #D3D1C7; color: #0D1B2E; font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 20px; cursor: pointer; font-family: Arial, sans-serif; display: inline-flex; align-items: center; gap: 6px; }
         .avatar-upload-btn:hover { border-color: #1D9E75; }
-        .doc-upload-area { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #161C2A; }
+        .doc-upload-area { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #F1EFE8; }
         .doc-type-row { display: flex; gap: 10px; margin-bottom: 12px; align-items: flex-end; flex-wrap: wrap; }
-        .doc-type-select { flex: 1; padding: 10px 14px; border: 1.5px solid #E8E4F0; border-radius: 8px; font-size: 14px; outline: none; font-family: system-ui; background: white; color: #0D1B2E; min-width: 160px; }
+        .doc-type-select { flex: 1; padding: 10px 14px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: 14px; outline: none; font-family: system-ui; background: #1C2338; color: #F0EDE4; min-width: 160px; }
         .doc-upload-btn { background: #1D9E75; color: white; border: none; border-radius: 20px; padding: 9px 16px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; }
         .doc-upload-btn:disabled { opacity: 0.6; cursor: not-allowed; }
         .doc-hint { font-size: 12px; color: #888780; }
         .doc-list { display: flex; flex-direction: column; gap: 10px; }
-        .doc-item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #F8F7F4; border-radius: 8px; border: 0.5px solid #D3D1C7; }
+        .doc-item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #1C2338; border-radius: 8px; border: 0.5px solid #D3D1C7; }
         .doc-icon { width: 36px; height: 36px; border-radius: 8px; background: #E1F5EE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .doc-info { flex: 1; min-width: 0; }
         .doc-name { font-size: 13px; font-weight: 700; color: #0D1B2E; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -328,7 +328,7 @@ export default function ProfilePage() {
         .doc-delete:hover { border-color: #E05555; color: #E05555; }
         .doc-empty { text-align: center; padding: 32px 20px; color: #888780; font-size: 14px; }
         .doc-count { font-size: 12px; color: #888780; margin-bottom: 12px; }
-        .doc-private-note { background: #161C2A; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 10px; }
+        .doc-private-note { background: #111520; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 10px; }
         .doc-private-note p { font-size: 12px; color: #5F5E5A; line-height: 1.6; }
         @media (max-width: 768px) {
           .prof-nav { padding: 0 16px; height: 56px; }
@@ -368,10 +368,10 @@ export default function ProfilePage() {
         <p className="prof-subtitle">{T.profile_sub}</p>
 
         {/* Completion ring */}
-        <div style={{ background: 'white', borderRadius: '12px', padding: '20px 24px', border: '0.5px solid #D3D1C7', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <div style={{ background: '#161C2A', borderRadius: '12px', padding: '20px 24px', border: '0.5px solid #D3D1C7', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '20px' }}>
           <div style={{ position: 'relative', width: '88px', height: '88px', flexShrink: 0 }}>
             <svg width="88" height="88" viewBox="0 0 88 88">
-              <circle cx="44" cy="44" r={r} fill="none" stroke="#161C2A" strokeWidth="8"/>
+              <circle cx="44" cy="44" r={r} fill="none" stroke="#F1EFE8" strokeWidth="8"/>
               <circle cx="44" cy="44" r={r} fill="none" stroke={ringColor} strokeWidth="8"
                 strokeDasharray={circ} strokeDashoffset={offset}
                 strokeLinecap="round" transform="rotate(-90 44 44)"
@@ -379,11 +379,11 @@ export default function ProfilePage() {
               />
             </svg>
             <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontSize: '18px', fontWeight: '900', color: '#0D1B2E', fontFamily: 'Arial Black, Arial, sans-serif' }}>{completion}%</span>
+              <span style={{ fontSize: '18px', fontWeight: '900', color: '#F0EDE4', fontFamily: 'Arial Black, Arial, sans-serif' }}>{completion}%</span>
             </div>
           </div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '15px', fontWeight: '900', color: '#0D1B2E', fontFamily: 'Arial Black, Arial, sans-serif', marginBottom: '4px' }}>
+            <div style={{ fontSize: '15px', fontWeight: '900', color: '#F0EDE4', fontFamily: 'Arial Black, Arial, sans-serif', marginBottom: '4px' }}>
               {completion === 100 ? T.completion_complete : completion >= 70 ? T.completion_strong : completion >= 40 ? T.completion_getting : T.completion_starting}
             </div>
             <div style={{ fontSize: '13px', color: '#5F5E5A', lineHeight: '1.5' }}>
