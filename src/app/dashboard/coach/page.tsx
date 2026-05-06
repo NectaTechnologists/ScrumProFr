@@ -207,11 +207,11 @@ export default function CoachDashboard() {
 
   const filteredNats = NATIONALITIES.filter(n => n.toLowerCase().includes(natSearch.toLowerCase()))
 
-  if (loading) return <div style={{ minHeight: '100vh', background: '#161C2A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ fontFamily: 'Arial', color: '#888780', fontSize: '14px' }}>Loading...</div></div>
+  if (loading) return <div style={{ minHeight: '100vh', background: '#0C0F16', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ fontFamily: 'Arial', color: '#888780', fontSize: '14px' }}>Loading...</div></div>
 
   if (profile && !profile.approved) return (
     <>
-      <style>{`* { box-sizing: border-box; margin: 0; padding: 0; } body { font-family: Arial, sans-serif; background: #161C2A; }`}</style>
+      <style>{`* { box-sizing: border-box; margin: 0; padding: 0; } body { font-family: 'DM Sans', Arial, sans-serif; background: #0C0F16; color: #F0EDE4; }`}</style>
       <nav style={{ background: '#0D1B2E', padding: '0 16px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <svg width="28" height="26" viewBox="0 0 32 30"><line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/><line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/><line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/></svg>
         <form action="/auth/signout" method="post"><button type="submit" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.7)', padding: '6px 14px', borderRadius: '6px', fontSize: '13px', cursor: 'pointer' }}>Sign out</button></form>
@@ -275,7 +275,7 @@ export default function CoachDashboard() {
     <>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: Arial, sans-serif; background: #161C2A; }
+        body { font-family: 'DM Sans', Arial, sans-serif; background: #0C0F16; color: #F0EDE4; }
         .nav { background: #0D1B2E; padding: 0 16px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
         .nav-logo { display: flex; align-items: center; gap: 8px; min-width: 0; }
         .nav-logo-text { display: none; }
@@ -287,68 +287,68 @@ export default function CoachDashboard() {
         .lang-btn-active { background: rgba(255,255,255,0.15); }
         .page-header { max-width: 1400px; margin: 0 auto; padding: 24px 16px 0; }
         .page-label { font-size: 10px; color: #1D9E75; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 6px; }
-        .page-title { font-size: 22px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -0.5px; margin-bottom: 2px; }
+        .page-title { font-size: 22px; font-weight: 900; color: #F0EDE4; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -0.5px; margin-bottom: 2px; }
         .page-sub { font-size: 12px; color: #888780; margin-bottom: 16px; }
-        .tabs { display: flex; gap: 2px; background: white; padding: 3px; border-radius: 10px; border: 0.5px solid #D3D1C7; margin-bottom: 0; width: fit-content; }
+        .tabs { display: flex; gap: 2px; background: #111520; padding: 3px; border-radius: 10px; border: 0.5px solid #D3D1C7; margin-bottom: 0; width: fit-content; }
         .tab { padding: 7px 14px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; font-weight: 700; font-family: Arial, sans-serif; background: transparent; color: #888780; }
-        .tab-active { background: #0D1B2E; color: white; }
+        .tab-active { background: #D4A843; color: #0C0F16; }
         .tab-count { display: inline-block; background: #1D9E75; color: white; border-radius: 10px; font-size: 10px; padding: 1px 6px; margin-left: 5px; }
         .main-layout { max-width: 1400px; margin: 0 auto; padding: 16px; display: flex; gap: 16px; align-items: flex-start; }
-        .filter-panel { width: 180px; flex-shrink: 0; background: white; border-radius: 12px; border: 0.5px solid #D3D1C7; overflow: hidden; display: none; }
-        .filter-panel-header { padding: 12px 16px; border-bottom: 0.5px solid #D3D1C7; display: flex; justify-content: space-between; align-items: center; }
-        .filter-panel-title { font-size: 13px; font-weight: 700; color: #0D1B2E; }
+        .filter-panel { width: 180px; flex-shrink: 0; background: #161C2A; border-radius: 12px; border: 0.5px solid rgba(255,255,255,0.07); overflow: hidden; display: none; }
+        .filter-panel-header { padding: 12px 16px; border-bottom: 0.5px solid rgba(255,255,255,0.07); display: flex; justify-content: space-between; align-items: center; }
+        .filter-panel-title { font-size: 13px; font-weight: 700; color: #F0EDE4; }
         .filter-clear-all { font-size: 12px; color: #1D9E75; cursor: pointer; background: none; border: none; font-family: Arial, sans-serif; }
-        .filter-section { padding: 12px 16px; border-bottom: 0.5px solid #D3D1C7; }
+        .filter-section { padding: 12px 16px; border-bottom: 0.5px solid rgba(255,255,255,0.07); }
         .filter-section:last-child { border-bottom: none; }
         .filter-section-title { font-size: 10px; font-weight: 700; color: #888780; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
         .filter-option { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; cursor: pointer; }
         .filter-option:last-child { margin-bottom: 0; }
         .filter-option input[type="checkbox"] { accent-color: #1D9E75; width: 14px; height: 14px; flex-shrink: 0; cursor: pointer; }
-        .filter-option-label { font-size: 13px; color: #0D1B2E; flex: 1; cursor: pointer; }
-        .nat-search { width: 100%; padding: 6px 10px; border: 1.5px solid #E8E4F0; border-radius: 6px; font-size: 12px; outline: none; font-family: Arial, sans-serif; margin-bottom: 8px; color: #0D1B2E; }
+        .filter-option-label { font-size: 13px; color: #A8A398; flex: 1; cursor: pointer; }
+        ..nat-search { width: 100%; padding: 6px 10px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 6px; font-size: 12px; outline: none; font-family: Arial, sans-serif; margin-bottom: 8px; color: #F0EDE4; background: #1C2338; }
         .nat-search:focus { border-color: #1D9E75; }
         .results-area { flex: 1; min-width: 0; }
         .results-toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
-        .search-input { flex: 1; min-width: 0; padding: 8px 14px; border: 1.5px solid #D3D1C7; border-radius: 8px; font-size: 13px; color: #0D1B2E; background: white; outline: none; font-family: Arial, sans-serif; }
+        .search-input { flex: 1; min-width: 0; padding: 8px 14px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: 13px; color: #F0EDE4; background: #161C2A; outline: none; font-family: Arial, sans-serif; }
         .search-input:focus { border-color: #1D9E75; }
         .search-input::placeholder { color: #B4B2A9; }
-        .view-toggle { display: flex; gap: 2px; background: white; padding: 3px; border-radius: 8px; border: 1px solid #D3D1C7; flex-shrink: 0; }
+        .view-toggle { display: flex; gap: 2px; background: #111520; padding: 3px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.07); flex-shrink: 0; }
         .toggle-btn { padding: 5px 10px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; font-weight: 700; font-family: Arial, sans-serif; background: transparent; color: #888780; }
-        .toggle-active { background: #0D1B2E; color: white; }
+        .toggle-active { background: #D4A843; color: #0C0F16; }
         .mobile-filter-btn { display: flex; align-items: center; gap: 6px; padding: 8px 12px; border: 1.5px solid #D3D1C7; border-radius: 8px; background: white; font-size: 12px; font-weight: 700; color: #0D1B2E; cursor: pointer; font-family: Arial, sans-serif; flex-shrink: 0; }
         .mobile-filter-badge { background: #1D9E75; color: white; border-radius: 10px; font-size: 10px; padding: 1px 5px; }
         .active-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
         .active-tag { display: flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; background: #E1F5EE; color: #0F6E56; border: 1px solid rgba(29,158,117,0.2); }
         .active-tag-x { cursor: pointer; opacity: 0.6; font-size: 13px; line-height: 1; }
         .results-count { font-size: 12px; color: #888780; margin-bottom: 10px; }
-        .pill-btn { height: 28px; padding: 0 10px; border-radius: 20px; border: 1.5px solid #D3D1C7; background: white; cursor: pointer; display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: #5F5E5A; font-family: Arial, sans-serif; white-space: nowrap; transition: all 0.1s; }
+        .pill-btn { height: 28px; padding: 0 10px; border-radius: 20px; border: 1.5px solid rgba(255,255,255,0.1); background: #161C2A; cursor: pointer; display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: #5F5E5A; font-family: Arial, sans-serif; white-space: nowrap; transition: all 0.1s; }
         .pill-btn:hover { border-color: #888780; }
         .pill-btn-save-active { border-color: #F0A500; background: #FFF8E7; color: #856404; }
         .pill-btn-note-active { border-color: #4A7FD4; background: #EEF4FF; color: #185FA5; }
         .player-list { display: flex; flex-direction: column; gap: 8px; }
-        .player-row { background: white; border-radius: 10px; padding: 12px 14px; border: 0.5px solid #D3D1C7; }
+        .player-row { background: #161C2A; border-radius: 10px; padding: 12px 14px; border: 0.5px solid rgba(255,255,255,0.07); }
         .player-row-main { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
         .row-avatar { width: 36px; height: 36px; border-radius: 8px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
         .row-avatar span { color: white; font-size: 13px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; }
         .row-avatar img { width: 100%; height: 100%; object-fit: cover; }
         .row-info { flex: 1; min-width: 120px; }
-        .row-name { font-size: 13px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .row-name { font-size: 13px; font-weight: 900; color: #F0EDE4; font-family: 'Arial Black', Arial, sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .row-sub { font-size: 11px; color: #888780; margin-top: 3px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
         .row-position { display: inline-block; font-size: 10px; background: #E1F5EE; color: #0F6E56; padding: 2px 6px; border-radius: 4px; font-weight: 700; letter-spacing: 0.06em; }
         .row-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; width: 100%; padding-top: 8px; }
         .row-cv-btn { background: #0D1B2E; color: white; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; white-space: nowrap; }
-        .row-extras { padding-top: 8px; margin-top: 8px; border-top: 1px solid #161C2A; display: flex; flex-direction: column; gap: 6px; }
+        .row-extras { padding-top: 8px; margin-top: 8px; border-top: 1px solid rgba(255,255,255,0.07); display: flex; flex-direction: column; gap: 6px; }
         .row-category { display: flex; align-items: center; gap: 8px; }
         .row-category-label { font-size: 11px; color: #888780; white-space: nowrap; }
-        .row-category-select { flex: 1; padding: 4px 8px; border: 1.5px solid #D3D1C7; border-radius: 6px; font-size: 12px; font-family: Arial, sans-serif; outline: none; cursor: pointer; color: #0D1B2E; background: white; }
+        .row-category-select { flex: 1; padding: 4px 8px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 6px; font-size: 12px; font-family: Arial, sans-serif; outline: none; cursor: pointer; color: #F0EDE4; background: #1C2338; }
         .category-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; border: 1px solid; }
         .row-note-panel { display: flex; gap: 8px; align-items: flex-start; }
-        .row-note-textarea { flex: 1; padding: 7px 10px; border: 1.5px solid #D3D1C7; border-radius: 6px; font-size: 12px; font-family: Arial, sans-serif; resize: none; height: 56px; outline: none; color: #0D1B2E; }
+        .row-note-textarea { flex: 1; padding: 7px 10px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 6px; font-size: 12px; font-family: Arial, sans-serif; resize: none; height: 56px; outline: none; color: #F0EDE4; background: #1C2338; }
         .row-note-textarea:focus { border-color: #1D9E75; }
         .row-note-save { padding: 7px 12px; background: #1D9E75; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; align-self: flex-end; }
-        .row-note-preview { font-size: 11px; color: #5F5E5A; font-style: italic; background: #F8F7F4; padding: 5px 8px; border-radius: 6px; }
+        .row-note-preview { font-size: 11px; color: #A8A398; font-style: italic; background: #1C2338; padding: 5px 8px; border-radius: 6px; }
         .player-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
-        .player-card { background: white; border-radius: 12px; padding: 14px; border: 0.5px solid #D3D1C7; }
+        .player-card { background: #161C2A; border-radius: 12px; padding: 14px; border: 0.5px solid rgba(255,255,255,0.07); }
         .player-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
         .player-avatar { width: 38px; height: 38px; border-radius: 8px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
         .player-avatar span { color: white; font-size: 14px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; }
@@ -356,14 +356,14 @@ export default function CoachDashboard() {
         .player-name { font-size: 13px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 2px; }
         .player-meta { font-size: 11px; color: #888780; }
         .position-badge { display: inline-block; background: #E1F5EE; color: #0F6E56; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.06em; margin-bottom: 8px; }
-        .player-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #161C2A; border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
-        .stat-cell { background: white; padding: 6px; text-align: center; }
-        .stat-val { font-size: 13px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; }
+        .player-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,0.05); border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
+        .stat-cell { background: #1C2338; padding: 6px; text-align: center; }
+        .stat-val { font-size: 13px; font-weight: 900; color: #F0EDE4; font-family: 'Arial Black', Arial, sans-serif; }
         .stat-lbl { font-size: 9px; color: #888780; letter-spacing: 0.08em; margin-top: 1px; }
         .card-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
         .cv-btn { flex: 1; padding: 7px; background: #0D1B2E; color: white; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; font-family: 'Arial Black', Arial, sans-serif; cursor: pointer; text-align: center; text-decoration: none; display: block; }
         .note-preview { font-size: 11px; color: #5F5E5A; margin-top: 6px; padding: 5px 7px; background: #F8F7F4; border-radius: 5px; font-style: italic; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .note-panel { margin-top: 8px; padding-top: 8px; border-top: 1px solid #161C2A; }
+        .note-panel { margin-top: 8px; padding-top: 8px; border-top: 1px solid #F1EFE8; }
         .note-textarea { width: 100%; padding: 7px 9px; border: 1.5px solid #D3D1C7; border-radius: 6px; font-size: 12px; font-family: Arial, sans-serif; resize: none; height: 64px; outline: none; color: #0D1B2E; }
         .note-textarea:focus { border-color: #1D9E75; }
         .note-save-btn { margin-top: 5px; width: 100%; padding: 6px; background: #1D9E75; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; }
@@ -371,14 +371,14 @@ export default function CoachDashboard() {
         .upgrade-text h3 { font-size: 14px; font-weight: 900; color: white; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 4px; }
         .upgrade-text p { font-size: 12px; color: rgba(255,255,255,0.55); margin-bottom: 10px; }
         .upgrade-btn { display: block; background: #1D9E75; color: white; font-size: 12px; font-weight: 700; padding: 9px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; text-align: center; }
-        .empty-state { text-align: center; padding: 40px 20px; background: white; border-radius: 12px; border: 0.5px solid #D3D1C7; }
-        .empty-state h3 { font-size: 15px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 6px; }
+        .empty-state { text-align: center; padding: 40px 20px; background: #161C2A; border-radius: 12px; border: 0.5px solid rgba(255,255,255,0.07); }
+        .empty-state h3 { font-size: 15px; font-weight: 900; color: #F0EDE4; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 6px; }
         .empty-state p { font-size: 13px; color: #888780; }
-        .mobile-filter-overlay { position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; background: white; overflow-y: auto; }
-        .mobile-filter-overlay-header { padding: 16px; border-bottom: 0.5px solid #D3D1C7; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: white; z-index: 1; }
+        .mobile-filter-overlay { position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; background: #111520; overflow-y: auto; }
+        .mobile-filter-overlay-header { padding: 16px; border-bottom: 0.5px solid rgba(255,255,255,0.07); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #111520; z-index: 1; }
         .mobile-filter-overlay-title { font-size: 16px; font-weight: 700; color: #0D1B2E; }
         .mobile-filter-close { background: none; border: none; font-size: 24px; color: #888780; cursor: pointer; line-height: 1; padding: 0 4px; }
-        .mobile-filter-footer { padding: 16px; border-top: 0.5px solid #D3D1C7; display: flex; gap: 8px; position: sticky; bottom: 0; background: white; }
+        .mobile-filter-footer { padding: 16px; border-top: 0.5px solid rgba(255,255,255,0.07); display: flex; gap: 8px; position: sticky; bottom: 0; background: #111520; }
         .mobile-filter-apply { flex: 1; padding: 12px; background: #1D9E75; color: white; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; }
         .mobile-filter-clear { padding: 12px 16px; background: white; color: #0D1B2E; border: 1.5px solid #D3D1C7; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; }
         @media (min-width: 769px) {
