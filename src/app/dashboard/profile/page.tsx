@@ -369,9 +369,9 @@ export default function ProfilePage() {
         <p className="prof-subtitle">{T.profile_sub}</p>
 
         {/* Completion ring */}
-        <div style={{ background: '#161C2A', borderRadius: '12px', padding: '20px 24px', border: '0.5px solid #D3D1C7', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <div style={{ position: 'relative', width: '88px', height: '88px', flexShrink: 0 }}>
-            <svg width="88" height="88" viewBox="0 0 88 88">
+        <div style={{ background: '#161C2A', borderRadius: '12px', padding: '20px 16px', border: '0.5px solid #D3D1C7', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <div style={{ position: 'relative', width: '100px', height: '100px', flexShrink: 0 }}>
+            <svg width="100" height="100" viewBox="0 0 88 88">
               <circle cx="44" cy="44" r={r} fill="none" stroke="#F1EFE8" strokeWidth="8"/>
               <circle cx="44" cy="44" r={r} fill="none" stroke={ringColor} strokeWidth="8"
                 strokeDasharray={circ} strokeDashoffset={offset}
@@ -379,7 +379,7 @@ export default function ProfilePage() {
                 style={{ transition: 'stroke-dashoffset 0.6s ease' }}
               />
             </svg>
-            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', top: 0, left: 0, right: 0, bottom: 0 }}>
               <span style={{ fontSize: '18px', fontWeight: '900', color: '#F0EDE4', fontFamily: 'Arial Black, Arial, sans-serif' }}>{completion}%</span>
             </div>
           </div>
