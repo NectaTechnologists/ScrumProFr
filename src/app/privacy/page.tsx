@@ -3,7 +3,7 @@ export default function PrivacyPolicy() {
     <>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: Arial, sans-serif; background: #161C2A; }
+        body { font-family: Arial, sans-serif; background: #F1EFE8; }
 
         .legal-nav {
           background: #0D1B2E;

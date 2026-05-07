@@ -39,7 +39,7 @@ export default async function PlayersPage() {
     <>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: Arial, sans-serif; background: #161C2A; }
+        body { font-family: Arial, sans-serif; background: #F1EFE8; }
         .dir-nav { background: #0D1B2E; padding: 0 28px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
         .dir-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
         .dir-logo-text { color: white; font-weight: 900; font-size: 20px; letter-spacing: -0.5px; font-family: 'Arial Black', Arial, sans-serif; }
@@ -69,7 +69,7 @@ export default async function PlayersPage() {
         .dir-card-meta-item { text-align: center; }
         .dir-card-meta-val { font-size: 14px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; }
         .dir-card-meta-lbl { font-size: 9px; color: #888780; letter-spacing: 0.08em; margin-top: 1px; }
-        .dir-card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 8px; border-top: 0.5px solid #161C2A; }
+        .dir-card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 8px; border-top: 0.5px solid #F1EFE8; }
         .dir-card-nat { font-size: 11px; color: #888780; }
         .dir-card-views { font-size: 10px; color: #B4B2A9; display: flex; align-items: center; gap: 3px; }
         .dir-empty { text-align: center; padding: 60px 20px; }

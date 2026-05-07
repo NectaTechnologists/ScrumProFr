@@ -155,7 +155,7 @@ export default function AdminPage() {
   const formatDate = (d: string) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
 
   if (loading) return (
-    <div style={{ minHeight: '100vh', background: '#161C2A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <div style={{ minHeight: '100vh', background: '#F1EFE8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div style={{ fontFamily: 'Arial', color: '#888780', fontSize: '14px' }}>Loading...</div>
     </div>
   )
@@ -164,7 +164,7 @@ export default function AdminPage() {
     <>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: Arial, sans-serif; background: #161C2A; }
+        body { font-family: Arial, sans-serif; background: #F1EFE8; }
         .nav { background: #0D1B2E; padding: 0 28px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
         .nav-logo-text { color: white; font-weight: 900; font-size: 20px; letter-spacing: -1px; font-family: 'Arial Black', Arial, sans-serif; }
         .content { max-width: 1000px; margin: 0 auto; padding: 40px 28px; }
@@ -179,7 +179,7 @@ export default function AdminPage() {
         .card-title { font-size: 13px; font-weight: 700; color: #0D1B2E; margin-bottom: 1rem; }
         .bar-row { margin-bottom: 10px; }
         .bar-label-row { display: flex; justify-content: space-between; font-size: 11px; color: #5F5E5A; margin-bottom: 3px; }
-        .bar-track { height: 6px; background: #161C2A; border-radius: 4px; }
+        .bar-track { height: 6px; background: #F1EFE8; border-radius: 4px; }
         .bar-fill-green { height: 6px; background: #1D9E75; border-radius: 4px; }
         .bar-fill-dark { height: 6px; background: #0D1B2E; border-radius: 4px; }
         .bar-fill-gray { height: 6px; background: #888780; border-radius: 4px; }
@@ -187,7 +187,7 @@ export default function AdminPage() {
         .table-title { font-size: 13px; font-weight: 700; color: #0D1B2E; margin-bottom: 1rem; }
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
         th { text-align: left; font-weight: 700; color: #888780; padding: 0 0 10px; font-size: 11px; letter-spacing: 0.06em; }
-        td { padding: 10px 0; color: #0D1B2E; border-top: 0.5px solid #161C2A; }
+        td { padding: 10px 0; color: #0D1B2E; border-top: 0.5px solid #F1EFE8; }
         .badge { font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 700; }
         .badge-active { background: #E1F5EE; color: #0F6E56; }
         .badge-pending { background: #FAEEDA; color: #854F0B; }

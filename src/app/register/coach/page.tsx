@@ -126,7 +126,7 @@ export default function CoachRegisterPage() {
         .form-input { padding: 10px 14px; border: 1.5px solid #E8E4F0; border-radius: 8px; font-size: 14px; outline: none; font-family: Arial, sans-serif; color: #0D1B2E; background: white; width: 100%; }
         .form-input:focus { border-color: #1D9E75; }
         .form-full { margin-bottom: 14px; }
-        .divider { border: none; border-top: 1px solid #161C2A; margin: 20px 0; }
+        .divider { border: none; border-top: 1px solid #F1EFE8; margin: 20px 0; }
         .submit-btn { width: 100%; padding: 13px; background: #1D9E75; color: white; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; font-family: Arial, sans-serif; cursor: pointer; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 7px; }
         .submit-btn:disabled { opacity: 0.65; cursor: not-allowed; }
         .error-box { background: #FCEBEB; border: 1px solid #F09595; border-radius: 8px; padding: 12px 14px; font-size: 13px; color: #A32D2D; margin-bottom: 16px; }

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import ShareModal from '@/components/ShareModal'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { t, Lang } from '@/lib/translations'
@@ -27,6 +28,8 @@ export default function DashboardPage() {
   const [user, setUser] = useState<any>(null)
   const [lang, setLang] = useState<Lang>('en')
   const [loading, setLoading] = useState(true)
+  const [showShare, setShowShare] = useState(false)
+  const [shareUrl, setShareUrl] = useState('')
   const [viewCount, setViewCount] = useState<number>(0)
   const [recentViews, setRecentViews] = useState<any[]>([])
   const [showOnboardingBanner, setShowOnboardingBanner] = useState(false)
@@ -44,7 +47,7 @@ export default function DashboardPage() {
 
     const { data: player } = await supabase
       .from('players')
-      .select('id, first_name, avatar_url, bio')
+      .select('id, first_name, avatar_url, bio, share_token')
       .eq('profile_id', user.id)
       .single()
 
@@ -60,6 +63,7 @@ export default function DashboardPage() {
         .from('cv_views').select('organisation_name, viewed_at')
         .eq('player_id', player.id).order('viewed_at', { ascending: false }).limit(10)
       setRecentViews(views || [])
+      setShareUrl(`${window.location.origin}/cv/${player.share_token}`)
     } else {
       setShowOnboardingBanner(true)
     }
@@ -178,6 +182,12 @@ export default function DashboardPage() {
       <div className="dash-content">
         <h1 className="dash-title">{T.dashboard_welcome}</h1>
         <p className="dash-subtitle">{T.dashboard_logged_in} <strong>{user?.email}</strong></p>
+        <div style={{ marginTop: '16px', marginBottom: '24px' }}>
+          <button onClick={() => setShowShare(true)} style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '9px 18px', borderRadius: '8px', border: 'none', background: '#D4A843', color: '#0C0F16', fontSize: '13px', fontWeight: '500', cursor: 'pointer', fontFamily: 'DM Sans, sans-serif' }}>
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="2.5" cy="6.5" r="1.8" stroke="#0C0F16" strokeWidth="1.2"/><circle cx="10.5" cy="2.5" r="1.8" stroke="#0C0F16" strokeWidth="1.2"/><circle cx="10.5" cy="10.5" r="1.8" stroke="#0C0F16" strokeWidth="1.2"/><line x1="4.2" y1="5.6" x2="8.8" y2="3.4" stroke="#0C0F16" strokeWidth="1.2" strokeLinecap="round"/><line x1="4.2" y1="7.4" x2="8.8" y2="9.6" stroke="#0C0F16" strokeWidth="1.2" strokeLinecap="round"/></svg>
+            Share my CV
+          </button>
+        </div>
 
         {showOnboardingBanner && (
           <div className="ob-banner">
@@ -264,6 +274,7 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+      <ShareModal shareUrl={shareUrl} isOpen={showShare} onClose={() => setShowShare(false)} />
     </>
   )
 }
