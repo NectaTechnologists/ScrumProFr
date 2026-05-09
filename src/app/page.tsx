@@ -8,6 +8,7 @@ const FLAG_FR = '🇫🇷'
 
 export default function Home() {
   const [lang, setLang] = useState<Lang>('en')
+  const [activeStep, setActiveStep] = useState(0)
 
   useEffect(() => {
     const saved = localStorage.getItem('gainline_lang') as Lang
@@ -20,6 +21,29 @@ export default function Home() {
   }
 
   const T = t[lang]
+
+  const howItWorksSteps = [
+    {
+      label: 'CREATE',
+      title: 'Sign up in seconds',
+      desc: 'Create your free account and claim your Gainline Player Card. Your digital identity on the pitch.',
+    },
+    {
+      label: 'BUILD',
+      title: 'Build your Player CV',
+      desc: 'Add your stats, career history, video highlights and documents. The more you add, the more coaches see.',
+    },
+    {
+      label: 'SHARE',
+      title: 'Share your card',
+      desc: 'Send your unique Player Card link via WhatsApp, email or social. One tap and coaches have everything they need.',
+    },
+    {
+      label: 'GET DISCOVERED',
+      title: 'Get in front of clubs',
+      desc: "Coaches search Gainline daily. You'll see who's viewed your card and which clubs are paying attention.",
+    },
+  ]
 
   return (
     <>
@@ -105,6 +129,47 @@ export default function Home() {
         .footer-links { display: flex; gap: 18px; }
         .footer-link { font-size: 11px; color: rgba(255,255,255,0.32); text-decoration: none; }
 
+        /* HOW IT WORKS */
+        .hiw { background: #0D1B2E; padding: 80px 40px; }
+        .hiw-inner { max-width: 1060px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+        .hiw-eyebrow { font-size: 10px; letter-spacing: 0.16em; color: #5DCAA5; margin-bottom: 14px; font-weight: 700; }
+        .hiw-headline { font-size: 38px; color: white; line-height: 1.1; margin-bottom: 14px; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -1px; }
+        .hiw-sub { font-size: 14px; color: rgba(255,255,255,0.56); line-height: 1.75; margin-bottom: 36px; }
+        .hiw-steps { display: flex; flex-direction: column; gap: 4px; }
+        .hiw-step { display: flex; gap: 16px; padding: 14px 16px; border-radius: 10px; cursor: pointer; border: 1px solid transparent; transition: all 0.2s; }
+        .hiw-step:hover { background: rgba(255,255,255,0.04); }
+        .hiw-step-active { background: rgba(29,158,117,0.1) !important; border-color: rgba(29,158,117,0.25) !important; }
+        .hiw-num { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px; border: 1.5px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.4); transition: all 0.2s; font-family: 'Arial Black', Arial, sans-serif; }
+        .hiw-step-active .hiw-num { border-color: #1D9E75; color: #1D9E75; background: rgba(29,158,117,0.12); }
+        .hiw-step-content { flex: 1; }
+        .hiw-step-label { font-size: 9px; letter-spacing: 0.16em; color: rgba(255,255,255,0.3); margin-bottom: 3px; font-weight: 700; transition: color 0.2s; }
+        .hiw-step-active .hiw-step-label { color: #5DCAA5; }
+        .hiw-step-title { font-size: 15px; font-weight: 900; color: rgba(255,255,255,0.7); margin-bottom: 0; transition: color 0.2s; font-family: 'Arial Black', Arial, sans-serif; }
+        .hiw-step-active .hiw-step-title { color: white; }
+        .hiw-step-desc { font-size: 13px; color: rgba(255,255,255,0.48); line-height: 1.65; margin-top: 6px; }
+        .hiw-right { position: sticky; top: 40px; }
+        .hiw-card { background: #161C2A; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.07); }
+        .hiw-card-top { background: #1C2338; padding: 20px; display: flex; align-items: center; gap: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .hiw-avatar { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #2A3448, #1C2338); border: 2px solid rgba(212,168,67,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 22px; }
+        .hiw-card-name { font-size: 17px; font-weight: 700; color: #F0EDE4; }
+        .hiw-card-pos { display: inline-block; background: rgba(212,168,67,0.15); border: 1px solid rgba(212,168,67,0.3); border-radius: 4px; font-size: 10px; color: #D4A843; padding: 2px 8px; margin-top: 3px; letter-spacing: 0.08em; font-weight: 700; }
+        .hiw-card-body { padding: 20px; min-height: 180px; }
+        .hiw-card-stats { background: #111520; padding: 14px 20px; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid rgba(255,255,255,0.05); }
+        .hiw-stat { text-align: center; }
+        .hiw-stat-val { font-size: 18px; font-weight: 700; color: #F0EDE4; }
+        .hiw-stat-lbl { font-size: 9px; color: rgba(255,255,255,0.35); letter-spacing: 0.1em; margin-top: 2px; }
+        .hiw-progress-row { margin-bottom: 12px; }
+        .hiw-progress-label { display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 5px; }
+        .hiw-progress-track { height: 5px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+        .hiw-progress-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, #1D9E75, #5DCAA5); }
+        .hiw-share-btn { display: flex; align-items: center; gap: 9px; padding: 10px 14px; border-radius: 8px; margin-bottom: 8px; font-size: 12px; font-weight: 600; cursor: default; }
+        .hiw-view-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .hiw-view-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+        .hiw-view-info { flex: 1; }
+        .hiw-view-name { font-size: 12px; color: rgba(255,255,255,0.8); font-weight: 600; }
+        .hiw-view-org { font-size: 10px; color: rgba(255,255,255,0.35); }
+        .hiw-view-time { font-size: 10px; color: rgba(255,255,255,0.3); }
+
         @media (max-width: 768px) {
           .nav { padding: 0 20px; height: 56px; }
           .nav-links .nav-link { display: none; }
@@ -132,6 +197,10 @@ export default function Home() {
           .cta-card-dark { padding: 28px; }
           .cta-card-teal { padding: 28px; }
           .footer { flex-direction: column; align-items: flex-start; padding: 24px 20px; }
+          .hiw { padding: 52px 20px; }
+          .hiw-inner { grid-template-columns: 1fr; gap: 40px; }
+          .hiw-headline { font-size: 26px; }
+          .hiw-right { position: static; }
         }
       `}</style>
 
@@ -173,6 +242,158 @@ export default function Home() {
             <a href="/register/coach" className="btn-ghost">{T.hero_btn_agent}</a>
           </div>
           <p className="hero-note">{T.hero_note}</p>
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section className="hiw">
+        <div className="hiw-inner">
+          {/* Left: text + steps */}
+          <div>
+            <p className="hiw-eyebrow">HOW IT WORKS</p>
+            <h2 className="hiw-headline">Your Player Card.<br/>Your pathway to the game.</h2>
+            <p className="hiw-sub">No talent goes unseen. Build your digital Player Card in minutes and put yourself in front of coaches and clubs worldwide.</p>
+            <div className="hiw-steps">
+              {howItWorksSteps.map((step, i) => (
+                <div
+                  key={i}
+                  className={`hiw-step${activeStep === i ? ' hiw-step-active' : ''}`}
+                  onClick={() => setActiveStep(i)}
+                >
+                  <div className="hiw-num">{String(i + 1).padStart(2, '0')}</div>
+                  <div className="hiw-step-content">
+                    <p className="hiw-step-label">{step.label}</p>
+                    <p className="hiw-step-title">{step.title}</p>
+                    {activeStep === i && <p className="hiw-step-desc">{step.desc}</p>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right: player card preview */}
+          <div className="hiw-right">
+            <div className="hiw-card">
+              {/* Card header */}
+              <div className="hiw-card-top">
+                <div className="hiw-avatar">🏉</div>
+                <div>
+                  <div className="hiw-card-name">James Okafor</div>
+                  <div className="hiw-card-pos">PROP · #1</div>
+                </div>
+                <div style={{ marginLeft: 'auto', textAlign: 'right' }}>
+                  <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)' }}>🇳🇬 Nigeria</div>
+                  <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.2)', marginTop: '2px' }}>24 yrs · 188cm</div>
+                </div>
+              </div>
+
+              {/* Card body — updates per step */}
+              <div className="hiw-card-body">
+                {activeStep === 0 && (
+                  <div>
+                    <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em', marginBottom: '12px' }}>ABOUT</p>
+                    <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.55)', lineHeight: '1.7' }}>Front-row specialist with 6 seasons of club rugby across West Africa and Europe. Strong in the scrum, mobile in open play.</p>
+                    <div style={{ display: 'flex', gap: '8px', marginTop: '16px', flexWrap: 'wrap' }}>
+                      {['Scrum', 'Line-out', 'Ball carrier'].map(tag => (
+                        <span key={tag} style={{ fontSize: '10px', padding: '3px 9px', borderRadius: '4px', background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.4)' }}>{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {activeStep === 1 && (
+                  <div>
+                    <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em', marginBottom: '14px' }}>PROFILE COMPLETION</p>
+                    {[
+                      { label: 'Career history', pct: 85 },
+                      { label: 'Video highlights', pct: 60 },
+                      { label: 'Documents', pct: 40 },
+                      { label: 'References', pct: 25 },
+                    ].map(item => (
+                      <div key={item.label} className="hiw-progress-row">
+                        <div className="hiw-progress-label">
+                          <span>{item.label}</span>
+                          <span style={{ color: '#1D9E75' }}>{item.pct}%</span>
+                        </div>
+                        <div className="hiw-progress-track">
+                          <div className="hiw-progress-fill" style={{ width: `${item.pct}%` }}></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {activeStep === 2 && (
+                  <div>
+                    <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em', marginBottom: '12px' }}>SHARE YOUR CARD</p>
+                    <div style={{ background: 'rgba(255,255,255,0.04)', borderRadius: '8px', padding: '9px 12px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>gainline.pro/cv/j-okafor-xk4</span>
+                      <span style={{ fontSize: '10px', color: '#1D9E75', fontWeight: '700', cursor: 'default', fontFamily: "'Arial Black', Arial, sans-serif" }}>COPY</span>
+                    </div>
+                    {[
+                      { icon: '💬', label: 'Share via WhatsApp', bg: 'rgba(37,211,102,0.12)', color: '#25D366' },
+                      { icon: '✉️', label: 'Send by Email', bg: 'rgba(74,144,217,0.12)', color: '#4A90D9' },
+                      { icon: '📘', label: 'Post to Facebook', bg: 'rgba(24,119,242,0.12)', color: '#1877F2' },
+                    ].map(btn => (
+                      <div key={btn.label} className="hiw-share-btn" style={{ background: btn.bg }}>
+                        <span>{btn.icon}</span>
+                        <span style={{ color: btn.color }}>{btn.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {activeStep === 3 && (
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                      <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em' }}>RECENT VIEWS</p>
+                      <span style={{ fontSize: '11px', color: '#5DCAA5', fontWeight: '700' }}>3 this week</span>
+                    </div>
+                    {[
+                      { initials: 'MR', name: 'Marc Roussel', org: 'Clermont Auvergne', time: '2h ago', bg: '#1D9E75' },
+                      { initials: 'TK', name: 'Tom Keane', org: 'Leicester Tigers', time: 'Yesterday', bg: '#4A90D9' },
+                      { initials: 'JL', name: 'Jean Lebrun', org: 'Stade Français', time: '3 days ago', bg: '#8B5CF6' },
+                    ].map(view => (
+                      <div key={view.name} className="hiw-view-row">
+                        <div className="hiw-view-avatar" style={{ background: view.bg }}>
+                          <span style={{ color: 'white', fontSize: '10px', fontWeight: '700' }}>{view.initials}</span>
+                        </div>
+                        <div className="hiw-view-info">
+                          <div className="hiw-view-name">{view.name}</div>
+                          <div className="hiw-view-org">{view.org}</div>
+                        </div>
+                        <div className="hiw-view-time">{view.time}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Stats strip */}
+              <div className="hiw-card-stats">
+                {[
+                  { val: '6', lbl: 'SEASONS' },
+                  { val: '94', lbl: 'CAPS' },
+                  { val: '118kg', lbl: 'WEIGHT' },
+                ].map(s => (
+                  <div key={s.lbl} className="hiw-stat">
+                    <div className="hiw-stat-val">{s.val}</div>
+                    <div className="hiw-stat-lbl">{s.lbl}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Gainline badge */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginTop: '12px' }}>
+              <svg width="14" height="12" viewBox="0 0 26 24">
+                <line x1="2" y1="22" x2="7" y2="4" stroke="white" strokeWidth="4" strokeLinecap="round" opacity="0.28"/>
+                <line x1="11" y1="22" x2="16" y2="1" stroke="white" strokeWidth="4" strokeLinecap="round" opacity="0.58"/>
+                <line x1="20" y1="22" x2="25" y2="0" stroke="#1D9E75" strokeWidth="4" strokeLinecap="round"/>
+              </svg>
+              <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.25)' }}>Gainline Player Card</span>
+            </div>
+          </div>
         </div>
       </section>
 
