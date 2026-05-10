@@ -44,6 +44,13 @@ const NoteIcon = ({ filled }: { filled: boolean }) => (
   </svg>
 )
 
+const LockIcon = () => (
+  <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+    <rect x="3" y="8" width="10" height="7" rx="1.5"/>
+    <path d="M5 8V5.5a3 3 0 0 1 6 0V8"/>
+  </svg>
+)
+
 export default function CoachDashboard() {
   const supabase = createClient()
   const router = useRouter()
@@ -52,6 +59,8 @@ export default function CoachDashboard() {
   const [profile, setProfile] = useState<any>(null)
   const [players, setPlayers] = useState<any[]>([])
   const [shortlistedIds, setShortlistedIds] = useState<Set<string>>(new Set())
+  const [sharedWithMeIds, setSharedWithMeIds] = useState<Set<string>>(new Set())
+  const [lockedPlayerId, setLockedPlayerId] = useState<string | null>(null)
   const [categories, setCategories] = useState<Record<string, string>>({})
   const [notes, setNotes] = useState<Record<string, string>>({})
   const [openNoteId, setOpenNoteId] = useState<string | null>(null)
@@ -88,14 +97,20 @@ export default function CoachDashboard() {
     if (profile?.role === 'player') { router.push('/dashboard'); return }
     if (profile?.approved) {
       await fetchPlayers({ positions: [], nationalities: [], ages: [], categories: [] }, '')
-      const { data: sl } = await supabase.from('shortlists').select('player_id, category').eq('coach_id', user.id)
+      const [{ data: sl }, { data: views }, { data: nn }] = await Promise.all([
+        supabase.from('shortlists').select('player_id, category').eq('coach_id', user.id),
+        supabase.from('cv_views').select('player_id').eq('coach_id', user.id),
+        supabase.from('coach_notes').select('player_id, note').eq('coach_id', user.id),
+      ])
       if (sl) {
         setShortlistedIds(new Set(sl.map((s: any) => s.player_id)))
         const catMap: Record<string, string> = {}
         sl.forEach((s: any) => { if (s.category) catMap[s.player_id] = s.category })
         setCategories(catMap)
       }
-      const { data: nn } = await supabase.from('coach_notes').select('player_id, note').eq('coach_id', user.id)
+      const viewedIds = (views || []).map((v: any) => v.player_id)
+      const slIds = (sl || []).map((s: any) => s.player_id)
+      setSharedWithMeIds(new Set([...viewedIds, ...slIds]))
       if (nn) {
         const map: Record<string, string> = {}
         nn.forEach((n: any) => { map[n.player_id] = n.note })
@@ -371,6 +386,9 @@ export default function CoachDashboard() {
         .upgrade-text h3 { font-size: 14px; font-weight: 900; color: white; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 4px; }
         .upgrade-text p { font-size: 12px; color: rgba(255,255,255,0.55); margin-bottom: 10px; }
         .upgrade-btn { display: block; background: #1D9E75; color: white; font-size: 12px; font-weight: 700; padding: 9px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; text-align: center; }
+        .row-cv-btn-locked { background: rgba(255,255,255,0.05); color: #888780; border: none; cursor: pointer; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 6px; font-family: 'Arial Black', Arial, sans-serif; white-space: nowrap; display: flex; align-items: center; gap: 5px; }
+        .cv-btn-locked { flex: 1; padding: 7px; background: rgba(255,255,255,0.05); color: #888780; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; font-family: 'Arial Black', Arial, sans-serif; cursor: pointer; text-align: center; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .locked-msg { font-size: 11px; color: #888780; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); padding: 8px 10px; border-radius: 6px; line-height: 1.55; margin-top: 6px; }
         .empty-state { text-align: center; padding: 40px 20px; background: #161C2A; border-radius: 12px; border: 0.5px solid rgba(255,255,255,0.07); }
         .empty-state h3 { font-size: 15px; font-weight: 900; color: #F0EDE4; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 6px; }
         .empty-state p { font-size: 13px; color: #888780; }
@@ -530,7 +548,13 @@ export default function CoachDashboard() {
                           </div>
                         </div>
                         <div className="row-actions">
-                          <a href={`/cv/${player.share_token}`} className="row-cv-btn" target="_blank" rel="noopener noreferrer">{T.coach_view_cv_short}</a>
+                          {sharedWithMeIds.has(player.id) ? (
+                            <a href={`/cv/${player.share_token}`} className="row-cv-btn" target="_blank" rel="noopener noreferrer">View full card</a>
+                          ) : (
+                            <button className="row-cv-btn-locked" onClick={() => setLockedPlayerId(lockedPlayerId === player.id ? null : player.id)}>
+                              <LockIcon /> View full card
+                            </button>
+                          )}
                           <button className={`pill-btn ${hasNote || isNoteOpen ? 'pill-btn-note-active' : ''}`} onClick={e => { e.stopPropagation(); isNoteOpen ? setOpenNoteId(null) : openNote(e, player.id) }}>
                             <NoteIcon filled={hasNote || isNoteOpen} />
                             {isNoteOpen ? (lang === 'fr' ? 'Modifier' : 'Edit note') : hasNote ? (lang === 'fr' ? 'Modifier' : 'Edit note') : (lang === 'fr' ? 'Ajouter' : 'Add note')}
@@ -541,6 +565,9 @@ export default function CoachDashboard() {
                           </button>
                         </div>
                       </div>
+                      {lockedPlayerId === player.id && (
+                        <div className="locked-msg">This player hasn't shared their Player Card with you yet. Ask them to share their Gainline link directly.</div>
+                      )}
                       {(isShortlisted || isNoteOpen || hasNote) && (
                         <div className="row-extras">
                           {isShortlisted && (
@@ -615,8 +642,17 @@ export default function CoachDashboard() {
                           <button className="note-save-btn" disabled={savingNote} onClick={() => saveNote(player.id)}>{savingNote ? '...' : (lang === 'fr' ? 'Sauver' : 'Save note')}</button>
                         </div>
                       )}
+                      {lockedPlayerId === player.id && (
+                        <div className="locked-msg" style={{ marginBottom: '8px' }}>This player hasn't shared their Player Card with you yet. Ask them to share their Gainline link directly.</div>
+                      )}
                       <div className="card-actions">
-                        <a href={`/cv/${player.share_token}`} className="cv-btn" target="_blank" rel="noopener noreferrer">{T.coach_view_cv}</a>
+                        {sharedWithMeIds.has(player.id) ? (
+                          <a href={`/cv/${player.share_token}`} className="cv-btn" target="_blank" rel="noopener noreferrer">View full card</a>
+                        ) : (
+                          <button className="cv-btn-locked" onClick={() => setLockedPlayerId(lockedPlayerId === player.id ? null : player.id)}>
+                            <LockIcon /> View full card
+                          </button>
+                        )}
                         <button className={`pill-btn ${hasNote || isNoteOpen ? 'pill-btn-note-active' : ''}`} onClick={e => isNoteOpen ? setOpenNoteId(null) : openNote(e, player.id)}>
                           <NoteIcon filled={hasNote || isNoteOpen} />
                           {isNoteOpen ? (lang === 'fr' ? 'Modifier' : 'Edit note') : hasNote ? (lang === 'fr' ? 'Modifier' : 'Edit note') : (lang === 'fr' ? 'Ajouter' : 'Add note')}

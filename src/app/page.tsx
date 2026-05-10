@@ -6,6 +6,17 @@ import { t, Lang } from '@/lib/translations'
 const FLAG_EN = '🇬🇧'
 const FLAG_FR = '🇫🇷'
 
+const CAROUSEL_PLAYERS = [
+  { name: 'James Okafor',   initials: 'JO', color: '#1D9E75', position: 'PROP',      flag: 'ng',     nat: 'Nigerian',      age: 24, height: 188, weight: 118, views: 47 },
+  { name: 'Callum Fraser',  initials: 'CF', color: '#4A7FD4', position: 'FLANKER',   flag: 'gb-sct', nat: 'Scottish',      age: 22, height: 192, weight: 105, views: 31 },
+  { name: 'Sipho Dlamini',  initials: 'SD', color: '#E05252', position: 'SCRUMHALF', flag: 'za',     nat: 'South African', age: 26, height: 174, weight: 82,  views: 58 },
+  { name: 'Ciarán Murphy',  initials: 'CM', color: '#8B5CF6', position: 'FULLBACK',  flag: 'ie',     nat: 'Irish',         age: 21, height: 183, weight: 90,  views: 22 },
+  { name: 'Baptiste Girard',initials: 'BG', color: '#D4A843', position: 'NUMBER 8',  flag: 'fr',     nat: 'French',        age: 28, height: 196, weight: 112, views: 64 },
+  { name: 'Tapiwa Mutasa',  initials: 'TM', color: '#1D9E75', position: 'LOCK',      flag: 'zw',     nat: 'Zimbabwean',    age: 25, height: 201, weight: 120, views: 19 },
+  { name: 'Owen Davies',    initials: 'OD', color: '#E05252', position: 'FLYHALF',   flag: 'gb-wls', nat: 'Welsh',         age: 23, height: 179, weight: 88,  views: 36 },
+  { name: 'Marcus Webb',    initials: 'MW', color: '#4A7FD4', position: 'HOOKER',    flag: 'gb-eng', nat: 'English',       age: 27, height: 181, weight: 102, views: 42 },
+]
+
 export default function Home() {
   const [lang, setLang] = useState<Lang>('en')
   const [activeStep, setActiveStep] = useState(0)
@@ -129,6 +140,19 @@ export default function Home() {
         .footer-links { display: flex; gap: 18px; }
         .footer-link { font-size: 11px; color: rgba(255,255,255,0.32); text-decoration: none; }
 
+        /* CAROUSEL */
+        @keyframes carousel-scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .carousel-wrapper { position: relative; overflow: hidden; padding: 6px 0; }
+        .carousel-track { display: flex; gap: 14px; padding: 0 20px; width: max-content; animation: carousel-scroll 50s linear infinite; }
+        .carousel-wrapper:hover .carousel-track { animation-play-state: paused; }
+        .carousel-card { background: #161C2A; border-radius: 12px; padding: 14px; border: 0.5px solid rgba(255,255,255,0.07); width: 216px; flex-shrink: 0; }
+        .carousel-fade-left { position: absolute; left: 0; top: 0; bottom: 0; width: 100px; background: linear-gradient(to right, #0D1B2E, transparent); z-index: 2; pointer-events: none; }
+        .carousel-fade-right { position: absolute; right: 0; top: 0; bottom: 0; width: 100px; background: linear-gradient(to left, #0D1B2E, transparent); z-index: 2; pointer-events: none; }
+        .carousel-stat { background: #1C2338; padding: 6px; text-align: center; }
+
         /* HOW IT WORKS */
         .hiw { background: #0D1B2E; padding: 80px 40px; }
         .hiw-inner { max-width: 1060px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
@@ -242,6 +266,52 @@ export default function Home() {
             <a href="/register/coach" className="btn-ghost">{T.hero_btn_agent}</a>
           </div>
           <p className="hero-note">{T.hero_note}</p>
+        </div>
+      </section>
+
+      {/* PLAYER CAROUSEL */}
+      <section style={{ background: '#0D1B2E', padding: '72px 0 64px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+        <div style={{ textAlign: 'center', padding: '0 40px', marginBottom: '40px' }}>
+          <p style={{ fontSize: '10px', color: '#5DCAA5', letterSpacing: '0.16em', marginBottom: '10px', fontWeight: '700' }}>REAL PLAYERS. REAL PROFILES.</p>
+          <h2 style={{ fontSize: '32px', fontWeight: '900', color: 'white', letterSpacing: '-1px', fontFamily: "'Arial Black', Arial, sans-serif", lineHeight: '1.1' }}>
+            Player Cards live on Gainline
+          </h2>
+        </div>
+
+        <div className="carousel-wrapper">
+          <div className="carousel-fade-left" />
+          <div className="carousel-fade-right" />
+          <div className="carousel-track">
+            {[...CAROUSEL_PLAYERS, ...CAROUSEL_PLAYERS].map((p, i) => (
+              <div key={i} className="carousel-card">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                  <div style={{ width: '38px', height: '38px', borderRadius: '8px', background: p.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <span style={{ color: 'white', fontSize: '13px', fontWeight: '900', fontFamily: "'Arial Black', Arial, sans-serif" }}>{p.initials}</span>
+                  </div>
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ fontSize: '13px', fontWeight: '900', color: '#F0EDE4', fontFamily: "'Arial Black', Arial, sans-serif", whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginTop: '2px' }}>
+                      <img src={`https://flagcdn.com/w20/${p.flag}.png`} alt={p.nat} style={{ width: '14px', height: '10px', borderRadius: '1px', objectFit: 'cover' }} />
+                      <span style={{ fontSize: '10px', color: '#888780' }}>{p.nat} · {p.age} yrs</span>
+                    </div>
+                  </div>
+                </div>
+                <div style={{ display: 'inline-block', background: '#E1F5EE', color: '#0F6E56', fontSize: '9px', fontWeight: '700', padding: '2px 8px', borderRadius: '4px', letterSpacing: '0.06em', marginBottom: '10px' }}>{p.position}</div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1px', background: 'rgba(255,255,255,0.05)', borderRadius: '6px', overflow: 'hidden' }}>
+                  {[{ v: p.height, l: 'CM' }, { v: p.weight, l: 'KG' }, { v: p.views, l: 'VIEWS' }].map(s => (
+                    <div key={s.l} className="carousel-stat">
+                      <div style={{ fontSize: '13px', fontWeight: '900', color: '#F0EDE4', fontFamily: "'Arial Black', Arial, sans-serif" }}>{s.v}</div>
+                      <div style={{ fontSize: '9px', color: '#888780', letterSpacing: '0.08em', marginTop: '1px' }}>{s.l}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ textAlign: 'center', marginTop: '44px' }}>
+          <a href="/login" className="btn-primary">Build your free Player Card</a>
         </div>
       </section>
 
