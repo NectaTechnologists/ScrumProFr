@@ -90,18 +90,31 @@ export default async function CVPage(props: any) {
   const circ = 2 * Math.PI * r
   const offset = circ - (completion / 100) * circ
 
+  const NATIONALITY_FLAG: Record<string, string> = {
+    'South African': 'za', 'English': 'gb-eng', 'Welsh': 'gb-wls', 'Scottish': 'gb-sct',
+    'Irish': 'ie', 'French': 'fr', 'Australian': 'au', 'New Zealander': 'nz',
+    'Argentinian': 'ar', 'Zimbabwean': 'zw', 'Namibian': 'na', 'Georgian': 'ge',
+    'Italian': 'it', 'Japanese': 'jp', 'Fijian': 'fj', 'Samoan': 'ws', 'Tongan': 'to',
+    'American': 'us', 'Canadian': 'ca', 'British': 'gb', 'Nigerian': 'ng',
+    'Spanish': 'es', 'Portuguese': 'pt', 'German': 'de', 'Dutch': 'nl',
+  }
+
   return (
     <>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: Arial, sans-serif; background: #F1EFE8; }
-        .cv-nav { background: #0D1B2E; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
-        .cv-logo { display: flex; align-items: center; gap: 8px; }
+        body { font-family: Arial, sans-serif; background: #0C0F16; }
+
+        /* ── Nav ── */
+        .cv-nav { background: #0D1B2E; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 0.5px solid rgba(255,255,255,0.06); }
+        .cv-logo { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
         .cv-logo-text { color: white; font-weight: 900; font-size: 17px; letter-spacing: -0.5px; font-family: 'Arial Black', Arial, sans-serif; }
         .cv-nav-right { display: flex; align-items: center; gap: 10px; }
         .cv-nav-label { color: rgba(255,255,255,0.35); font-size: 11px; letter-spacing: 0.1em; }
         .lang-toggle { display: flex; gap: 2px; background: rgba(255,255,255,0.08); padding: 3px; border-radius: 8px; }
         .lang-btn { background: transparent; border: none; cursor: pointer; font-size: 15px; width: 28px; height: 24px; border-radius: 5px; display: flex; align-items: center; justify-content: center; }
+
+        /* ── Hero — untouched ── */
         .cv-hero { background: linear-gradient(160deg, #0D1B2E 0%, #0F2E1E 100%); padding: 36px 20px 0; }
         .cv-hero-inner { max-width: 680px; margin: 0 auto; }
         .cv-profile-row { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 28px; }
@@ -124,37 +137,55 @@ export default async function CVPage(props: any) {
         .cv-stat:last-child { border-right: none; }
         .cv-stat-value { color: white; font-size: 20px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; line-height: 1; }
         .cv-stat-label { color: rgba(255,255,255,0.35); font-size: 9px; letter-spacing: 0.14em; margin-top: 5px; }
-        .cv-content { max-width: 680px; margin: 0 auto; padding: 20px 20px 40px; }
-        .cv-card { background: white; border-radius: 12px; padding: 24px; border: 0.5px solid #D3D1C7; margin-bottom: 12px; }
+
+        /* ── Content — dark ── */
+        .cv-content { max-width: 680px; margin: 0 auto; padding: 20px 20px 60px; }
+        .cv-card { background: #131720; border-radius: 12px; padding: 24px; border: 0.5px solid #1e2330; margin-bottom: 12px; }
         .cv-card-label { font-size: 10px; color: #1D9E75; letter-spacing: 0.14em; margin-bottom: 14px; font-weight: 700; }
-        .cv-bio { font-size: 14px; color: #0D1B2E; line-height: 1.75; }
+        .cv-bio { font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.75; }
+
+        /* Detail grid */
         .cv-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
-        .cv-detail-item { padding: 12px 0; border-bottom: 0.5px solid #F1EFE8; }
+        .cv-detail-item { padding: 12px 0; border-bottom: 0.5px solid rgba(255,255,255,0.06); }
         .cv-detail-item:nth-last-child(-n+2) { border-bottom: none; }
-        .cv-detail-label { font-size: 11px; color: #888780; margin-bottom: 3px; }
-        .cv-detail-value { font-size: 14px; font-weight: 700; color: #0D1B2E; }
-        .cv-list-item { padding: 10px 0; border-bottom: 0.5px solid #F1EFE8; font-size: 14px; color: #0D1B2E; line-height: 1.6; }
+        .cv-detail-label { font-size: 11px; color: rgba(255,255,255,0.35); margin-bottom: 3px; }
+        .cv-detail-value { font-size: 14px; font-weight: 700; color: #F0EDE4; }
+
+        /* Lists */
+        .cv-list-item { padding: 10px 0; border-bottom: 0.5px solid rgba(255,255,255,0.06); font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.6; }
         .cv-list-item:last-child { border-bottom: none; }
+
+        /* Tags */
         .cv-tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
-        .cv-tag { background: #F1EFE8; color: #0D1B2E; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 6px; border: 0.5px solid #D3D1C7; }
-        .cv-tag-green { background: #E1F5EE; color: #0F6E56; border-color: rgba(29,158,117,0.2); }
+        .cv-tag { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 6px; border: 0.5px solid rgba(255,255,255,0.1); }
+        .cv-tag-green { background: rgba(29,158,117,0.15); color: #5DCAA5; border-color: rgba(29,158,117,0.2); }
+
+        /* Video */
         .cv-video-list { display: flex; flex-direction: column; gap: 8px; }
-        .cv-video-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: #F8F7F4; border-radius: 8px; text-decoration: none; border: 0.5px solid #D3D1C7; }
+        .cv-video-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: rgba(255,255,255,0.05); border-radius: 8px; text-decoration: none; border: 0.5px solid rgba(255,255,255,0.08); transition: border-color 0.15s; }
         .cv-video-item:hover { border-color: #1D9E75; }
         .cv-video-icon { width: 32px; height: 32px; border-radius: 6px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .cv-video-title { font-size: 13px; font-weight: 700; color: #0D1B2E; margin-bottom: 2px; }
-        .cv-video-source { font-size: 11px; color: #888780; }
+        .cv-video-title { font-size: 13px; font-weight: 700; color: #F0EDE4; margin-bottom: 2px; }
+        .cv-video-source { font-size: 11px; color: rgba(255,255,255,0.35); }
         .cv-video-watch { font-size: 11px; color: #1D9E75; font-weight: 700; margin-left: auto; white-space: nowrap; border: 1.5px solid #1D9E75; border-radius: 20px; padding: 4px 12px; display: flex; align-items: center; gap: 5px; }
-        .cv-agent-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 0.5px solid #F1EFE8; }
+
+        /* Agent */
+        .cv-agent-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 0.5px solid rgba(255,255,255,0.06); }
         .cv-agent-row:last-child { border-bottom: none; }
-        .cv-agent-icon { width: 32px; height: 32px; border-radius: 6px; background: #F1EFE8; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
-        .cv-agent-label { font-size: 11px; color: #888780; margin-bottom: 2px; }
-        .cv-agent-value { font-size: 13px; font-weight: 700; color: #0D1B2E; }
-        .cv-footer-card { background: #0D1B2E; border-radius: 12px; padding: 28px; text-align: center; margin-top: 12px; }
+        .cv-agent-icon { width: 32px; height: 32px; border-radius: 6px; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
+        .cv-agent-label { font-size: 11px; color: rgba(255,255,255,0.35); margin-bottom: 2px; }
+        .cv-agent-value { font-size: 13px; font-weight: 700; color: #F0EDE4; }
+
+        /* Footer CTA card */
+        .cv-footer-card { background: #0D1B2E; border-radius: 12px; padding: 28px; text-align: center; margin-top: 12px; border: 0.5px solid rgba(255,255,255,0.08); }
         .cv-footer-label { font-size: 10px; color: #5DCAA5; letter-spacing: 0.14em; margin-bottom: 8px; }
         .cv-footer-brand { font-size: 20px; font-weight: 900; color: white; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -0.5px; margin-bottom: 6px; }
         .cv-footer-tag { font-size: 12px; color: rgba(255,255,255,0.35); margin-bottom: 16px; }
         .cv-footer-cta { background: #1D9E75; color: white; font-size: 13px; font-weight: 700; padding: 10px 22px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; display: inline-block; }
+
+        @media (max-width: 600px) {
+          .lang-toggle { display: none; }
+        }
         @media (min-width: 600px) {
           .cv-nav { padding: 0 28px; height: 64px; }
           .cv-logo-text { font-size: 18px; }
@@ -164,7 +195,7 @@ export default async function CVPage(props: any) {
           .cv-avatar span { font-size: 34px; }
           .cv-stat-value { font-size: 22px; }
           .cv-card { padding: 28px; }
-          .cv-content { padding: 24px 28px 48px; }
+          .cv-content { padding: 24px 28px 60px; }
         }
       `}</style>
 
@@ -197,6 +228,21 @@ export default async function CVPage(props: any) {
               <div className="cv-badges">
                 {player.position_primary && <span className="cv-position-badge">{pos(player.position_primary)}</span>}
                 {player.position_secondary && <span className="cv-position-badge-alt">{pos(player.position_secondary)}</span>}
+                {player.availability && (
+                  <span style={{
+                    fontSize: '10px', fontWeight: '700', padding: '3px 9px', borderRadius: '4px',
+                    letterSpacing: '0.08em', border: '1px solid',
+                    ...(player.availability === 'available'
+                      ? { background: 'rgba(61,190,114,0.15)', borderColor: 'rgba(61,190,114,0.25)', color: '#3DBE72' }
+                      : player.availability === 'unavailable'
+                      ? { background: 'rgba(224,82,82,0.12)', borderColor: 'rgba(224,82,82,0.2)', color: '#E05252' }
+                      : { background: 'rgba(212,168,67,0.12)', borderColor: 'rgba(212,168,67,0.2)', color: '#D4A843' })
+                  }}>
+                    {player.availability === 'available' ? 'Available'
+                      : player.availability === 'unavailable' ? 'Not available'
+                      : 'Available end of season'}
+                  </span>
+                )}
               </div>
               <div className="cv-meta-row">
                 {player.nationality_primary && <span className="cv-meta-item">{player.nationality_primary}</span>}
@@ -244,6 +290,98 @@ export default async function CVPage(props: any) {
       </div>
 
       <div className="cv-content">
+        {/* VIDEO — premium position, directly below the hero */}
+        {(player.video_url || player.video_url_2 || player.video_url_3) && (
+          <div className="cv-card">
+            <p className="cv-card-label" id="label-video">VIDEO HIGHLIGHTS</p>
+            <div className="cv-video-list">
+              {player.video_url && (
+                <a href={player.video_url} target="_blank" rel="noopener noreferrer" className="cv-video-item">
+                  <div className="cv-video-icon"><svg width="12" height="14" viewBox="0 0 12 14" fill="white"><path d="M0 0L12 7L0 14V0Z"/></svg></div>
+                  <div>
+                    <div className="cv-video-title" id="vid-1-label">Highlight reel</div>
+                    <div className="cv-video-source">{player.video_url.includes('youtube') ? 'YouTube' : 'Vimeo'}</div>
+                  </div>
+                  <div className="cv-video-watch" id="vid-watch-1">Watch<svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></div>
+                </a>
+              )}
+              {player.video_url_2 && (
+                <a href={player.video_url_2} target="_blank" rel="noopener noreferrer" className="cv-video-item">
+                  <div className="cv-video-icon"><svg width="12" height="14" viewBox="0 0 12 14" fill="white"><path d="M0 0L12 7L0 14V0Z"/></svg></div>
+                  <div>
+                    <div className="cv-video-title" id="vid-2-label">Match footage</div>
+                    <div className="cv-video-source">{player.video_url_2.includes('youtube') ? 'YouTube' : 'Vimeo'}</div>
+                  </div>
+                  <div className="cv-video-watch" id="vid-watch-2">Watch<svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></div>
+                </a>
+              )}
+              {player.video_url_3 && (
+                <a href={player.video_url_3} target="_blank" rel="noopener noreferrer" className="cv-video-item">
+                  <div className="cv-video-icon"><svg width="12" height="14" viewBox="0 0 12 14" fill="white"><path d="M0 0L12 7L0 14V0Z"/></svg></div>
+                  <div>
+                    <div className="cv-video-title" id="vid-3-label">Additional footage</div>
+                    <div className="cv-video-source">{player.video_url_3.includes('youtube') ? 'YouTube' : 'Vimeo'}</div>
+                  </div>
+                  <div className="cv-video-watch" id="vid-watch-3">Watch<svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></div>
+                </a>
+              )}
+            </div>
+          </div>
+        )}
+
+        {(player.matches_played != null || player.tries_scored != null || player.tackles_made != null || player.tackle_success_pct != null || player.penalties_conceded != null || player.lineout_win_pct != null || player.metres_carried != null) && (
+          <div className="cv-card">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '14px' }}>
+              <p className="cv-card-label" style={{ marginBottom: 0 }}>PLAYING STATS</p>
+              {player.season && <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.4)', fontWeight: '600' }}>{player.season}</span>}
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
+              {player.matches_played != null && (
+                <div style={{ background: 'rgba(255,255,255,0.05)', border: '0.5px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 8px', textAlign: 'center' }}>
+                  <div style={{ fontSize: '20px', fontWeight: '900', color: '#F0EDE4', fontFamily: 'Arial Black, Arial, sans-serif', lineHeight: 1 }}>{player.matches_played}</div>
+                  <div style={{ fontSize: '8px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.12em', marginTop: '5px' }}>MATCHES</div>
+                </div>
+              )}
+              {player.tries_scored != null && (
+                <div style={{ background: 'rgba(255,255,255,0.05)', border: '0.5px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 8px', textAlign: 'center' }}>
+                  <div style={{ fontSize: '20px', fontWeight: '900', color: '#F0EDE4', fontFamily: 'Arial Black, Arial, sans-serif', lineHeight: 1 }}>{player.tries_scored}</div>
+                  <div style={{ fontSize: '8px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.12em', marginTop: '5px' }}>TRIES</div>
+                </div>
+              )}
+              {player.tackles_made != null && (
+                <div style={{ background: 'rgba(255,255,255,0.05)', border: '0.5px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 8px', textAlign: 'center' }}>
+                  <div style={{ fontSize: '20px', fontWeight: '900', color: '#F0EDE4', fontFamily: 'Arial Black, Arial, sans-serif', lineHeight: 1 }}>{player.tackles_made}</div>
+                  <div style={{ fontSize: '8px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.12em', marginTop: '5px' }}>TACKLES</div>
+                </div>
+              )}
+              {player.tackle_success_pct != null && (
+                <div style={{ background: 'rgba(255,255,255,0.05)', border: '0.5px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 8px', textAlign: 'center' }}>
+                  <div style={{ fontSize: '20px', fontWeight: '900', color: '#F0EDE4', fontFamily: 'Arial Black, Arial, sans-serif', lineHeight: 1 }}>{player.tackle_success_pct}%</div>
+                  <div style={{ fontSize: '8px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.12em', marginTop: '5px' }}>TACKLE ACC.</div>
+                </div>
+              )}
+              {player.penalties_conceded != null && (
+                <div style={{ background: 'rgba(255,255,255,0.05)', border: '0.5px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 8px', textAlign: 'center' }}>
+                  <div style={{ fontSize: '20px', fontWeight: '900', color: '#F0EDE4', fontFamily: 'Arial Black, Arial, sans-serif', lineHeight: 1 }}>{player.penalties_conceded}</div>
+                  <div style={{ fontSize: '8px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.12em', marginTop: '5px' }}>PENALTIES</div>
+                </div>
+              )}
+              {player.lineout_win_pct != null && (
+                <div style={{ background: 'rgba(255,255,255,0.05)', border: '0.5px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 8px', textAlign: 'center' }}>
+                  <div style={{ fontSize: '20px', fontWeight: '900', color: '#F0EDE4', fontFamily: 'Arial Black, Arial, sans-serif', lineHeight: 1 }}>{player.lineout_win_pct}%</div>
+                  <div style={{ fontSize: '8px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.12em', marginTop: '5px' }}>LINEOUT WIN</div>
+                </div>
+              )}
+              {player.metres_carried != null && (
+                <div style={{ background: 'rgba(255,255,255,0.05)', border: '0.5px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 8px', textAlign: 'center' }}>
+                  <div style={{ fontSize: '20px', fontWeight: '900', color: '#F0EDE4', fontFamily: 'Arial Black, Arial, sans-serif', lineHeight: 1 }}>{player.metres_carried}</div>
+                  <div style={{ fontSize: '8px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.12em', marginTop: '5px' }}>METRES</div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {player.bio && (
           <div className="cv-card">
             <p className="cv-card-label" id="label-about">ABOUT</p>
@@ -293,32 +431,6 @@ export default async function CVPage(props: any) {
           </div>
         </div>
 
-        {(player.passport_countries || player.languages) && (
-          <div className="cv-card">
-            <p className="cv-card-label" id="label-eligibility">ELIGIBILITY & LANGUAGES</p>
-            {player.passport_countries && (
-              <div style={{ marginBottom: player.languages ? '16px' : '0' }}>
-                <div className="cv-detail-label" id="lbl-passport" style={{ marginBottom: '8px' }}>Passport countries</div>
-                <div className="cv-tag-row">
-                  {player.passport_countries.split(',').map((c: string) => (
-                    <span key={c} className="cv-tag cv-tag-green">{c.trim()}</span>
-                  ))}
-                </div>
-              </div>
-            )}
-            {player.languages && (
-              <div>
-                <div className="cv-detail-label" id="lbl-languages" style={{ marginBottom: '8px' }}>Languages spoken</div>
-                <div className="cv-tag-row">
-                  {player.languages.split(',').map((l: string) => (
-                    <span key={l} className="cv-tag">{l.trim()}</span>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
         {player.clubs_history && (
           <div className="cv-card">
             <p className="cv-card-label" id="label-clubs">CLUB HISTORY</p>
@@ -337,24 +449,57 @@ export default async function CVPage(props: any) {
           </div>
         )}
 
+        {(player.passport_countries || player.languages) && (
+          <div className="cv-card">
+            <p className="cv-card-label" id="label-eligibility">PASSPORT & ELIGIBILITY</p>
+            {player.passport_countries && (
+              <div style={{ marginBottom: player.languages ? '16px' : '0' }}>
+                <div className="cv-detail-label" id="lbl-passport" style={{ marginBottom: '8px' }}>Passports held</div>
+                <div className="cv-tag-row">
+                  {player.passport_countries.split(',').map((c: string) => {
+                    const country = c.trim()
+                    const code = NATIONALITY_FLAG[country]
+                    return (
+                      <span key={country} className="cv-tag cv-tag-green" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                        {code && <img src={`https://flagcdn.com/w20/${code}.png`} width="16" height="12" alt={country} style={{ borderRadius: '2px', flexShrink: 0 }} />}
+                        {country}
+                      </span>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+            {player.languages && (
+              <div>
+                <div className="cv-detail-label" id="lbl-languages" style={{ marginBottom: '8px' }}>Languages spoken</div>
+                <div className="cv-tag-row">
+                  {player.languages.split(',').map((l: string) => (
+                    <span key={l} className="cv-tag">{l.trim()}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {references && references.length > 0 && (
           <div className="cv-card">
             <p className="cv-card-label">REFERENCES</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {references.map((ref: any) => (
-                <div key={ref.id} style={{ paddingBottom: '16px', borderBottom: '0.5px solid #F1EFE8' }}>
+                <div key={ref.id} style={{ paddingBottom: '16px', borderBottom: '0.5px solid rgba(255,255,255,0.06)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                    <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#E1F5EE', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(29,158,117,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                       <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M3 8l3 3 7-7"/>
                       </svg>
                     </div>
                     <div>
-                      <div style={{ fontSize: '13px', fontWeight: '700', color: '#0D1B2E' }}>{ref.coach_name}</div>
-                      <div style={{ fontSize: '11px', color: '#888780' }}>{ref.organisation_name}</div>
+                      <div style={{ fontSize: '13px', fontWeight: '700', color: '#F0EDE4' }}>{ref.coach_name}</div>
+                      <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.35)' }}>{ref.organisation_name}</div>
                     </div>
                   </div>
-                  <p style={{ fontSize: '13px', color: '#5F5E5A', lineHeight: '1.7', fontStyle: 'italic' }}>"{ref.content}"</p>
+                  <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', lineHeight: '1.7', fontStyle: 'italic' }}>"{ref.content}"</p>
                 </div>
               ))}
             </div>
@@ -394,53 +539,6 @@ export default async function CVPage(props: any) {
           </div>
         )}
 
-        {(player.video_url || player.video_url_2 || player.video_url_3) && (
-          <div className="cv-card">
-            <p className="cv-card-label" id="label-video">VIDEO HIGHLIGHTS</p>
-            <div className="cv-video-list">
-              {player.video_url && (
-                <a href={player.video_url} target="_blank" rel="noopener noreferrer" className="cv-video-item">
-                  <div className="cv-video-icon"><svg width="12" height="14" viewBox="0 0 12 14" fill="white"><path d="M0 0L12 7L0 14V0Z"/></svg></div>
-                  <div>
-                    <div className="cv-video-title" id="vid-1-label">Highlight reel</div>
-                    <div className="cv-video-source">{player.video_url.includes('youtube') ? 'YouTube' : 'Vimeo'}</div>
-                  </div>
-                  <div className="cv-video-watch" id="vid-watch-1">
-                    Watch
-                    <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-                  </div>
-                </a>
-              )}
-              {player.video_url_2 && (
-                <a href={player.video_url_2} target="_blank" rel="noopener noreferrer" className="cv-video-item">
-                  <div className="cv-video-icon"><svg width="12" height="14" viewBox="0 0 12 14" fill="white"><path d="M0 0L12 7L0 14V0Z"/></svg></div>
-                  <div>
-                    <div className="cv-video-title" id="vid-2-label">Match footage</div>
-                    <div className="cv-video-source">{player.video_url_2.includes('youtube') ? 'YouTube' : 'Vimeo'}</div>
-                  </div>
-                  <div className="cv-video-watch" id="vid-watch-2">
-                    Watch
-                    <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-                  </div>
-                </a>
-              )}
-              {player.video_url_3 && (
-                <a href={player.video_url_3} target="_blank" rel="noopener noreferrer" className="cv-video-item">
-                  <div className="cv-video-icon"><svg width="12" height="14" viewBox="0 0 12 14" fill="white"><path d="M0 0L12 7L0 14V0Z"/></svg></div>
-                  <div>
-                    <div className="cv-video-title" id="vid-3-label">Additional footage</div>
-                    <div className="cv-video-source">{player.video_url_3.includes('youtube') ? 'YouTube' : 'Vimeo'}</div>
-                  </div>
-                  <div className="cv-video-watch" id="vid-watch-3">
-                    Watch
-                    <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-                  </div>
-                </a>
-              )}
-            </div>
-          </div>
-        )}
-
         <div className="cv-footer-card">
           <p className="cv-footer-label" id="footer-powered">POWERED BY</p>
           <p className="cv-footer-brand">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></p>
@@ -455,13 +553,13 @@ export default async function CVPage(props: any) {
           var T = {
             en: {
               nav_label: 'PLAYER CV', about: 'ABOUT', details: 'PLAYER DETAILS',
-              eligibility: 'ELIGIBILITY & LANGUAGES', clubs: 'CLUB HISTORY',
+              eligibility: 'PASSPORT & ELIGIBILITY', clubs: 'CLUB HISTORY',
               accolades: 'ACCOLADES & ACHIEVEMENTS', agent: 'AGENT / CONTACT',
               video: 'VIDEO HIGHLIGHTS',
               age: 'AGE', height: 'HEIGHT (CM)', weight: 'WEIGHT (KG)', altpos: 'ALT POS',
               pos_p: 'Primary Position', pos_s: 'Secondary Position', nat: 'Nationality',
               sch: 'School', hgt: 'Height', wgt: 'Weight', hand: 'Dominant Hand', fitness: 'Fitness Score',
-              passport: 'Passport countries', languages: 'Languages spoken',
+              passport: 'Passports held', languages: 'Languages spoken',
               agent_name: 'Agent', agent_email: 'Email', agent_phone: 'Phone',
               vid1: 'Highlight reel', vid2: 'Match footage', vid3: 'Additional footage',
               watch: 'Watch →', powered: 'POWERED BY', tagline: 'No talent goes unseen',
@@ -471,13 +569,13 @@ export default async function CVPage(props: any) {
             },
             fr: {
               nav_label: 'CV JOUEUR', about: 'À PROPOS', details: 'DÉTAILS DU JOUEUR',
-              eligibility: 'ÉLIGIBILITÉ & LANGUES', clubs: 'HISTORIQUE DE CLUBS',
+              eligibility: 'PASSEPORT & ÉLIGIBILITÉ', clubs: 'HISTORIQUE DE CLUBS',
               accolades: 'DISTINCTIONS & RÉCOMPENSES', agent: 'AGENT / CONTACT',
               video: 'VIDÉOS DE HIGHLIGHTS',
               age: 'ÂGE', height: 'TAILLE (CM)', weight: 'POIDS (KG)', altpos: 'POSTE ALT',
               pos_p: 'Poste principal', pos_s: 'Poste secondaire', nat: 'Nationalité',
               sch: 'École', hgt: 'Taille', wgt: 'Poids', hand: 'Main dominante', fitness: 'Condition physique',
-              passport: 'Pays de passeport', languages: 'Langues parlées',
+              passport: 'Passeports détenus', languages: 'Langues parlées',
               agent_name: 'Agent', agent_email: 'E-mail', agent_phone: 'Téléphone',
               vid1: 'Highlight principal', vid2: 'Footage de match', vid3: 'Footage supplémentaire',
               watch: 'Regarder →', powered: 'PROPULSÉ PAR', tagline: 'Aucun talent ne passe inaperçu',

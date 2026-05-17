@@ -49,7 +49,14 @@ export default function LoginPage() {
           .select('role')
           .eq('id', user?.id || '')
           .single()
-        if (profile?.role === 'org_user') {
+        const { data: profileExtra } = await supabase
+          .from('profiles')
+          .select('is_coach, is_player')
+          .eq('id', user?.id || '')
+          .single()
+        const isCoach = profile?.role === 'org_user' || profileExtra?.is_coach
+        const isPlayer = profileExtra?.is_player
+        if (isCoach && !isPlayer) {
           router.push('/dashboard/coach')
         } else {
           router.push('/dashboard')

@@ -5,6 +5,8 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { t, Lang } from '@/lib/translations'
 
+const HERO_COLLAPSED_KEY = 'gainline_coach_hero_collapsed'
+
 const FLAG_EN = '🇬🇧'
 const FLAG_FR = '🇫🇷'
 
@@ -29,9 +31,64 @@ const CATEGORY_COLORS: Record<string, { bg: string, color: string, border: strin
   'Interested':  { bg: '#E8F0FE', color: '#1A56DB', border: 'rgba(74,127,212,0.3)' },
 }
 
+// Inline SVG icons — Tabler outline style
+const UserIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c98a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/>
+    <path d="M6 20v-1a6 6 0 0 1 12 0v1"/>
+  </svg>
+)
+
+const IdIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+    <rect x="3" y="4" width="18" height="16" rx="3"/>
+    <circle cx="9" cy="10" r="2"/>
+    <line x1="15" y1="8" x2="17" y2="8"/>
+    <line x1="15" y1="12" x2="17" y2="12"/>
+    <line x1="7" y1="16" x2="17" y2="16"/>
+  </svg>
+)
+
+const TrophyIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+    <line x1="8" y1="21" x2="16" y2="21"/>
+    <line x1="12" y1="17" x2="12" y2="21"/>
+    <path d="M7 4h10v8a5 5 0 0 1 -10 0v-8"/>
+    <path d="M5 9h-2a2 2 0 0 0 2 4"/>
+    <path d="M19 9h2a2 2 0 0 1 -2 4"/>
+  </svg>
+)
+
+const LockIconSm = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+    <rect x="5" y="11" width="14" height="10" rx="2"/>
+    <path d="M12 3a4 4 0 0 1 4 4v4h-8v-4a4 4 0 0 1 4 -4z"/>
+  </svg>
+)
+
+const BuildingIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+    <line x1="3" y1="21" x2="21" y2="21"/>
+    <path d="M5 21v-14a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v14"/>
+    <line x1="9" y1="10" x2="9" y2="10.01"/>
+    <line x1="15" y1="10" x2="15" y2="10.01"/>
+    <line x1="9" y1="14" x2="9" y2="14.01"/>
+    <line x1="15" y1="14" x2="15" y2="14.01"/>
+  </svg>
+)
+
+const NotesIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+    <path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2z"/>
+    <line x1="9" y1="8" x2="15" y2="8"/>
+    <line x1="9" y1="12" x2="15" y2="12"/>
+    <line x1="9" y1="16" x2="12" y2="16"/>
+  </svg>
+)
+
 const StarIcon = ({ filled }: { filled: boolean }) => (
-  <svg width="13" height="13" viewBox="0 0 16 16" fill={filled ? '#F0A500' : 'none'} stroke={filled ? '#F0A500' : 'currentColor'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M8 2L9.8 6.2L14 6.6L11 9.4L11.8 13.6L8 11.4L4.2 13.6L5 9.4L2 6.6L6.2 6.2Z"/>
+  <svg width="13" height="13" viewBox="0 0 24 24" fill={filled ? '#F0A500' : 'none'} stroke={filled ? '#F0A500' : 'currentColor'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/>
   </svg>
 )
 
@@ -44,13 +101,6 @@ const NoteIcon = ({ filled }: { filled: boolean }) => (
   </svg>
 )
 
-const LockIcon = () => (
-  <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-    <rect x="3" y="8" width="10" height="7" rx="1.5"/>
-    <path d="M5 8V5.5a3 3 0 0 1 6 0V8"/>
-  </svg>
-)
-
 export default function CoachDashboard() {
   const supabase = createClient()
   const router = useRouter()
@@ -60,7 +110,7 @@ export default function CoachDashboard() {
   const [players, setPlayers] = useState<any[]>([])
   const [shortlistedIds, setShortlistedIds] = useState<Set<string>>(new Set())
   const [sharedWithMeIds, setSharedWithMeIds] = useState<Set<string>>(new Set())
-  const [lockedPlayerId, setLockedPlayerId] = useState<string | null>(null)
+  const [cvRequests, setCvRequests] = useState<Record<string, string>>({})
   const [categories, setCategories] = useState<Record<string, string>>({})
   const [notes, setNotes] = useState<Record<string, string>>({})
   const [openNoteId, setOpenNoteId] = useState<string | null>(null)
@@ -74,6 +124,9 @@ export default function CoachDashboard() {
   const [search, setSearch] = useState('')
   const [showMobileFilters, setShowMobileFilters] = useState(false)
   const [natSearch, setNatSearch] = useState('')
+  const [viewCounts, setViewCounts] = useState<Record<string, number>>({})
+  const [coachProfile, setCoachProfile] = useState<any>(null)
+  const [heroCollapsed, setHeroCollapsed] = useState(false)
 
   const [activeFilters, setActiveFilters] = useState<{
     positions: string[]
@@ -85,6 +138,8 @@ export default function CoachDashboard() {
   useEffect(() => {
     const saved = localStorage.getItem('gainline_lang') as Lang
     if (saved === 'en' || saved === 'fr') setLang(saved)
+    const collapsed = localStorage.getItem(HERO_COLLAPSED_KEY)
+    if (collapsed === '1') setHeroCollapsed(true)
     load()
   }, [])
 
@@ -95,12 +150,18 @@ export default function CoachDashboard() {
     const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single()
     setProfile(profile)
     if (profile?.role === 'player') { router.push('/dashboard'); return }
+    if (profile && !profile.approved && !profile.is_coach) { router.push('/dashboard'); return }
+    // Fetch coach profile row
+    const { data: coachRow } = await supabase.from('coaches').select('*').eq('profile_id', user.id).single()
+    if (coachRow) setCoachProfile(coachRow)
+
     if (profile?.approved) {
       await fetchPlayers({ positions: [], nationalities: [], ages: [], categories: [] }, '')
-      const [{ data: sl }, { data: views }, { data: nn }] = await Promise.all([
+      const [{ data: sl }, { data: views }, { data: nn }, { data: cvReqs }] = await Promise.all([
         supabase.from('shortlists').select('player_id, category').eq('coach_id', user.id),
         supabase.from('cv_views').select('player_id').eq('coach_id', user.id),
         supabase.from('coach_notes').select('player_id, note').eq('coach_id', user.id),
+        supabase.from('cv_requests').select('player_id, status').eq('coach_id', user.id),
       ])
       if (sl) {
         setShortlistedIds(new Set(sl.map((s: any) => s.player_id)))
@@ -110,17 +171,35 @@ export default function CoachDashboard() {
       }
       const viewedIds = (views || []).map((v: any) => v.player_id)
       const slIds = (sl || []).map((s: any) => s.player_id)
-      setSharedWithMeIds(new Set([...viewedIds, ...slIds]))
+      const sharedReqIds = (cvReqs || []).filter((r: any) => r.status === 'shared').map((r: any) => r.player_id)
+      setSharedWithMeIds(new Set([...viewedIds, ...slIds, ...sharedReqIds]))
       if (nn) {
         const map: Record<string, string> = {}
         nn.forEach((n: any) => { map[n.player_id] = n.note })
         setNotes(map)
+      }
+      if (cvReqs) {
+        const reqMap: Record<string, string> = {}
+        cvReqs.forEach((r: any) => { reqMap[r.player_id] = r.status })
+        setCvRequests(reqMap)
+      }
+      const { data: allViews } = await supabase.from('cv_views').select('player_id')
+      if (allViews) {
+        const counts: Record<string, number> = {}
+        allViews.forEach((v: any) => { counts[v.player_id] = (counts[v.player_id] || 0) + 1 })
+        setViewCounts(counts)
       }
     }
     setLoading(false)
   }
 
   function toggleLang(l: Lang) { setLang(l); localStorage.setItem('gainline_lang', l) }
+
+  function toggleHeroCollapsed() {
+    const next = !heroCollapsed
+    setHeroCollapsed(next)
+    localStorage.setItem(HERO_COLLAPSED_KEY, next ? '1' : '0')
+  }
 
   async function fetchPlayers(f: typeof activeFilters, nameSearch: string) {
     setSearching(true)
@@ -188,6 +267,27 @@ export default function CoachDashboard() {
     }
   }
 
+  async function requestCard(playerId: string) {
+    if (!user || !profile) return
+    setCvRequests(prev => ({ ...prev, [playerId]: 'pending' }))
+    await supabase.from('cv_requests').insert({
+      coach_id: user.id,
+      player_id: playerId,
+      coach_name: profile?.full_name || user?.email || null,
+      coach_org: profile?.organisation_name || null,
+    })
+    // Fire notification — non-blocking, errors don't affect UX
+    fetch('/api/notify-cv-request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        player_id: playerId,
+        coach_name: profile?.full_name || profile?.organisation_name || user?.email || 'A coach',
+        coach_org: profile?.organisation_name || null,
+      }),
+    }).catch(() => {/* silent — notification is best-effort */})
+  }
+
   async function updateCategory(playerId: string, category: string) {
     if (!user) return
     const value = category || null
@@ -222,7 +322,7 @@ export default function CoachDashboard() {
 
   const filteredNats = NATIONALITIES.filter(n => n.toLowerCase().includes(natSearch.toLowerCase()))
 
-  if (loading) return <div style={{ minHeight: '100vh', background: '#0C0F16', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ fontFamily: 'Arial', color: '#888780', fontSize: '14px' }}>Loading...</div></div>
+  if (loading) return <div style={{ minHeight: '100vh', background: '#0C0F16', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ fontFamily: 'Arial', color: '#A8A398', fontSize: '14px' }}>Loading...</div></div>
 
   if (profile && !profile.approved) return (
     <>
@@ -320,7 +420,7 @@ export default function CoachDashboard() {
         .filter-option:last-child { margin-bottom: 0; }
         .filter-option input[type="checkbox"] { accent-color: #1D9E75; width: 14px; height: 14px; flex-shrink: 0; cursor: pointer; }
         .filter-option-label { font-size: 13px; color: #A8A398; flex: 1; cursor: pointer; }
-        ..nat-search { width: 100%; padding: 6px 10px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 6px; font-size: 12px; outline: none; font-family: Arial, sans-serif; margin-bottom: 8px; color: #F0EDE4; background: #1C2338; }
+        .nat-search { width: 100%; padding: 6px 10px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 6px; font-size: 12px; outline: none; font-family: Arial, sans-serif; margin-bottom: 8px; color: #F0EDE4; background: #1C2338; }
         .nat-search:focus { border-color: #1D9E75; }
         .results-area { flex: 1; min-width: 0; }
         .results-toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
@@ -330,7 +430,7 @@ export default function CoachDashboard() {
         .view-toggle { display: flex; gap: 2px; background: #111520; padding: 3px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.07); flex-shrink: 0; }
         .toggle-btn { padding: 5px 10px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; font-weight: 700; font-family: Arial, sans-serif; background: transparent; color: #888780; }
         .toggle-active { background: #D4A843; color: #0C0F16; }
-        .mobile-filter-btn { display: flex; align-items: center; gap: 6px; padding: 8px 12px; border: 1.5px solid #D3D1C7; border-radius: 8px; background: white; font-size: 12px; font-weight: 700; color: #0D1B2E; cursor: pointer; font-family: Arial, sans-serif; flex-shrink: 0; }
+        .mobile-filter-btn { display: flex; align-items: center; gap: 6px; padding: 8px 12px; border: 1.5px solid rgba(255,255,255,0.15); border-radius: 8px; background: rgba(255,255,255,0.08); font-size: 12px; font-weight: 700; color: #F0EDE4; cursor: pointer; font-family: Arial, sans-serif; flex-shrink: 0; }
         .mobile-filter-badge { background: #1D9E75; color: white; border-radius: 10px; font-size: 10px; padding: 1px 5px; }
         .active-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
         .active-tag { display: flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; background: #E1F5EE; color: #0F6E56; border: 1px solid rgba(29,158,117,0.2); }
@@ -362,43 +462,65 @@ export default function CoachDashboard() {
         .row-note-textarea:focus { border-color: #1D9E75; }
         .row-note-save { padding: 7px 12px; background: #1D9E75; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; align-self: flex-end; }
         .row-note-preview { font-size: 11px; color: #A8A398; font-style: italic; background: #1C2338; padding: 5px 8px; border-radius: 6px; }
-        .player-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
-        .player-card { background: #161C2A; border-radius: 12px; padding: 14px; border: 0.5px solid rgba(255,255,255,0.07); }
-        .player-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-        .player-avatar { width: 38px; height: 38px; border-radius: 8px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
-        .player-avatar span { color: white; font-size: 14px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; }
-        .player-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .player-name { font-size: 13px; font-weight: 900; color: #F0EDE4; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 2px; }
-        .player-meta { font-size: 11px; color: #888780; }
-        .position-badge { display: inline-block; background: #E1F5EE; color: #0F6E56; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.06em; margin-bottom: 8px; }
-        .player-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,0.05); border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
-        .stat-cell { background: #1C2338; padding: 6px; text-align: center; }
-        .stat-val { font-size: 13px; font-weight: 900; color: #F0EDE4; font-family: 'Arial Black', Arial, sans-serif; }
-        .stat-lbl { font-size: 9px; color: #888780; letter-spacing: 0.08em; margin-top: 1px; }
-        .card-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
-        .cv-btn { flex: 1; padding: 7px; background: #0D1B2E; color: white; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; font-family: 'Arial Black', Arial, sans-serif; cursor: pointer; text-align: center; text-decoration: none; display: block; }
-        .note-preview { font-size: 11px; color: #5F5E5A; margin-top: 6px; padding: 5px 7px; background: #F8F7F4; border-radius: 5px; font-style: italic; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .note-panel { margin-top: 8px; padding-top: 8px; border-top: 1px solid #F1EFE8; }
-        .note-textarea { width: 100%; padding: 7px 9px; border: 1.5px solid #D3D1C7; border-radius: 6px; font-size: 12px; font-family: Arial, sans-serif; resize: none; height: 64px; outline: none; color: #0D1B2E; }
-        .note-textarea:focus { border-color: #1D9E75; }
-        .note-save-btn { margin-top: 5px; width: 100%; padding: 6px; background: #1D9E75; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; }
-        .upgrade-banner { background: #0D1B2E; border-radius: 12px; padding: 18px; margin-top: 16px; }
-        .upgrade-text h3 { font-size: 14px; font-weight: 900; color: white; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 4px; }
-        .upgrade-text p { font-size: 12px; color: rgba(255,255,255,0.55); margin-bottom: 10px; }
-        .upgrade-btn { display: block; background: #1D9E75; color: white; font-size: 12px; font-weight: 700; padding: 9px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; text-align: center; }
-        .row-cv-btn-locked { background: rgba(255,255,255,0.05); color: #888780; border: none; cursor: pointer; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 6px; font-family: 'Arial Black', Arial, sans-serif; white-space: nowrap; display: flex; align-items: center; gap: 5px; }
-        .cv-btn-locked { flex: 1; padding: 7px; background: rgba(255,255,255,0.05); color: #888780; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; font-family: 'Arial Black', Arial, sans-serif; cursor: pointer; text-align: center; display: flex; align-items: center; justify-content: center; gap: 5px; }
-        .locked-msg { font-size: 11px; color: #888780; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); padding: 8px 10px; border-radius: 6px; line-height: 1.55; margin-top: 6px; }
+        .row-cv-btn-request { background: transparent; color: #D4A843; border: 1.5px solid rgba(212,168,67,0.35); cursor: pointer; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 6px; font-family: 'Arial Black', Arial, sans-serif; white-space: nowrap; }
+        .row-cv-btn-requested { background: rgba(29,158,117,0.08); color: #5DCAA5; border: 1.5px solid rgba(29,158,117,0.2); cursor: default; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 6px; font-family: 'Arial Black', Arial, sans-serif; white-space: nowrap; }
         .empty-state { text-align: center; padding: 40px 20px; background: #161C2A; border-radius: 12px; border: 0.5px solid rgba(255,255,255,0.07); }
         .empty-state h3 { font-size: 15px; font-weight: 900; color: #F0EDE4; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 6px; }
         .empty-state p { font-size: 13px; color: #888780; }
         .mobile-filter-overlay { position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; background: #111520; overflow-y: auto; }
         .mobile-filter-overlay-header { padding: 16px; border-bottom: 0.5px solid rgba(255,255,255,0.07); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #111520; z-index: 1; }
-        .mobile-filter-overlay-title { font-size: 16px; font-weight: 700; color: #0D1B2E; }
+        .mobile-filter-overlay-title { font-size: 16px; font-weight: 700; color: #F0EDE4; }
         .mobile-filter-close { background: none; border: none; font-size: 24px; color: #888780; cursor: pointer; line-height: 1; padding: 0 4px; }
         .mobile-filter-footer { padding: 16px; border-top: 0.5px solid rgba(255,255,255,0.07); display: flex; gap: 8px; position: sticky; bottom: 0; background: #111520; }
         .mobile-filter-apply { flex: 1; padding: 12px; background: #1D9E75; color: white; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; }
-        .mobile-filter-clear { padding: 12px 16px; background: white; color: #0D1B2E; border: 1.5px solid #D3D1C7; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; }
+        .mobile-filter-clear { padding: 12px 16px; background: rgba(255,255,255,0.08); color: #F0EDE4; border: 1.5px solid rgba(255,255,255,0.15); border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; }
+        .upgrade-banner { background: #0D1B2E; border-radius: 12px; padding: 18px; margin-top: 16px; }
+        .upgrade-text h3 { font-size: 14px; font-weight: 900; color: white; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 4px; }
+        .upgrade-text p { font-size: 12px; color: rgba(255,255,255,0.55); margin-bottom: 10px; }
+        .upgrade-btn { display: block; background: #1D9E75; color: white; font-size: 12px; font-weight: 700; padding: 9px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; text-align: center; }
+
+        /* New card design */
+        .player-grid { display: grid; grid-template-columns: 1fr; gap: 14px; align-items: stretch; }
+        .pc-card { background: #131720; border: 0.5px solid #1e2330; border-radius: 12px; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+        .pc-card-top { padding: 16px; border-bottom: 0.5px solid #1e2330; position: relative; }
+        .pc-saved-badge { position: absolute; top: 12px; right: 12px; display: flex; align-items: center; gap: 4px; background: #22c98a18; color: #22c98a; font-size: 10px; font-weight: 600; text-transform: uppercase; border-radius: 20px; padding: 3px 9px; }
+        .pc-avatar { width: 56px; height: 56px; border-radius: 12px; background: #1e2330; border: 0.5px solid #2a2d35; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; margin-bottom: 10px; }
+        .pc-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .pc-name { font-size: 15px; font-weight: 600; color: white; margin-bottom: 7px; }
+        .pc-badges { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; margin-bottom: 7px; }
+        .pc-badge { font-size: 10px; font-weight: 600; text-transform: uppercase; border-radius: 20px; padding: 3px 9px; }
+        .pc-badge-pos { background: #22c98a22; color: #22c98a; border: 0.5px solid #22c98a40; }
+        .pc-badge-alt { background: #1e2330; color: #888; }
+        .pc-badge-available { background: #22c98a; color: #000; }
+        .pc-badge-eos { background: #f59e0b22; color: #f59e0b; border: 0.5px solid #f59e0b40; }
+        .pc-badge-unavailable { background: #1e2330; color: #6b7280; }
+        .pc-meta { font-size: 12px; color: #6b7280; }
+        .pc-stats-bar { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 0.5px solid #1e2330; }
+        .pc-stat { padding: 10px 12px; text-align: center; }
+        .pc-stat + .pc-stat { border-left: 0.5px solid #1e2330; }
+        .pc-stat-val { font-size: 14px; font-weight: 600; color: white; }
+        .pc-stat-val-muted { font-size: 14px; font-weight: 600; color: #3a3f4a; }
+        .pc-stat-lbl { font-size: 10px; text-transform: uppercase; color: #6b7280; margin-top: 2px; }
+        .pc-details { padding: 10px 16px; border-bottom: 0.5px solid #1e2330; display: flex; flex-direction: column; gap: 6px; }
+        .pc-detail-row { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #6b7280; }
+        .pc-detail-amber { color: #f59e0b; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .pc-views { padding: 8px 16px; border-bottom: 0.5px solid #1e2330; display: flex; align-items: center; gap: 6px; font-size: 11px; color: #6b7280; }
+        .pc-views-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c98a; flex-shrink: 0; }
+        .pc-footer { padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
+        .pc-cta { display: block; width: 100%; padding: 9px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; text-align: center; text-decoration: none; cursor: pointer; border: none; font-family: inherit; }
+        .pc-cta-green { background: #22c98a; color: #000; }
+        .pc-cta-muted { background: #1e2330; color: #6b7280; }
+        .pc-cta-outline { background: transparent; border: 0.5px solid rgba(34,201,138,0.4); color: #22c98a; }
+        .pc-cta-sent { background: #1e2330; color: #6b7280; cursor: default; }
+        .pc-footer-actions { display: flex; gap: 6px; }
+        .pc-action-btn { flex: 1; padding: 7px 10px; border: 0.5px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: #6b7280; border-radius: 8px; font-size: 11px; font-weight: 600; font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .pc-action-btn-active-note { border-color: rgba(74,127,212,0.4); background: rgba(74,127,212,0.08); color: #4A7FD4; }
+        .pc-action-btn-active-save { border-color: rgba(240,165,0,0.4); background: rgba(240,165,0,0.08); color: #F0A500; }
+        .pc-note-panel { background: #0c0f16; border: 0.5px solid #1e2330; border-radius: 8px; padding: 10px; }
+        .pc-note-textarea { width: 100%; background: transparent; border: none; outline: none; color: #F0EDE4; font-size: 12px; font-family: inherit; resize: none; height: 60px; }
+        .pc-note-save { width: 100%; padding: 7px; background: #22c98a; color: #000; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; margin-top: 6px; }
+
+        @media (min-width: 600px) { .player-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (min-width: 769px) {
           .nav { padding: 0 28px; height: 64px; }
           .nav-logo-text { display: inline; color: white; font-weight: 900; font-size: 20px; letter-spacing: -1px; font-family: 'Arial Black', Arial, sans-serif; }
@@ -411,7 +533,7 @@ export default function CoachDashboard() {
           .filter-panel { display: block; }
           .mobile-filter-btn { display: none; }
           .mobile-filter-overlay { display: none !important; }
-          .player-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+          .player-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
           .row-actions { width: auto; padding-top: 0; flex-wrap: nowrap; }
           .player-row-main { flex-wrap: nowrap; align-items: center; }
           .upgrade-banner { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px 24px; }
@@ -458,12 +580,118 @@ export default function CoachDashboard() {
             <button className={`lang-btn ${lang === 'en' ? 'lang-btn-active' : ''}`} onClick={() => toggleLang('en')}>{FLAG_EN}</button>
             <button className={`lang-btn ${lang === 'fr' ? 'lang-btn-active' : ''}`} onClick={() => toggleLang('fr')}>{FLAG_FR}</button>
           </div>
+          <a href="/dashboard/coach-profile" style={{ color: '#D4A843', fontSize: '13px', fontWeight: '700', textDecoration: 'none', whiteSpace: 'nowrap' }}>My Coach Card</a>
+          <a href="/dashboard/vacancies" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', textDecoration: 'none', whiteSpace: 'nowrap' }}>Post Vacancy</a>
+          <a href="/dashboard" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', textDecoration: 'none', whiteSpace: 'nowrap' }}>Dashboard</a>
           <form action="/auth/signout" method="post">
             <a href="/dashboard/settings" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', textDecoration: 'none', marginRight: '8px' }}>Settings</a>
             <button type="submit" className="signout-btn">{T.nav_sign_out}</button>
           </form>
         </div>
       </nav>
+
+      {/* ── COACH HERO STRIP ──────────────────────────────────────────────── */}
+      <div style={{ maxWidth: 1400, margin: '0 auto', padding: '16px 16px 0' }}>
+        {heroCollapsed ? (
+          /* Collapsed state */
+          <div
+            onClick={toggleHeroCollapsed}
+            style={{
+              background: 'rgba(212,168,67,0.05)',
+              border: '1px solid rgba(212,168,67,0.1)',
+              borderRadius: '10px',
+              padding: '10px 16px',
+              marginBottom: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              cursor: 'pointer',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              {/* Avatar 32×32 */}
+              <div style={{ width: 32, height: 32, borderRadius: '7px', background: '#1C2338', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0 }}>
+                {coachProfile?.headshot_url ? (
+                  <img src={coachProfile.headshot_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  <span style={{ fontFamily: 'Arial Black, Arial, sans-serif', fontSize: '12px', color: '#D4A843', fontWeight: 900 }}>
+                    {(coachProfile?.full_name || profile?.full_name || '?')[0]}
+                  </span>
+                )}
+              </div>
+              <span style={{ fontSize: '13px', color: '#D4A843', fontWeight: 700, fontFamily: 'Arial, sans-serif' }}>
+                {coachProfile?.full_name || profile?.full_name || 'Coach'}
+              </span>
+              <span style={{ fontSize: '11px', color: '#5A564F', fontFamily: 'Arial, sans-serif' }}>Coach dashboard</span>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#5A564F" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="4,6 8,10 12,6"/>
+            </svg>
+          </div>
+        ) : (
+          /* Expanded state */
+          <div style={{
+            background: '#161C2A',
+            border: '1px solid rgba(212,168,67,0.15)',
+            borderRadius: '14px',
+            padding: '16px 20px',
+            marginBottom: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            flexWrap: 'wrap',
+          }}>
+            {/* Avatar 48×48 */}
+            <div style={{ width: 48, height: 48, borderRadius: '10px', background: '#1C2338', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0 }}>
+              {coachProfile?.headshot_url ? (
+                <img src={coachProfile.headshot_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              ) : (
+                <span style={{ fontFamily: 'Arial Black, Arial, sans-serif', fontSize: '18px', color: '#D4A843', fontWeight: 900 }}>
+                  {(coachProfile?.full_name || profile?.full_name || '?')[0]}
+                </span>
+              )}
+            </div>
+            {/* Info */}
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontFamily: 'Arial Black, Arial, sans-serif', fontSize: '16px', fontWeight: 900, color: '#F0EDE4', marginBottom: '2px' }}>
+                {coachProfile?.full_name || profile?.full_name || 'Coach'}
+              </div>
+              {coachProfile?.role_title && (
+                <div style={{ fontSize: '11px', color: '#D4A843', fontFamily: 'Arial, sans-serif' }}>{coachProfile.role_title}</div>
+              )}
+              {coachProfile?.organisation && (
+                <div style={{ fontSize: '11px', color: '#A8A398', fontFamily: 'Arial, sans-serif' }}>{coachProfile.organisation}</div>
+              )}
+            </div>
+            {/* Stat pills */}
+            <div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>
+              <span style={{ fontSize: '11px', color: '#5A564F', background: 'rgba(255,255,255,0.05)', padding: '4px 10px', borderRadius: '20px', fontFamily: 'Arial, sans-serif' }}>
+                {shortlistedIds.size} shortlisted
+              </span>
+              <span style={{ fontSize: '11px', color: '#5A564F', background: 'rgba(255,255,255,0.05)', padding: '4px 10px', borderRadius: '20px', fontFamily: 'Arial, sans-serif' }}>
+                {Object.keys(notes).length} notes
+              </span>
+            </div>
+            {/* Buttons */}
+            <div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexShrink: 0 }}>
+              <a href="/dashboard/coach-profile" style={{ color: '#D4A843', border: '1px solid rgba(212,168,67,0.3)', background: 'transparent', padding: '6px 12px', borderRadius: '6px', fontSize: '11px', fontFamily: 'Arial, sans-serif', textDecoration: 'none', whiteSpace: 'nowrap' }}>
+                Edit Coach Card
+              </a>
+              {coachProfile?.share_token && (
+                <a href={`/coach/${coachProfile.share_token}`} target="_blank" style={{ background: '#D4A843', color: '#0C0F16', border: 'none', padding: '6px 14px', borderRadius: '6px', fontSize: '11px', fontFamily: 'Arial, sans-serif', textDecoration: 'none', whiteSpace: 'nowrap', fontWeight: 700 }}>
+                  Share Coach Card
+                </a>
+              )}
+            </div>
+            {/* Collapse button */}
+            <button onClick={toggleHeroCollapsed} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', color: '#5A564F', flexShrink: 0 }}>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="4,10 8,6 12,10"/>
+              </svg>
+            </button>
+          </div>
+        )}
+      </div>
 
       <div className="page-header">
         <p className="page-label">{T.coach_label}</p>
@@ -522,6 +750,7 @@ export default function CoachDashboard() {
             }
           </p>
 
+          {/* LIST VIEW — unchanged */}
           {view === 'list' && (
             displayedPlayers.length > 0 ? (
               <div className="player-list">
@@ -544,16 +773,19 @@ export default function CoachDashboard() {
                             <span className="row-position">{pos(player.position_primary)}</span>
                             {player.nationality_primary && <span>{player.nationality_primary}</span>}
                             {age && <span>· {age} yrs</span>}
+                            {player.passport_countries && player.passport_countries.split(',').map((c: string) => c.trim()).filter(Boolean).some((c: string) => c !== player.nationality_primary) && (
+                              <span>· {player.passport_countries.split(',').map((c: string) => c.trim()).filter((c: string) => c !== player.nationality_primary).join(', ')} passport{player.passport_countries.split(',').length > 2 ? 's' : ''}</span>
+                            )}
                             {catStyle && <span className="category-badge" style={{ background: catStyle.bg, color: catStyle.color, borderColor: catStyle.border }}>{category}</span>}
                           </div>
                         </div>
                         <div className="row-actions">
                           {sharedWithMeIds.has(player.id) ? (
                             <a href={`/cv/${player.share_token}`} className="row-cv-btn" target="_blank" rel="noopener noreferrer">View full card</a>
+                          ) : cvRequests[player.id] === 'pending' ? (
+                            <button className="row-cv-btn-requested" disabled>Request sent ✓</button>
                           ) : (
-                            <button className="row-cv-btn-locked" onClick={() => setLockedPlayerId(lockedPlayerId === player.id ? null : player.id)}>
-                              <LockIcon /> View full card
-                            </button>
+                            <button className="row-cv-btn-request" onClick={() => requestCard(player.id)}>Request Card</button>
                           )}
                           <button className={`pill-btn ${hasNote || isNoteOpen ? 'pill-btn-note-active' : ''}`} onClick={e => { e.stopPropagation(); isNoteOpen ? setOpenNoteId(null) : openNote(e, player.id) }}>
                             <NoteIcon filled={hasNote || isNoteOpen} />
@@ -565,9 +797,6 @@ export default function CoachDashboard() {
                           </button>
                         </div>
                       </div>
-                      {lockedPlayerId === player.id && (
-                        <div className="locked-msg">This player hasn't shared their Player Card with you yet. Ask them to share their Gainline link directly.</div>
-                      )}
                       {(isShortlisted || isNoteOpen || hasNote) && (
                         <div className="row-extras">
                           {isShortlisted && (
@@ -600,67 +829,216 @@ export default function CoachDashboard() {
             )
           )}
 
+          {/* CARD VIEW — new design */}
           {view === 'card' && (
             displayedPlayers.length > 0 ? (
               <div className="player-grid">
                 {displayedPlayers.map(player => {
                   const age = getAge(player.date_of_birth)
                   const isShortlisted = shortlistedIds.has(player.id)
+                  const isShared = sharedWithMeIds.has(player.id)
                   const hasNote = !!notes[player.id]
                   const isNoteOpen = openNoteId === player.id
-                  const category = categories[player.id]
-                  const catStyle = category ? CATEGORY_COLORS[category] : null
+                  const isPending = cvRequests[player.id] === 'pending'
+                  const isUnavailable = player.availability === 'unavailable'
+
+                  // Build passport display text
+                  const passportText = player.passport_countries
+                    ? player.passport_countries
+                    : player.nationality_primary
+                      ? `${player.nationality_primary} passport`
+                      : null
+
+                  // Build meta string
+                  const metaParts = [
+                    player.nationality_primary,
+                    age ? `${age} yrs` : null,
+                    player.school_attended || null,
+                  ].filter(Boolean)
+
+                  // Zone 2: stat value or muted dash
+                  const statVal = (v: any) => v ? v : null
+
+                  // Row 2 contextual
+                  let row2: React.ReactNode = null
+                  if (notes[player.id]) {
+                    row2 = (
+                      <div className="pc-detail-row pc-detail-amber">
+                        <NotesIcon />
+                        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{notes[player.id]}</span>
+                      </div>
+                    )
+                  } else if (!isShared) {
+                    row2 = (
+                      <div className="pc-detail-row">
+                        <LockIconSm />
+                        <span>Full card locked — request access</span>
+                      </div>
+                    )
+                  } else if (isUnavailable) {
+                    row2 = (
+                      <div className="pc-detail-row">
+                        <BuildingIcon />
+                        <span>Contracted · Available next season</span>
+                      </div>
+                    )
+                  } else if (player.clubs_history) {
+                    const firstLine = typeof player.clubs_history === 'string'
+                      ? player.clubs_history.split('\n')[0]
+                      : Array.isArray(player.clubs_history)
+                        ? player.clubs_history[0]
+                        : null
+                    if (firstLine) {
+                      row2 = (
+                        <div className="pc-detail-row">
+                          <TrophyIcon />
+                          <span>{firstLine}</span>
+                        </div>
+                      )
+                    }
+                  }
+
+                  // CTA button
+                  let ctaNode: React.ReactNode
+                  if (isShared) {
+                    ctaNode = (
+                      <a
+                        href={`/cv/${player.share_token}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`pc-cta ${isUnavailable ? 'pc-cta-muted' : 'pc-cta-green'}`}
+                      >
+                        View full card
+                      </a>
+                    )
+                  } else if (isPending) {
+                    ctaNode = <button className="pc-cta pc-cta-sent" disabled>Request sent ✓</button>
+                  } else {
+                    ctaNode = (
+                      <button className="pc-cta pc-cta-outline" onClick={() => requestCard(player.id)}>
+                        Request card access
+                      </button>
+                    )
+                  }
+
                   return (
-                    <div key={player.id} className="player-card">
-                      <div className="player-header">
-                        <div className="player-avatar">
-                          {player.avatar_url ? <img src={player.avatar_url} alt={player.first_name} /> : <span>{getInitials(player)}</span>}
-                        </div>
-                        <div>
-                          <div className="player-name">{player.first_name} {player.last_name}</div>
-                          <div className="player-meta">{player.nationality_primary || '–'}</div>
-                        </div>
-                      </div>
-                      {player.position_primary && <div className="position-badge">{pos(player.position_primary)}</div>}
-                      <div className="player-stats">
-                        <div className="stat-cell"><div className="stat-val">{age ?? '–'}</div><div className="stat-lbl">AGE</div></div>
-                        <div className="stat-cell"><div className="stat-val">{player.height_cm || '–'}</div><div className="stat-lbl">CM</div></div>
-                        <div className="stat-cell"><div className="stat-val">{player.weight_kg || '–'}</div><div className="stat-lbl">KG</div></div>
-                      </div>
-                      {isShortlisted && (
-                        <div style={{ marginBottom: '8px' }}>
-                          <select style={{ width: '100%', padding: '5px 8px', border: '1.5px solid #D3D1C7', borderRadius: '6px', fontSize: '12px', fontFamily: 'Arial, sans-serif', outline: 'none', cursor: 'pointer', color: '#0D1B2E', background: 'white' }} value={category || ''} onChange={e => updateCategory(player.id, e.target.value)}>
-                            <option value="">{lang === 'fr' ? '— Choisir —' : '— Set status —'}</option>
-                            {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
-                          </select>
-                        </div>
-                      )}
-                      {hasNote && !isNoteOpen && <div className="note-preview">{notes[player.id]}</div>}
-                      {isNoteOpen && (
-                        <div className="note-panel">
-                          <textarea className="note-textarea" placeholder={lang === 'fr' ? 'Note privée...' : 'Private note...'} value={noteText} onChange={e => setNoteText(e.target.value)} autoFocus />
-                          <button className="note-save-btn" disabled={savingNote} onClick={() => saveNote(player.id)}>{savingNote ? '...' : (lang === 'fr' ? 'Sauver' : 'Save note')}</button>
-                        </div>
-                      )}
-                      {lockedPlayerId === player.id && (
-                        <div className="locked-msg" style={{ marginBottom: '8px' }}>This player hasn't shared their Player Card with you yet. Ask them to share their Gainline link directly.</div>
-                      )}
-                      <div className="card-actions">
-                        {sharedWithMeIds.has(player.id) ? (
-                          <a href={`/cv/${player.share_token}`} className="cv-btn" target="_blank" rel="noopener noreferrer">View full card</a>
-                        ) : (
-                          <button className="cv-btn-locked" onClick={() => setLockedPlayerId(lockedPlayerId === player.id ? null : player.id)}>
-                            <LockIcon /> View full card
-                          </button>
+                    <div key={player.id} className="pc-card">
+                      {/* Zone 1 — Card top */}
+                      <div className="pc-card-top">
+                        {isShortlisted && (
+                          <div className="pc-saved-badge">
+                            <StarIcon filled={true} />
+                            Saved
+                          </div>
                         )}
-                        <button className={`pill-btn ${hasNote || isNoteOpen ? 'pill-btn-note-active' : ''}`} onClick={e => isNoteOpen ? setOpenNoteId(null) : openNote(e, player.id)}>
-                          <NoteIcon filled={hasNote || isNoteOpen} />
-                          {isNoteOpen ? (lang === 'fr' ? 'Modifier' : 'Edit note') : hasNote ? (lang === 'fr' ? 'Modifier' : 'Edit note') : (lang === 'fr' ? 'Ajouter' : 'Add note')}
-                        </button>
-                        <button className={`pill-btn ${isShortlisted ? 'pill-btn-save-active' : ''}`} onClick={e => toggleShortlist(e, player.id)}>
-                          <StarIcon filled={isShortlisted} />
-                          {isShortlisted ? (lang === 'fr' ? 'Sauvegardé' : 'Saved') : (lang === 'fr' ? 'Sauvegarder' : 'Save')}
-                        </button>
+                        <div className="pc-avatar">
+                          {player.avatar_url
+                            ? <img src={player.avatar_url} alt={player.first_name} />
+                            : <UserIcon />
+                          }
+                        </div>
+                        <div className="pc-name">{player.first_name} {player.last_name}</div>
+                        <div className="pc-badges">
+                          {player.position_primary && (
+                            <span className="pc-badge pc-badge-pos">{pos(player.position_primary)}</span>
+                          )}
+                          {player.position_secondary && (
+                            <span className="pc-badge pc-badge-alt">{pos(player.position_secondary)}</span>
+                          )}
+                          {isUnavailable ? (
+                            player.availability === 'end_of_season'
+                              ? <span className="pc-badge pc-badge-eos">End of season</span>
+                              : <span className="pc-badge pc-badge-unavailable">Not available</span>
+                          ) : (
+                            <span className="pc-badge pc-badge-available">Available</span>
+                          )}
+                        </div>
+                        {metaParts.length > 0 && (
+                          <div className="pc-meta">{metaParts.join(' · ')}</div>
+                        )}
+                      </div>
+
+                      {/* Zone 2 — Stats bar */}
+                      <div className="pc-stats-bar">
+                        <div className="pc-stat">
+                          {statVal(player.height_cm)
+                            ? <div className="pc-stat-val">{player.height_cm}</div>
+                            : <div className="pc-stat-val-muted">—</div>
+                          }
+                          <div className="pc-stat-lbl">Height (cm)</div>
+                        </div>
+                        <div className="pc-stat">
+                          {statVal(player.weight_kg)
+                            ? <div className="pc-stat-val">{player.weight_kg}</div>
+                            : <div className="pc-stat-val-muted">—</div>
+                          }
+                          <div className="pc-stat-lbl">Weight (kg)</div>
+                        </div>
+                        <div className="pc-stat">
+                          {statVal(player.international_caps)
+                            ? <div className="pc-stat-val">{player.international_caps}</div>
+                            : <div className="pc-stat-val-muted">—</div>
+                          }
+                          <div className="pc-stat-lbl">Caps</div>
+                        </div>
+                      </div>
+
+                      {/* Zone 3 — Detail rows */}
+                      {(passportText || row2) && (
+                        <div className="pc-details">
+                          {passportText && (
+                            <div className="pc-detail-row">
+                              <IdIcon />
+                              <span>{passportText}</span>
+                            </div>
+                          )}
+                          {row2}
+                        </div>
+                      )}
+
+                      {/* Zone 4 — View count */}
+                      <div className="pc-views">
+                        <div className="pc-views-dot" />
+                        {viewCounts[player.id] || 0} profile views
+                      </div>
+
+                      {/* Zone 5 — Footer */}
+                      <div className="pc-footer">
+                        {isNoteOpen && (
+                          <div className="pc-note-panel">
+                            <textarea
+                              className="pc-note-textarea"
+                              placeholder={lang === 'fr' ? 'Note privée...' : 'Private note...'}
+                              value={noteText}
+                              onChange={e => setNoteText(e.target.value)}
+                              autoFocus
+                            />
+                            <button
+                              className="pc-note-save"
+                              disabled={savingNote}
+                              onClick={() => saveNote(player.id)}
+                            >
+                              {savingNote ? '...' : (lang === 'fr' ? 'Sauver' : 'Save note')}
+                            </button>
+                          </div>
+                        )}
+                        {ctaNode}
+                        <div className="pc-footer-actions">
+                          <button
+                            className={`pc-action-btn ${isNoteOpen || hasNote ? 'pc-action-btn-active-note' : ''}`}
+                            onClick={e => isNoteOpen ? setOpenNoteId(null) : openNote(e, player.id)}
+                          >
+                            <NoteIcon filled={isNoteOpen || hasNote} />
+                            {isNoteOpen ? (lang === 'fr' ? 'Fermer' : 'Close note') : hasNote ? (lang === 'fr' ? 'Modifier' : 'Edit note') : (lang === 'fr' ? 'Ajouter note' : 'Add note')}
+                          </button>
+                          <button
+                            className={`pc-action-btn ${isShortlisted ? 'pc-action-btn-active-save' : ''}`}
+                            onClick={e => toggleShortlist(e, player.id)}
+                          >
+                            <StarIcon filled={isShortlisted} />
+                            {isShortlisted ? (lang === 'fr' ? 'Sauvegardé' : 'Saved') : (lang === 'fr' ? 'Sauvegarder' : 'Save')}
+                          </button>
+                        </div>
                       </div>
                     </div>
                   )

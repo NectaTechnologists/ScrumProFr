@@ -23,6 +23,11 @@ const NATIONALITIES = [
   'Ugandan','Ukrainian','Uruguayan','Welsh','Zimbabwean'
 ]
 
+function getAge(dob: string): number | null {
+  if (!dob) return null
+  return Math.floor((new Date().getTime() - new Date(dob).getTime()) / 31557600000)
+}
+
 export default function OnboardingPage() {
   const supabase = createClient()
   const router = useRouter()
@@ -36,7 +41,11 @@ export default function OnboardingPage() {
   const [form, setForm] = useState({
     first_name: '', last_name: '', position_primary: 'HOOKER',
     nationality_primary: '', date_of_birth: '', bio: '', avatar_url: '',
+    height_cm: '', weight_kg: '',
   })
+
+  // Track which fields have been interacted with (for inline error display)
+  const [touched, setTouched] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
     async function init() {
@@ -49,18 +58,86 @@ export default function OnboardingPage() {
     init()
   }, [])
 
+  // ── Field-level validators ────────────────────────────────────────────────
+
+  function getFieldError(field: string): string | null {
+    if (!touched[field]) return null
+    switch (field) {
+      case 'first_name':
+        return !form.first_name.trim() ? 'Required to continue' : null
+      case 'last_name':
+        return !form.last_name.trim() ? 'Required to continue' : null
+      case 'nationality_primary':
+        return !form.nationality_primary ? 'Required to continue' : null
+      case 'date_of_birth': {
+        if (!form.date_of_birth) return 'Required to continue'
+        const age = getAge(form.date_of_birth)
+        if (age === null || age < 14) return 'Player must be at least 14 years old'
+        return null
+      }
+      case 'height_cm': {
+        if (!form.height_cm) return 'Required to continue'
+        const h = Number(form.height_cm)
+        if (isNaN(h) || h < 140 || h > 220) return 'Please enter a valid value (140–220 cm)'
+        return null
+      }
+      case 'weight_kg': {
+        if (!form.weight_kg) return 'Required to continue'
+        const w = Number(form.weight_kg)
+        if (isNaN(w) || w < 50 || w > 180) return 'Please enter a valid value (50–180 kg)'
+        return null
+      }
+      default:
+        return null
+    }
+  }
+
+  function touch(field: string) {
+    setTouched(prev => ({ ...prev, [field]: true }))
+  }
+
+  function touchAll() {
+    setTouched({
+      first_name: true, last_name: true, nationality_primary: true,
+      date_of_birth: true, height_cm: true, weight_kg: true,
+    })
+  }
+
+  // ── Can-continue check ────────────────────────────────────────────────────
+
+  const step2Valid = (() => {
+    if (!form.first_name.trim() || !form.last_name.trim()) return false
+    if (!form.nationality_primary) return false
+    if (!form.date_of_birth) return false
+    const age = getAge(form.date_of_birth)
+    if (age === null || age < 14) return false
+    if (!form.height_cm) return false
+    const h = Number(form.height_cm)
+    if (isNaN(h) || h < 140 || h > 220) return false
+    if (!form.weight_kg) return false
+    const w = Number(form.weight_kg)
+    if (isNaN(w) || w < 50 || w > 180) return false
+    return true
+  })()
+
+  // ── Save functions ────────────────────────────────────────────────────────
+
   async function saveBasics() {
+    touchAll()
+    if (!step2Valid) return
     setSaving(true)
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
     const { data: existing } = await supabase.from('players').select('id').eq('profile_id', user.id).single()
     const payload = {
       profile_id: user.id,
-      first_name: form.first_name,
-      last_name: form.last_name,
+      first_name: form.first_name.trim(),
+      last_name: form.last_name.trim(),
       position_primary: form.position_primary,
       nationality_primary: form.nationality_primary,
       date_of_birth: form.date_of_birth || null,
+      height_cm: form.height_cm ? Number(form.height_cm) : null,
+      weight_kg: form.weight_kg ? Number(form.weight_kg) : null,
       profile_visibility: 'PUBLIC',
     }
     let result
@@ -110,7 +187,21 @@ export default function OnboardingPage() {
   }
 
   const pos = (s: string) => s.replace(/_/g, ' ')
-  const canContinueStep2 = form.first_name && form.last_name && form.nationality_primary && form.date_of_birth
+
+  // ── Icons ─────────────────────────────────────────────────────────────────
+
+  const LockIcon = () => (
+    <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'inline', marginRight: '4px', verticalAlign: 'middle' }}>
+      <rect x="3" y="7" width="10" height="8" rx="1.5"/>
+      <path d="M5 7V5a3 3 0 0 1 6 0v2"/>
+    </svg>
+  )
+
+  const CheckIcon = () => (
+    <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="#1D9E75" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'inline', marginRight: '4px', verticalAlign: 'middle' }}>
+      <path d="M3 8l3.5 3.5L13 4"/>
+    </svg>
+  )
 
   return (
     <>
@@ -125,22 +216,25 @@ export default function OnboardingPage() {
         .ob-title { font-size: 22px; font-weight: 900; margin-bottom: 8px; font-family: 'Arial Black', Arial, sans-serif; }
         .ob-sub { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.6; margin-bottom: 24px; }
         .ob-sub-dark { font-size: 13px; color: #888780; line-height: 1.6; margin-bottom: 20px; }
-        .ob-step-label { font-size: 10px; color: #1D9E75; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 6px; }
+        .ob-step-label { font-size: 10px; color: #1D9E75; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 4px; }
         .ob-form-title { font-size: 18px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 4px; }
         .field-label { font-size: 12px; font-weight: 600; color: #0D1B2E; display: block; margin-bottom: 5px; }
         .field-input { width: 100%; padding: 10px 14px; border: 1.5px solid #E8E4F0; border-radius: 8px; font-size: 14px; outline: none; font-family: Arial, sans-serif; color: #0D1B2E; background: white; }
         .field-input:focus { border-color: #1D9E75; }
         .field-input::placeholder { color: #B4B2A9; }
+        .field-input-error { border-color: #e05252 !important; }
+        .field-error { font-size: 11px; color: #e05252; margin-top: 4px; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-        .form-field { display: flex; flex-direction: column; gap: 5px; }
-        .form-full { margin-bottom: 12px; display: flex; flex-direction: column; gap: 5px; }
-        .ob-btn { width: 100%; padding: 12px; background: #1D9E75; color: white; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 8px; }
-        .ob-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .form-field { display: flex; flex-direction: column; gap: 0; }
+        .form-full { margin-bottom: 12px; display: flex; flex-direction: column; gap: 0; }
+        .ob-btn { width: 100%; padding: 12px; background: #1D9E75; color: white; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 8px; transition: opacity 0.15s; }
+        .ob-btn:disabled { opacity: 0.45; cursor: not-allowed; }
         .ob-btn-outline { width: 100%; padding: 11px; background: white; color: #0D1B2E; border: 1.5px solid #D3D1C7; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; margin-top: 8px; }
         .ob-skip { display: block; text-align: center; margin-top: 14px; font-size: 12px; color: #888780; cursor: pointer; background: none; border: none; font-family: Arial, sans-serif; text-decoration: underline; }
-        .dots { display: flex; justify-content: center; gap: 6px; margin-top: 16px; }
+        .dots { display: flex; justify-content: center; align-items: center; gap: 6px; margin-top: 16px; }
         .dot { height: 4px; border-radius: 2px; background: #D3D1C7; }
         .dot-active { background: #1D9E75; width: 24px; }
+        .dot-done { background: #1D9E75; width: 8px; opacity: 0.5; }
         .dot-inactive { width: 8px; }
         .ob-stats { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; }
         .ob-stat-val { font-size: 20px; font-weight: 900; color: #1D9E75; font-family: 'Arial Black', Arial, sans-serif; }
@@ -157,6 +251,7 @@ export default function OnboardingPage() {
         .ob-success-icon { width: 52px; height: 52px; border-radius: 50%; background: rgba(29,158,117,0.15); border: 2px solid #1D9E75; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
         .ob-go-btn { width: 100%; padding: 12px; background: white; color: #0D1B2E; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; margin-bottom: 10px; }
         .ob-hint { font-size: 11px; color: rgba(255,255,255,0.3); text-align: center; margin-top: 6px; }
+        .ob-required-note { font-size: 11px; color: #888780; margin-bottom: 16px; }
         @media (max-width: 480px) {
           .ob-wrap { padding: 24px 16px; }
           .ob-hero { padding: 28px 20px; }
@@ -168,6 +263,7 @@ export default function OnboardingPage() {
       <div className="ob-wrap">
         <div className="ob-card">
 
+          {/* ── Step 1: Welcome ─────────────────────────────────────────── */}
           {step === 1 && (
             <>
               <div className="ob-hero">
@@ -213,49 +309,127 @@ export default function OnboardingPage() {
             </>
           )}
 
+          {/* ── Step 2: Your basics (mandatory) ─────────────────────────── */}
           {step === 2 && (
             <>
               <div className="ob-form">
-                <p className="ob-step-label">STEP 1 OF 3</p>
+                <div className="ob-step-label">
+                  <LockIcon />
+                  STEP 1 OF 3 · REQUIRED
+                </div>
                 <h2 className="ob-form-title">Your basics</h2>
-                <p className="ob-sub-dark">This is what coaches see first.</p>
+                <p className="ob-sub-dark" style={{ marginBottom: '4px' }}>This is what coaches see first.</p>
+                <p className="ob-required-note">All fields on this step are required.</p>
+
+                {/* Name row */}
                 <div className="form-row">
                   <div className="form-field">
                     <label className="field-label">First name</label>
-                    <input className="field-input" value={form.first_name} onChange={e => setForm({...form, first_name: e.target.value})} placeholder="Abonga"/>
+                    <input
+                      className={`field-input${getFieldError('first_name') ? ' field-input-error' : ''}`}
+                      value={form.first_name}
+                      onChange={e => setForm({...form, first_name: e.target.value})}
+                      onBlur={() => touch('first_name')}
+                      placeholder="Abonga"
+                    />
+                    {getFieldError('first_name') && <span className="field-error">{getFieldError('first_name')}</span>}
                   </div>
                   <div className="form-field">
                     <label className="field-label">Last name</label>
-                    <input className="field-input" value={form.last_name} onChange={e => setForm({...form, last_name: e.target.value})} placeholder="Nkwelo"/>
+                    <input
+                      className={`field-input${getFieldError('last_name') ? ' field-input-error' : ''}`}
+                      value={form.last_name}
+                      onChange={e => setForm({...form, last_name: e.target.value})}
+                      onBlur={() => touch('last_name')}
+                      placeholder="Nkwelo"
+                    />
+                    {getFieldError('last_name') && <span className="field-error">{getFieldError('last_name')}</span>}
                   </div>
                 </div>
+
+                {/* Position + Nationality row */}
                 <div className="form-row">
                   <div className="form-field">
                     <label className="field-label">Primary position</label>
-                    <select className="field-input" value={form.position_primary} onChange={e => setForm({...form, position_primary: e.target.value})}>
+                    <select
+                      className="field-input"
+                      value={form.position_primary}
+                      onChange={e => setForm({...form, position_primary: e.target.value})}
+                    >
                       {POSITIONS.map(p => <option key={p} value={p}>{pos(p)}</option>)}
                     </select>
                   </div>
                   <div className="form-field">
                     <label className="field-label">Nationality</label>
-                    <select className="field-input" value={form.nationality_primary} onChange={e => setForm({...form, nationality_primary: e.target.value})}>
+                    <select
+                      className={`field-input${getFieldError('nationality_primary') ? ' field-input-error' : ''}`}
+                      value={form.nationality_primary}
+                      onChange={e => setForm({...form, nationality_primary: e.target.value})}
+                      onBlur={() => touch('nationality_primary')}
+                    >
                       <option value="">— Select —</option>
                       {NATIONALITIES.map(n => <option key={n} value={n}>{n}</option>)}
                     </select>
+                    {getFieldError('nationality_primary') && <span className="field-error">{getFieldError('nationality_primary')}</span>}
                   </div>
                 </div>
-                <div className="form-full">
+
+                {/* Date of birth */}
+                <div className="form-full" style={{ marginBottom: '12px' }}>
                   <label className="field-label">Date of birth</label>
-                  <input className="field-input" type="date" value={form.date_of_birth} onChange={e => setForm({...form, date_of_birth: e.target.value})}/>
+                  <input
+                    className={`field-input${getFieldError('date_of_birth') ? ' field-input-error' : ''}`}
+                    type="date"
+                    value={form.date_of_birth}
+                    onChange={e => setForm({...form, date_of_birth: e.target.value})}
+                    onBlur={() => touch('date_of_birth')}
+                  />
+                  {getFieldError('date_of_birth') && <span className="field-error">{getFieldError('date_of_birth')}</span>}
                 </div>
-                <button className="ob-btn" disabled={!canContinueStep2 || saving} onClick={saveBasics}>
+
+                {/* Height + Weight row */}
+                <div className="form-row">
+                  <div className="form-field">
+                    <label className="field-label">Height (cm)</label>
+                    <input
+                      className={`field-input${getFieldError('height_cm') ? ' field-input-error' : ''}`}
+                      type="number"
+                      value={form.height_cm}
+                      onChange={e => setForm({...form, height_cm: e.target.value})}
+                      onBlur={() => touch('height_cm')}
+                      placeholder="e.g. 183"
+                      min={140} max={220}
+                    />
+                    {getFieldError('height_cm') && <span className="field-error">{getFieldError('height_cm')}</span>}
+                  </div>
+                  <div className="form-field">
+                    <label className="field-label">Weight (kg)</label>
+                    <input
+                      className={`field-input${getFieldError('weight_kg') ? ' field-input-error' : ''}`}
+                      type="number"
+                      value={form.weight_kg}
+                      onChange={e => setForm({...form, weight_kg: e.target.value})}
+                      onBlur={() => touch('weight_kg')}
+                      placeholder="e.g. 92"
+                      min={50} max={180}
+                    />
+                    {getFieldError('weight_kg') && <span className="field-error">{getFieldError('weight_kg')}</span>}
+                  </div>
+                </div>
+
+                <button
+                  className="ob-btn"
+                  disabled={saving}
+                  onClick={saveBasics}
+                  style={{ opacity: step2Valid ? 1 : 0.45 }}
+                >
                   {saving ? 'Saving...' : 'Continue'}
                   {!saving && <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>}
                 </button>
                 <button className="ob-btn-outline" onClick={() => setStep(1)}>Back</button>
               </div>
               <div className="dots">
-                <div className="dot dot-inactive"></div>
+                <div className="dot dot-done"></div>
                 <div className="dot dot-active"></div>
                 <div className="dot dot-inactive"></div>
                 <div className="dot dot-inactive"></div>
@@ -263,10 +437,11 @@ export default function OnboardingPage() {
             </>
           )}
 
+          {/* ── Step 3: Profile photo + bio (optional) ───────────────────── */}
           {step === 3 && (
             <>
               <div className="ob-form">
-                <p className="ob-step-label">STEP 2 OF 3</p>
+                <div className="ob-step-label">STEP 2 OF 3</div>
                 <h2 className="ob-form-title">Your profile</h2>
                 <p className="ob-sub-dark">Profiles with a photo get 3× more views from coaches.</p>
                 <div className="ob-photo-box">
@@ -306,14 +481,15 @@ export default function OnboardingPage() {
                 <button className="ob-btn-outline" onClick={() => setStep(2)}>Back</button>
               </div>
               <div className="dots">
-                <div className="dot dot-inactive"></div>
-                <div className="dot dot-inactive"></div>
+                <div className="dot dot-done"></div>
+                <div className="dot dot-done"></div>
                 <div className="dot dot-active"></div>
                 <div className="dot dot-inactive"></div>
               </div>
             </>
           )}
 
+          {/* ── Step 4: Success ──────────────────────────────────────────── */}
           {step === 4 && (
             <>
               <div className="ob-hero">
@@ -339,9 +515,9 @@ export default function OnboardingPage() {
                 <p className="ob-hint">You can always add more to your profile later.</p>
               </div>
               <div className="dots">
-                <div className="dot dot-inactive"></div>
-                <div className="dot dot-inactive"></div>
-                <div className="dot dot-inactive"></div>
+                <div className="dot dot-done"></div>
+                <div className="dot dot-done"></div>
+                <div className="dot dot-done"></div>
                 <div className="dot dot-active"></div>
               </div>
             </>

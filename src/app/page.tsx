@@ -60,6 +60,7 @@ export default function Home() {
     <>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
         body { font-family: Arial, sans-serif; }
 
         .nav { background: #0D1B2E; padding: 0 28px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
@@ -243,7 +244,7 @@ export default function Home() {
         <div className="nav-links">
           <a href="/players" className="nav-link">Browse players</a>
           <a href="/register/coach" className="nav-link">{T.nav_agents}</a>
-          <a href="/login" className="nav-link">{T.nav_pricing}</a>
+          <a href="/#how-it-works" className="nav-link">{T.nav_pricing}</a>
           <div className="lang-toggle">
             <button className={`lang-btn ${lang === 'en' ? 'lang-btn-active' : ''}`} onClick={() => toggleLang('en')} title="English">{FLAG_EN}</button>
             <button className={`lang-btn ${lang === 'fr' ? 'lang-btn-active' : ''}`} onClick={() => toggleLang('fr')} title="Français">{FLAG_FR}</button>
@@ -316,7 +317,7 @@ export default function Home() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="hiw">
+      <section className="hiw" id="how-it-works">
         <div className="hiw-inner">
           {/* Left: text + steps */}
           <div>

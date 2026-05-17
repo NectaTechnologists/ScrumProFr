@@ -45,6 +45,19 @@ const positions = [
   'LEFT_WING','INSIDE_CENTRE','OUTSIDE_CENTRE','RIGHT_WING','FULLBACK'
 ]
 
+const COUNTRIES = [
+  'Afghan','Albanian','Algerian','American','Argentinian','Australian','Austrian',
+  'Belgian','Bolivian','Brazilian','British','Bulgarian','Cameroonian','Canadian',
+  'Chilean','Chinese','Colombian','Congolese','Croatian','Czech','Danish','Dutch',
+  'Egyptian','English','Estonian','Fijian','Finnish','French','Georgian','German',
+  'Ghanaian','Greek','Hungarian','Indian','Irish','Italian','Ivorian','Japanese',
+  'Kenyan','Korean','Latvian','Lithuanian','Malagasy','Malaysian','Namibian',
+  'New Zealander','Nigerian','Norwegian','Pakistani','Paraguayan','Polish',
+  'Portuguese','Romanian','Russian','Rwandan','Samoan','Scottish','Senegalese',
+  'Serbian','Slovak','South African','Spanish','Swedish','Swiss','Tongan',
+  'Ugandan','Ukrainian','Uruguayan','Welsh','Zimbabwean',
+]
+
 const DOCUMENT_TYPES = [
   'Fitness Report','Medical Clearance','Coaching Certificate',
   'Training Assessment','Academic Certificate','Player Contract','Other',
@@ -93,6 +106,7 @@ export default function ProfilePage() {
   const [docUploading, setDocUploading] = useState(false)
   const [selectedDocType, setSelectedDocType] = useState('Fitness Report')
   const [references, setReferences] = useState<any[]>([])
+  const [passportEntries, setPassportEntries] = useState<string[]>([''])
 
   const [form, setForm] = useState({
     first_name: '', last_name: '', date_of_birth: '', nationality_primary: '',
@@ -101,6 +115,9 @@ export default function ProfilePage() {
     avatar_url: '',
     clubs_history: '', accolades: '', dominant_hand: '', fitness_score: '',
     passport_countries: '', languages: '', agent_name: '', agent_email: '', agent_phone: '',
+    availability: 'available', season: '',
+    matches_played: '', tries_scored: '', tackles_made: '', tackle_success_pct: '',
+    penalties_conceded: '', lineout_win_pct: '', metres_carried: '',
   })
 
   useEffect(() => {
@@ -128,11 +145,21 @@ export default function ProfilePage() {
           passport_countries: player.passport_countries || '', languages: player.languages || '',
           agent_name: player.agent_name || '', agent_email: player.agent_email || '',
           agent_phone: player.agent_phone || '',
+          availability: player.availability || 'available', season: player.season || '',
+          matches_played: player.matches_played?.toString() || '',
+          tries_scored: player.tries_scored?.toString() || '',
+          tackles_made: player.tackles_made?.toString() || '',
+          tackle_success_pct: player.tackle_success_pct?.toString() || '',
+          penalties_conceded: player.penalties_conceded?.toString() || '',
+          lineout_win_pct: player.lineout_win_pct?.toString() || '',
+          metres_carried: player.metres_carried?.toString() || '',
         }
         setForm(loaded)
         setCompletion(calcCompletion(loaded))
         setMissingKeys(getMissingKeys(loaded))
         setShareUrl(`${window.location.origin}/cv/${player.share_token}`)
+        const existingPassports = (player.passport_countries || '').split(',').map((p: string) => p.trim()).filter(Boolean)
+        setPassportEntries(existingPassports.length > 0 ? existingPassports : [''])
 
         const { data: docs } = await supabase
           .from('player_documents').select('*').eq('player_id', player.id)
@@ -156,6 +183,24 @@ export default function ProfilePage() {
   function toggleLang(l: Lang) {
     setLang(l)
     localStorage.setItem('gainline_lang', l)
+  }
+
+  function updatePassportEntry(index: number, value: string) {
+    const next = [...passportEntries]
+    next[index] = value
+    setPassportEntries(next)
+    setForm(prev => ({ ...prev, passport_countries: next.filter(p => p.trim()).join(',') }))
+  }
+
+  function removePassportEntry(index: number) {
+    const next = passportEntries.filter((_, i) => i !== index)
+    const fixed = next.length > 0 ? next : ['']
+    setPassportEntries(fixed)
+    setForm(prev => ({ ...prev, passport_countries: fixed.filter(p => p.trim()).join(',') }))
+  }
+
+  function addPassportEntry() {
+    if (passportEntries.length < 3) setPassportEntries([...passportEntries, ''])
   }
 
   async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -228,6 +273,15 @@ export default function ProfilePage() {
       passport_countries: form.passport_countries || null, languages: form.languages || null,
       agent_name: form.agent_name || null, agent_email: form.agent_email || null,
       agent_phone: form.agent_phone || null,
+      availability: form.availability || 'available',
+      season: form.season || null,
+      matches_played: form.matches_played !== '' ? parseInt(form.matches_played) : null,
+      tries_scored: form.tries_scored !== '' ? parseInt(form.tries_scored) : null,
+      tackles_made: form.tackles_made !== '' ? parseInt(form.tackles_made) : null,
+      tackle_success_pct: form.tackle_success_pct !== '' ? parseInt(form.tackle_success_pct) : null,
+      penalties_conceded: form.penalties_conceded !== '' ? parseInt(form.penalties_conceded) : null,
+      lineout_win_pct: form.lineout_win_pct !== '' ? parseInt(form.lineout_win_pct) : null,
+      metres_carried: form.metres_carried !== '' ? parseInt(form.metres_carried) : null,
     }
     let result
     if (existing) {
@@ -439,7 +493,7 @@ export default function ProfilePage() {
               <div className="form-field"><label className="form-label">{T.profile_nationality}</label>
                 <select className="form-input" value={form.nationality_primary} onChange={e => setForm({ ...form, nationality_primary: e.target.value })}>
                   <option value="">— Select —</option>
-                  <option>Afghan</option><option>Albanian</option><option>Algerian</option><option>American</option><option>Argentinian</option><option>Australian</option><option>Austrian</option><option>Belgian</option><option>Bolivian</option><option>Brazilian</option><option>British</option><option>Bulgarian</option><option>Cameroonian</option><option>Canadian</option><option>Chilean</option><option>Chinese</option><option>Colombian</option><option>Congolese</option><option>Croatian</option><option>Czech</option><option>Danish</option><option>Dutch</option><option>Egyptian</option><option>English</option><option>Estonian</option><option>Fijian</option><option>Finnish</option><option>French</option><option>Georgian</option><option>German</option><option>Ghanaian</option><option>Greek</option><option>Hungarian</option><option>Indian</option><option>Irish</option><option>Italian</option><option>Ivorian</option><option>Japanese</option><option>Kenyan</option><option>Korean</option><option>Latvian</option><option>Lithuanian</option><option>Malagasy</option><option>Malaysian</option><option>Namibian</option><option>New Zealander</option><option>Nigerian</option><option>Norwegian</option><option>Pakistani</option><option>Paraguayan</option><option>Polish</option><option>Portuguese</option><option>Romanian</option><option>Russian</option><option>Rwandan</option><option>Samoan</option><option>Scottish</option><option>Senegalese</option><option>Serbian</option><option>Slovak</option><option>South African</option><option>Spanish</option><option>Swedish</option><option>Swiss</option><option>Tongan</option><option>Ugandan</option><option>Ukrainian</option><option>Uruguayan</option><option>Welsh</option><option>Zimbabwean</option>
+                  {COUNTRIES.map(c => <option key={c}>{c}</option>)}
                 </select>
               </div>
             </div>
@@ -464,6 +518,56 @@ export default function ProfilePage() {
             <div className="form-full"><label className="form-label">{T.profile_bio}</label>
               <textarea className="form-textarea" value={form.bio} onChange={e => setForm({ ...form, bio: e.target.value })} placeholder="Experienced front-row forward..."/>
             </div>
+
+            <hr className="section-divider"/>
+            <p className="section-title">AVAILABILITY</p>
+            <p className="form-hint" style={{ marginBottom: '12px', marginTop: '-8px' }}>Agents filter by this — keep it up to date.</p>
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              {[
+                { val: 'available', label: lang === 'fr' ? 'Disponible' : 'Available', red: false },
+                { val: 'unavailable', label: lang === 'fr' ? 'Non disponible' : 'Not available', red: true },
+                { val: 'end_of_season', label: lang === 'fr' ? 'Fin de saison' : 'End of season', red: false },
+              ].map(({ val, label, red }) => {
+                const active = form.availability === val
+                return (
+                  <button key={val} type="button" onClick={() => setForm({ ...form, availability: val })}
+                    style={{ padding: '8px 16px', borderRadius: '8px', border: '1.5px solid', cursor: 'pointer', fontSize: '13px', fontWeight: '700', fontFamily: 'Arial, sans-serif',
+                      borderColor: active ? (red ? 'rgba(224,82,82,0.4)' : 'rgba(212,168,67,0.5)') : 'rgba(255,255,255,0.08)',
+                      background: active ? (red ? 'rgba(224,82,82,0.06)' : 'rgba(212,168,67,0.08)') : 'transparent',
+                      color: active ? (red ? '#E05252' : '#D4A843') : '#5A564F',
+                    }}>
+                    {label}
+                  </button>
+                )
+              })}
+            </div>
+            <p className="form-hint" style={{ marginTop: '8px' }}>Shown as a badge on your public Player Card.</p>
+
+            <hr className="section-divider"/>
+            <p className="section-title">PLAYING STATS</p>
+            <p className="form-hint" style={{ marginBottom: '16px', marginTop: '-8px' }}>Agents want numbers. Fill what you can — leave the rest blank.</p>
+            <div className="form-full" style={{ marginBottom: '16px' }}>
+              <label className="form-label">{lang === 'fr' ? 'Saison' : 'Season'}</label>
+              <input className="form-input" style={{ marginTop: '6px' }} value={form.season} onChange={e => setForm({ ...form, season: e.target.value })} placeholder="e.g. 2024–25"/>
+            </div>
+            <div className="form-row">
+              <div className="form-field"><label className="form-label">{lang === 'fr' ? 'Matchs joués' : 'Matches played'}</label><input className="form-input" type="number" min="0" value={form.matches_played} onChange={e => setForm({ ...form, matches_played: e.target.value })} placeholder="22"/></div>
+              <div className="form-field"><label className="form-label">{lang === 'fr' ? 'Essais marqués' : 'Tries scored'}</label><input className="form-input" type="number" min="0" value={form.tries_scored} onChange={e => setForm({ ...form, tries_scored: e.target.value })} placeholder="6"/></div>
+            </div>
+            <div className="form-row">
+              <div className="form-field"><label className="form-label">{lang === 'fr' ? 'Plaquages réalisés' : 'Tackles made'}</label><input className="form-input" type="number" min="0" value={form.tackles_made} onChange={e => setForm({ ...form, tackles_made: e.target.value })} placeholder="184"/></div>
+              <div className="form-field"><label className="form-label">{lang === 'fr' ? 'Efficacité plaquage %' : 'Tackle success %'}</label><input className="form-input" type="number" min="0" max="100" value={form.tackle_success_pct} onChange={e => setForm({ ...form, tackle_success_pct: e.target.value })} placeholder="88"/></div>
+            </div>
+            <div className="form-row">
+              <div className="form-field"><label className="form-label">{lang === 'fr' ? 'Pénalités concédées' : 'Penalties conceded'}</label><input className="form-input" type="number" min="0" value={form.penalties_conceded} onChange={e => setForm({ ...form, penalties_conceded: e.target.value })} placeholder="4"/></div>
+              <div className="form-field"><label className="form-label">{lang === 'fr' ? 'Mètres parcourus' : 'Metres carried'}</label><input className="form-input" type="number" min="0" value={form.metres_carried} onChange={e => setForm({ ...form, metres_carried: e.target.value })} placeholder="312"/></div>
+            </div>
+            <div className="form-full" style={{ marginBottom: '16px' }}>
+              <label className="form-label">{lang === 'fr' ? 'Touche gagnée %' : 'Lineout win %'}</label>
+              <input className="form-input" style={{ marginTop: '6px' }} type="number" min="0" max="100" value={form.lineout_win_pct} onChange={e => setForm({ ...form, lineout_win_pct: e.target.value })} placeholder="87"/>
+              <p className="form-hint" style={{ marginTop: '6px' }}>{lang === 'fr' ? 'Talonneurs et secondes lignes uniquement' : 'Locks and hookers only'}</p>
+            </div>
+
             <button type="submit" disabled={loading} className="save-btn">
               <SaveIcon />
               {loading ? T.profile_saving : saved ? T.profile_saved : T.profile_save}
@@ -509,16 +613,31 @@ export default function ProfilePage() {
             <hr className="section-divider"/>
             <p className="section-title">{lang === 'fr' ? 'ÉLIGIBILITÉ & LANGUES' : 'ELIGIBILITY & LANGUAGES'}</p>
 
-            <div className="form-row">
-              <div className="form-field">
-                <label className="form-label">{lang === 'fr' ? 'Pays de passeport' : 'Passport countries'}</label>
-                <input className="form-input" value={form.passport_countries} onChange={e => setForm({ ...form, passport_countries: e.target.value })} placeholder={lang === 'fr' ? 'ex. Afrique du Sud, France' : 'e.g. South Africa, France'}/>
-                <p className="form-hint">{lang === 'fr' ? 'Important pour les transferts internationaux' : 'Important for international transfers'}</p>
+            <div className="form-full">
+              <label className="form-label" style={{ marginBottom: '10px', display: 'block' }}>{lang === 'fr' ? 'Passeports détenus' : 'Passports held'}</label>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {passportEntries.map((entry, idx) => (
+                  <div key={idx} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    <select className="form-input" style={{ flex: 1 }} value={entry} onChange={e => updatePassportEntry(idx, e.target.value)}>
+                      <option value="">— {lang === 'fr' ? 'Sélectionner un pays' : 'Select country'} —</option>
+                      {COUNTRIES.map(c => <option key={c}>{c}</option>)}
+                    </select>
+                    {passportEntries.length > 1 && (
+                      <button type="button" onClick={() => removePassportEntry(idx)} style={{ background: 'none', border: '1.5px solid rgba(255,255,255,0.15)', color: '#888780', borderRadius: '6px', width: '36px', height: '40px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '18px', lineHeight: 1 }}>×</button>
+                    )}
+                  </div>
+                ))}
+                {passportEntries.length < 3 && (
+                  <button type="button" onClick={addPassportEntry} style={{ background: 'none', border: 'none', color: '#1D9E75', fontSize: '13px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Arial, sans-serif', textAlign: 'left', padding: '2px 0' }}>
+                    + {lang === 'fr' ? 'Ajouter un autre passeport' : 'Add another passport'}
+                  </button>
+                )}
               </div>
-              <div className="form-field">
-                <label className="form-label">{lang === 'fr' ? 'Langues parlées' : 'Languages spoken'}</label>
-                <input className="form-input" value={form.languages} onChange={e => setForm({ ...form, languages: e.target.value })} placeholder={lang === 'fr' ? 'ex. Anglais, Français, Zulu' : 'e.g. English, French, Zulu'}/>
-              </div>
+              <p className="form-hint" style={{ marginTop: '8px' }}>{lang === 'fr' ? 'Ajoutez tous vos passeports — les agents vérifient l\'éligibilité internationale' : 'Add all passports you hold — agents use this to check eligibility to play in their country'}</p>
+            </div>
+            <div className="form-full">
+              <label className="form-label">{lang === 'fr' ? 'Langues parlées' : 'Languages spoken'}</label>
+              <input className="form-input" style={{ marginTop: '6px' }} value={form.languages} onChange={e => setForm({ ...form, languages: e.target.value })} placeholder={lang === 'fr' ? 'ex. Anglais, Français, Zulu' : 'e.g. English, French, Zulu'}/>
             </div>
 
             <hr className="section-divider"/>

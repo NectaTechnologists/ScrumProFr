@@ -33,6 +33,7 @@ export default function CoachRegisterPage() {
     country: '',
   })
   const [message, setMessage] = useState('')
+  const [alsoPlayer, setAlsoPlayer] = useState(false)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -62,10 +63,20 @@ export default function CoachRegisterPage() {
     }
 
     if (data.user) {
-      await supabase
-        .from('profiles')
-        .update({ approved: true })
-        .eq('id', data.user.id)
+      await supabase.from('profiles').update({
+        approved: true,
+        is_coach: true,
+        ...(alsoPlayer ? { is_player: true } : {}),
+      }).eq('id', data.user.id)
+
+      await supabase.from('coaches').upsert({
+        user_id: data.user.id,
+        full_name: form.full_name,
+        organisation: form.organisation,
+        org_type: form.org_type,
+        role_title: form.role_title,
+        country: form.country,
+      }, { onConflict: 'user_id' })
     }
 
     await fetch('/api/send-email', {
@@ -100,8 +111,8 @@ export default function CoachRegisterPage() {
             </svg>
           </div>
           <h1 style={{ fontSize: '22px', fontWeight: '900', color: '#0D1B2E', fontFamily: 'Arial Black, Arial, sans-serif', marginBottom: '12px' }}>You're in!</h1>
-          <p style={{ fontSize: '14px', color: '#5F5E5A', lineHeight: '1.7', marginBottom: '28px' }}>Your Gainline coach account is ready. Sign in now to start browsing players.</p>
-          <a href="/login" style={{ background: '#1D9E75', color: 'white', fontSize: '13px', fontWeight: '700', padding: '11px 24px', borderRadius: '20px', textDecoration: 'none', fontFamily: 'Arial, sans-serif' }}>Sign in now →</a>
+          <p style={{ fontSize: '14px', color: '#5F5E5A', lineHeight: '1.7', marginBottom: '28px' }}>Your Gainline coach account is ready. Sign in to build your Coach Card and start browsing players.</p>
+          <a href="/login" style={{ background: '#D4A843', color: '#0D1B2E', fontSize: '13px', fontWeight: '700', padding: '11px 24px', borderRadius: '20px', textDecoration: 'none', fontFamily: 'Arial, sans-serif' }}>Sign in and build my Coach Card →</a>
         </div>
       </>
     )
@@ -202,6 +213,19 @@ export default function CoachRegisterPage() {
                 <label className="form-label">COUNTRY</label>
                 <input className="form-input" value={form.country} onChange={e => setForm({ ...form, country: e.target.value })} required placeholder="e.g. United Kingdom" />
               </div>
+            </div>
+
+            <div style={{ margin: '8px 0 12px', display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '14px 16px', background: '#F8F7F4', borderRadius: '8px', border: '1px solid #E8E4F0' }}>
+              <input
+                type="checkbox"
+                id="alsoPlayer"
+                checked={alsoPlayer}
+                onChange={e => setAlsoPlayer(e.target.checked)}
+                style={{ marginTop: '2px', accentColor: '#1D9E75', width: '16px', height: '16px', flexShrink: 0, cursor: 'pointer' }}
+              />
+              <label htmlFor="alsoPlayer" style={{ fontSize: '13px', color: '#5F5E5A', lineHeight: '1.5', cursor: 'pointer' }}>
+                I also play rugby — set up a Player Card too
+              </label>
             </div>
 
             {message && <div className="error-box">{message}</div>}

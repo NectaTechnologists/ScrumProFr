@@ -30,6 +30,7 @@ export async function POST(req: Request) {
       player_id,
       coach_id,
       organisation_name,
+      viewed_at: new Date().toISOString(),
     })
 
     return NextResponse.json({ ok: true })
