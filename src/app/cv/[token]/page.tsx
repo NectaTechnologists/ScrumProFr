@@ -132,7 +132,7 @@ export default async function CVPage(props: any) {
         .cv-completion { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 10px 14px; margin-bottom: 28px; }
         .cv-completion-text { font-size: 12px; color: rgba(255,255,255,0.5); }
         .cv-completion-pct { font-size: 12px; color: #5DCAA5; font-weight: 700; }
-        .cv-stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); background: rgba(0,0,0,0.25); border-radius: 12px 12px 0 0; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); border-bottom: none; }
+        .cv-stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); width: 100%; background: rgba(0,0,0,0.25); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 12px; }
         .cv-stat { padding: 18px 12px; text-align: center; border-right: 1px solid rgba(255,255,255,0.06); }
         .cv-stat:last-child { border-right: none; }
         .cv-stat-value { color: white; font-size: 20px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; line-height: 1; }
@@ -268,28 +268,30 @@ export default async function CVPage(props: any) {
             </div>
           </div>
 
-          <div className="cv-stats-bar">
-            <div className="cv-stat">
-              <div className="cv-stat-value">{age ?? '–'}</div>
-              <div className="cv-stat-label" id="stat-age">AGE</div>
-            </div>
-            <div className="cv-stat">
-              <div className="cv-stat-value">{player.height_cm || '–'}</div>
-              <div className="cv-stat-label" id="stat-height">HEIGHT (CM)</div>
-            </div>
-            <div className="cv-stat">
-              <div className="cv-stat-value">{player.weight_kg || '–'}</div>
-              <div className="cv-stat-label" id="stat-weight">WEIGHT (KG)</div>
-            </div>
-            <div className="cv-stat">
-              <div className="cv-stat-value" style={{ fontSize: player.position_secondary ? '13px' : '20px' }}>{player.position_secondary ? pos(player.position_secondary) : '–'}</div>
-              <div className="cv-stat-label" id="stat-altpos">ALT POS</div>
-            </div>
-          </div>
         </div>
       </div>
 
       <div className="cv-content">
+        {/* STATS BAR — Age / Height / Weight / Alt Pos */}
+        <div className="cv-stats-bar">
+          <div className="cv-stat">
+            <div className="cv-stat-value">{age ?? '–'}</div>
+            <div className="cv-stat-label" id="stat-age">AGE</div>
+          </div>
+          <div className="cv-stat">
+            <div className="cv-stat-value">{player.height_cm || '–'}</div>
+            <div className="cv-stat-label" id="stat-height">HEIGHT (CM)</div>
+          </div>
+          <div className="cv-stat">
+            <div className="cv-stat-value">{player.weight_kg || '–'}</div>
+            <div className="cv-stat-label" id="stat-weight">WEIGHT (KG)</div>
+          </div>
+          <div className="cv-stat">
+            <div className="cv-stat-value" style={{ fontSize: player.position_secondary ? '13px' : '20px' }}>{player.position_secondary ? pos(player.position_secondary) : '–'}</div>
+            <div className="cv-stat-label" id="stat-altpos">ALT POS</div>
+          </div>
+        </div>
+
         {/* VIDEO — premium position, directly below the hero */}
         {(player.video_url || player.video_url_2 || player.video_url_3) && (
           <div className="cv-card">
