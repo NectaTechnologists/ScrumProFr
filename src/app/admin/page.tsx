@@ -3,6 +3,18 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import {
+  LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer
+} from 'recharts'
+
+// Test accounts to exclude from all stats
+const TEST_EMAILS = [
+  'brucekay@outlook.com',
+  'bruce@necta.co.za',
+  'bruce+1@necta.co.za',
+  'brucekay+1@outlook.com',
+  'brucekay+3@outlook.com',
+]
 
 export default function AdminPage() {
   const supabase = createClient()
@@ -20,129 +32,185 @@ export default function AdminPage() {
   const [ageData, setAgeData] = useState<{ group: string, count: number }[]>([])
   const [recentSignups, setRecentSignups] = useState<any[]>([])
   const [nationalityData, setNationalityData] = useState<{ nationality: string, count: number }[]>([])
+  const [signupChartData, setSignupChartData] = useState<{ label: string, total: number }[]>([])
 
   useEffect(() => {
     async function load() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) { router.push('/login'); return }
 
-      // Total players
-      const { count: playerCount } = await supabase
+      // ── Try to resolve test-account profile IDs via profiles.email ──
+      // Graceful fallback: if email column doesn't exist, no exclusion (empty set)
+      let testProfileIds = new Set<string>()
+      try {
+        const { data: testProfiles, error } = await supabase
+          .from('profiles')
+          .select('id')
+          .in('email', TEST_EMAILS)
+        if (!error && testProfiles?.length) {
+          testProfileIds = new Set(testProfiles.map((p: any) => p.id))
+        }
+      } catch (_) { /* profiles.email not present — proceed without exclusion */ }
+
+      // ── Fetch all players (with names for recent-signups table) ──
+      const { data: allPlayers } = await supabase
         .from('players')
-        .select('*', { count: 'exact', head: true })
+        .select('first_name, last_name, position_primary, date_of_birth, nationality_primary, created_at, profile_id')
 
-      // Coaches
-      const { count: coachCount } = await supabase
+      const players = (allPlayers || []).filter(p =>
+        !testProfileIds.has(p.profile_id)
+      )
+
+      // ── Fetch all coaches ──
+      // Try with email first for filtering; fall back to without
+      let coachProfiles: any[] = []
+      const coachSelect = 'id, approved, created_at, full_name, organisation_name, email'
+      const { data: coachWithEmail, error: coachErr } = await supabase
         .from('profiles')
-        .select('*', { count: 'exact', head: true })
+        .select(coachSelect)
         .eq('role', 'org_user')
 
-      const { count: approvedCount } = await supabase
-        .from('profiles')
-        .select('*', { count: 'exact', head: true })
-        .eq('role', 'org_user')
-        .eq('approved', true)
+      if (!coachErr && coachWithEmail) {
+        coachProfiles = coachWithEmail.filter(
+          c => !TEST_EMAILS.includes(c.email || '')
+        )
+      } else {
+        // Fallback: no email column — get coaches without filtering
+        const { data: coachNoEmail } = await supabase
+          .from('profiles')
+          .select('id, approved, created_at, full_name, organisation_name')
+          .eq('role', 'org_user')
+        coachProfiles = coachNoEmail || []
+      }
 
-      // Documents
+      // ── Stat tiles ──
+      const startOfMonth = new Date()
+      startOfMonth.setDate(1)
+      startOfMonth.setHours(0, 0, 0, 0)
+
+      const signupsThisMonth = players.filter(
+        p => new Date(p.created_at) >= startOfMonth
+      ).length
+
+      // Docs count (no test-account join needed here)
       const { count: docCount } = await supabase
         .from('player_documents')
         .select('*', { count: 'exact', head: true })
 
-      // Signups this month
-      const startOfMonth = new Date()
-      startOfMonth.setDate(1)
-      startOfMonth.setHours(0, 0, 0, 0)
-      const { count: monthCount } = await supabase
-        .from('players')
-        .select('*', { count: 'exact', head: true })
-        .gte('created_at', startOfMonth.toISOString())
-
       setStats({
-        totalPlayers: playerCount || 0,
-        totalCoaches: coachCount || 0,
-        approvedCoaches: approvedCount || 0,
+        totalPlayers: players.length,
+        totalCoaches: coachProfiles.length,
+        approvedCoaches: coachProfiles.filter(c => c.approved).length,
         totalDocs: docCount || 0,
-        signupsThisMonth: monthCount || 0,
+        signupsThisMonth,
       })
 
-      // Players by position
-      const { data: players } = await supabase
-        .from('players')
-        .select('position_primary, date_of_birth, nationality_primary')
-
-      if (players) {
-        // Position breakdown
-        const posCounts: Record<string, number> = {}
-        players.forEach(p => {
-          const pos = p.position_primary || 'Unknown'
-          posCounts[pos] = (posCounts[pos] || 0) + 1
-        })
-        const posArray = Object.entries(posCounts)
+      // ── Position breakdown ──
+      const posCounts: Record<string, number> = {}
+      players.forEach(p => {
+        const pos = p.position_primary || 'Unknown'
+        posCounts[pos] = (posCounts[pos] || 0) + 1
+      })
+      setPositionData(
+        Object.entries(posCounts)
           .map(([position, count]) => ({ position: position.replace(/_/g, ' '), count }))
           .sort((a, b) => b.count - a.count)
           .slice(0, 6)
-        setPositionData(posArray)
+      )
 
-        // Age breakdown
-        const ageCounts: Record<string, number> = {
-          'Under 18': 0, '18–21': 0, '22–25': 0, '26–30': 0, '30+': 0
-        }
-        players.forEach(p => {
-          if (!p.date_of_birth) return
-          const age = Math.floor((new Date().getTime() - new Date(p.date_of_birth).getTime()) / 31557600000)
-          if (age < 18) ageCounts['Under 18']++
-          else if (age <= 21) ageCounts['18–21']++
-          else if (age <= 25) ageCounts['22–25']++
-          else if (age <= 30) ageCounts['26–30']++
-          else ageCounts['30+']++
-        })
-        setAgeData(Object.entries(ageCounts).map(([group, count]) => ({ group, count })))
+      // ── Age breakdown ──
+      const ageCounts: Record<string, number> = {
+        'Under 18': 0, '18–21': 0, '22–25': 0, '26–30': 0, '30+': 0
+      }
+      players.forEach(p => {
+        if (!p.date_of_birth) return
+        const age = Math.floor((Date.now() - new Date(p.date_of_birth).getTime()) / 31557600000)
+        if (age < 18) ageCounts['Under 18']++
+        else if (age <= 21) ageCounts['18–21']++
+        else if (age <= 25) ageCounts['22–25']++
+        else if (age <= 30) ageCounts['26–30']++
+        else ageCounts['30+']++
+      })
+      setAgeData(Object.entries(ageCounts).map(([group, count]) => ({ group, count })))
 
-        // Nationality breakdown
-        const natCounts: Record<string, number> = {}
-        players.forEach(p => {
-          const nat = p.nationality_primary || 'Unknown'
-          natCounts[nat] = (natCounts[nat] || 0) + 1
-        })
-        const natArray = Object.entries(natCounts)
+      // ── Nationality breakdown ──
+      const natCounts: Record<string, number> = {}
+      players.forEach(p => {
+        const nat = p.nationality_primary || 'Unknown'
+        natCounts[nat] = (natCounts[nat] || 0) + 1
+      })
+      setNationalityData(
+        Object.entries(natCounts)
           .map(([nationality, count]) => ({ nationality, count }))
           .sort((a, b) => b.count - a.count)
           .slice(0, 5)
-        setNationalityData(natArray)
+      )
+
+      // ── Signups over time — cumulative, grouped by month ──
+      const allSignupDates: Date[] = [
+        ...players.map(p => new Date(p.created_at)),
+        ...coachProfiles.map(c => new Date(c.created_at)),
+      ].sort((a, b) => a.getTime() - b.getTime())
+
+      if (allSignupDates.length > 0) {
+        const earliest = allSignupDates[0]
+        const now = new Date()
+
+        // Build one bucket per calendar month from earliest → now
+        const buckets: { year: number, month: number, label: string, new: number }[] = []
+        const cur = new Date(earliest.getFullYear(), earliest.getMonth(), 1)
+        while (cur <= now) {
+          buckets.push({
+            year: cur.getFullYear(),
+            month: cur.getMonth(),
+            label: cur.toLocaleDateString('en-GB', { month: 'short', year: '2-digit' }),
+            new: 0,
+          })
+          cur.setMonth(cur.getMonth() + 1)
+        }
+
+        allSignupDates.forEach(d => {
+          const b = buckets.find(b => b.year === d.getFullYear() && b.month === d.getMonth())
+          if (b) b.new++
+        })
+
+        // Convert to running cumulative total
+        let running = 0
+        setSignupChartData(buckets.map(b => {
+          running += b.new
+          return { label: b.label, total: running }
+        }))
       }
 
-      // Recent signups
-      const { data: recentPlayers } = await supabase
-        .from('players')
-        .select('first_name, last_name, position_primary, created_at')
-        .order('created_at', { ascending: false })
-        .limit(5)
-
-      const { data: recentCoaches } = await supabase
-        .from('profiles')
-        .select('full_name, organisation_name, created_at, approved')
-        .eq('role', 'org_user')
-        .order('created_at', { ascending: false })
-        .limit(5)
-
-      const combined = [
-        ...(recentPlayers || []).map(p => ({
-          name: `${p.first_name} ${p.last_name}`,
+      // ── Recent signups table (test-excluded) ──
+      const recentPlayers = [...players]
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+        .slice(0, 5)
+        .map(p => ({
+          name: `${p.first_name || ''} ${p.last_name || ''}`.trim() || '–',
           type: 'Player',
           detail: p.position_primary?.replace(/_/g, ' ') || '–',
           date: p.created_at,
           status: 'Active',
-        })),
-        ...(recentCoaches || []).map(c => ({
+        }))
+
+      const recentCoaches = [...coachProfiles]
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+        .slice(0, 5)
+        .map(c => ({
           name: c.full_name || c.organisation_name || '–',
           type: 'Coach',
           detail: c.organisation_name || '–',
           date: c.created_at,
           status: c.approved ? 'Approved' : 'Pending',
-        })),
-      ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 8)
+        }))
 
-      setRecentSignups(combined)
+      setRecentSignups(
+        [...recentPlayers, ...recentCoaches]
+          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+          .slice(0, 8)
+      )
+
       setLoading(false)
     }
     load()
@@ -152,7 +220,9 @@ export default function AdminPage() {
   const maxAge = Math.max(...ageData.map(a => a.count), 1)
   const maxNat = Math.max(...nationalityData.map(n => n.count), 1)
 
-  const formatDate = (d: string) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+  const formatDate = (d: string) => new Date(d).toLocaleDateString('en-GB', {
+    day: 'numeric', month: 'short', year: 'numeric'
+  })
 
   if (loading) return (
     <div style={{ minHeight: '100vh', background: '#F1EFE8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -174,6 +244,7 @@ export default function AdminPage() {
         .stat-card { background: #E8E6DF; border-radius: 8px; padding: 1rem; }
         .stat-label { font-size: 12px; color: #5F5E5A; margin-bottom: 6px; }
         .stat-value { font-size: 24px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; }
+        .chart-card { background: white; border-radius: 12px; padding: 1.25rem; border: 0.5px solid #D3D1C7; margin-bottom: 16px; }
         .charts-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 24px; }
         .card { background: white; border-radius: 12px; padding: 1.25rem; border: 0.5px solid #D3D1C7; }
         .card-title { font-size: 13px; font-weight: 700; color: #0D1B2E; margin-bottom: 1rem; }
@@ -210,6 +281,7 @@ export default function AdminPage() {
         <p className="page-label">SUPER ADMIN</p>
         <h1 className="page-title">Platform overview</h1>
 
+        {/* ── Stat tiles ── */}
         <div className="stat-grid">
           <div className="stat-card">
             <p className="stat-label">Total players</p>
@@ -233,6 +305,55 @@ export default function AdminPage() {
           </div>
         </div>
 
+        {/* ── Signups over time — full-width line chart ── */}
+        <div className="chart-card">
+          <p className="card-title">Signups over time</p>
+          {signupChartData.length > 1 ? (
+            <ResponsiveContainer width="100%" height={220}>
+              <LineChart data={signupChartData} margin={{ top: 4, right: 16, bottom: 0, left: -20 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#F1EFE8" vertical={false} />
+                <XAxis
+                  dataKey="label"
+                  tick={{ fontSize: 11, fill: '#888780' }}
+                  axisLine={false}
+                  tickLine={false}
+                  interval="preserveStartEnd"
+                />
+                <YAxis
+                  tick={{ fontSize: 11, fill: '#888780' }}
+                  axisLine={false}
+                  tickLine={false}
+                  allowDecimals={false}
+                />
+                <Tooltip
+                  contentStyle={{
+                    background: '#0D1B2E',
+                    border: 'none',
+                    borderRadius: '8px',
+                    fontSize: '12px',
+                    color: '#F1EFE8',
+                  }}
+                  labelStyle={{ color: '#3DBE72', fontWeight: 700, marginBottom: 4 }}
+                  formatter={(value: number) => [value, 'Total signups']}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="total"
+                  stroke="#3DBE72"
+                  strokeWidth={2.5}
+                  dot={false}
+                  activeDot={{ r: 4, fill: '#3DBE72', strokeWidth: 0 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          ) : (
+            <div style={{ height: 220, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888780', fontSize: '13px' }}>
+              Not enough data yet
+            </div>
+          )}
+        </div>
+
+        {/* ── Three breakdown cards ── */}
         <div className="charts-grid">
           <div className="card">
             <p className="card-title">Players by position</p>
@@ -265,6 +386,7 @@ export default function AdminPage() {
           </div>
         </div>
 
+        {/* ── Recent signups table ── */}
         <div className="table-card">
           <p className="table-title">Recent signups</p>
           <table>
