@@ -33,6 +33,8 @@ export default function AdminPage() {
   const [recentSignups, setRecentSignups] = useState<any[]>([])
   const [nationalityData, setNationalityData] = useState<{ nationality: string, count: number }[]>([])
   const [signupChartData, setSignupChartData] = useState<{ label: string, total: number }[]>([])
+  const [signupDailyData, setSignupDailyData] = useState<{ label: string, total: number }[]>([])
+  const [chartView, setChartView] = useState<'weekly' | 'daily'>('weekly')
 
   useEffect(() => {
     async function load() {
@@ -174,11 +176,43 @@ export default function AdminPage() {
           if (b) b.new++
         })
 
-        // Convert to running cumulative total
+        // Convert to running cumulative total (monthly)
         let running = 0
         setSignupChartData(buckets.map(b => {
           running += b.new
           return { label: b.label, total: running }
+        }))
+
+        // ── Daily view — last 30 days, cumulative from day 0 ──
+        const thirtyDaysAgo = new Date(now)
+        thirtyDaysAgo.setDate(now.getDate() - 29)
+        thirtyDaysAgo.setHours(0, 0, 0, 0)
+
+        // Total signups before the 30-day window (baseline for cumulative)
+        const baseline = allSignupDates.filter(d => d < thirtyDaysAgo).length
+
+        // Build one bucket per day for the last 30 days
+        const dayBuckets: { dateKey: string, label: string, new: number }[] = []
+        for (let i = 0; i < 30; i++) {
+          const d = new Date(thirtyDaysAgo)
+          d.setDate(thirtyDaysAgo.getDate() + i)
+          dayBuckets.push({
+            dateKey: d.toISOString().slice(0, 10),
+            label: d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }),
+            new: 0,
+          })
+        }
+
+        allSignupDates.forEach(d => {
+          const key = d.toISOString().slice(0, 10)
+          const b = dayBuckets.find(b => b.dateKey === key)
+          if (b) b.new++
+        })
+
+        let dailyRunning = baseline
+        setSignupDailyData(dayBuckets.map(b => {
+          dailyRunning += b.new
+          return { label: b.label, total: dailyRunning }
         }))
       }
 
@@ -307,10 +341,34 @@ export default function AdminPage() {
 
         {/* ── Signups over time — full-width line chart ── */}
         <div className="chart-card">
-          <p className="card-title">Signups over time</p>
-          {signupChartData.length > 1 ? (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: '#0D1B2E' }}>Signups over time</p>
+            <div style={{ display: 'flex', background: '#F1EFE8', borderRadius: 6, padding: 3, gap: 2 }}>
+              {(['weekly', 'daily'] as const).map(v => (
+                <button
+                  key={v}
+                  onClick={() => setChartView(v)}
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 700,
+                    padding: '4px 12px',
+                    borderRadius: 4,
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontFamily: 'Arial, sans-serif',
+                    background: chartView === v ? '#3DBE72' : 'transparent',
+                    color: chartView === v ? 'white' : '#888780',
+                    transition: 'background 0.15s, color 0.15s',
+                  }}
+                >
+                  {v.charAt(0).toUpperCase() + v.slice(1)}
+                </button>
+              ))}
+            </div>
+          </div>
+          {(chartView === 'weekly' ? signupChartData : signupDailyData).length > 1 ? (
             <ResponsiveContainer width="100%" height={220}>
-              <LineChart data={signupChartData} margin={{ top: 4, right: 16, bottom: 0, left: -20 }}>
+              <LineChart data={chartView === 'weekly' ? signupChartData : signupDailyData} margin={{ top: 4, right: 16, bottom: 0, left: -20 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#F1EFE8" vertical={false} />
                 <XAxis
                   dataKey="label"
