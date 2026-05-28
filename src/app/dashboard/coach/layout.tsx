@@ -8,11 +8,13 @@ import CoachSideNav from '@/components/CoachSideNav'
 type CoachData = { name: string; club: string; initials: string } | null
 
 const PAGE_TITLES: Record<string, string> = {
-  '/dashboard/coach':              'Players',
-  '/dashboard/coach/applications': 'Applications',
-  '/dashboard/coach/vacancies':    'My Vacancies',
-  '/dashboard/coach/card':         'My Coach Card',
-  '/dashboard/coach/settings':     'Settings',
+  '/dashboard/coach':                  'Players',
+  '/dashboard/coach/dashboard':        'Dashboard',
+  '/dashboard/coach/applications':     'Applications',
+  '/dashboard/coach/vacancies':        'My Vacancies',
+  '/dashboard/coach/vacancies/new':    'Post Vacancy',
+  '/dashboard/coach/card':             'My Coach Card',
+  '/dashboard/coach/settings':         'Settings',
 }
 
 function getPageTitle(pathname: string) {
