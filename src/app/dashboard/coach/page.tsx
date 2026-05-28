@@ -337,10 +337,6 @@ export default function CoachDashboard() {
   if (profile && !profile.approved) return (
     <>
       <style>{`* { box-sizing: border-box; margin: 0; padding: 0; } body { font-family: 'DM Sans', Arial, sans-serif; background: #0C0F16; color: #F0EDE4; }`}</style>
-      <nav style={{ background: '#0D1B2E', padding: '0 16px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <svg width="28" height="26" viewBox="0 0 32 30"><line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/><line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/><line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/></svg>
-        <form action="/auth/signout" method="post"><button type="submit" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.7)', padding: '6px 14px', borderRadius: '6px', fontSize: '13px', cursor: 'pointer' }}>Sign out</button></form>
-      </nav>
       <div style={{ maxWidth: '560px', margin: '80px auto', padding: '0 20px', textAlign: 'center' }}>
         <h1 style={{ fontSize: '26px', fontWeight: '900', color: '#0D1B2E', fontFamily: 'Arial Black, Arial, sans-serif', marginBottom: '12px' }}>{T.coach_pending_title}</h1>
         <p style={{ fontSize: '15px', color: '#5F5E5A', lineHeight: '1.7', marginBottom: '8px' }}>{T.coach_pending_sub}</p>
@@ -575,38 +571,6 @@ export default function CoachDashboard() {
         </div>
       )}
 
-      <nav className="nav">
-        <div className="nav-logo">
-          <svg width="28" height="26" viewBox="0 0 32 30" style={{ display: 'block' }}>
-            <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
-            <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-            <line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
-          </svg>
-          <span className="nav-logo-text">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
-        </div>
-        <div className="nav-right">
-          <span className="nav-email">{user?.email}</span>
-          <div className="lang-toggle">
-            <button className={`lang-btn ${lang === 'en' ? 'lang-btn-active' : ''}`} onClick={() => toggleLang('en')}>{FLAG_EN}</button>
-            <button className={`lang-btn ${lang === 'fr' ? 'lang-btn-active' : ''}`} onClick={() => toggleLang('fr')}>{FLAG_FR}</button>
-          </div>
-          <a href="/dashboard/coach-profile" style={{ color: '#D4A843', fontSize: '13px', fontWeight: '700', textDecoration: 'none', whiteSpace: 'nowrap' }}>My Coach Card</a>
-          <a href="/dashboard/vacancies" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', textDecoration: 'none', whiteSpace: 'nowrap' }}>Post Vacancy</a>
-          <a href="/dashboard/coach/applications" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', textDecoration: 'none', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '5px' }}>
-            Applications
-            {newApplicationsCount > 0 && (
-              <span style={{ background: '#1D9E75', color: 'white', fontSize: '10px', fontWeight: 700, padding: '1px 6px', borderRadius: '10px', fontFamily: 'Arial, sans-serif' }}>
-                {newApplicationsCount}
-              </span>
-            )}
-          </a>
-          <a href="/dashboard" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', textDecoration: 'none', whiteSpace: 'nowrap' }}>Dashboard</a>
-          <form action="/auth/signout" method="post">
-            <a href="/dashboard/settings" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', textDecoration: 'none', marginRight: '8px' }}>Settings</a>
-            <button type="submit" className="signout-btn">{T.nav_sign_out}</button>
-          </form>
-        </div>
-      </nav>
 
       {/* ── COACH HERO STRIP ──────────────────────────────────────────────── */}
       <div style={{ maxWidth: 1400, margin: '0 auto', padding: '16px 16px 0' }}>

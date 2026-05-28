@@ -100,25 +100,6 @@ export default function CoachApplicationsPage() {
         @media (min-width: 769px) { .nav { padding: 0 28px; height: 64px; } .content { padding: 32px 28px 60px; } }
       `}</style>
 
-      <nav className="nav">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <svg width="28" height="26" viewBox="0 0 32 30" style={{ display: 'block' }}>
-            <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
-            <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-            <line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
-          </svg>
-          <span style={{ color: 'white', fontWeight: 900, fontSize: '18px', letterSpacing: '-0.5px', fontFamily: 'Arial Black, Arial, sans-serif' }}>GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
-        </div>
-        <div className="nav-right">
-          <a href="/dashboard/coach-profile" className="nav-link" style={{ color: '#D4A843', fontWeight: 700 }}>My Coach Card</a>
-          <a href="/dashboard/vacancies" className="nav-link">Post Vacancy</a>
-          <a href="/dashboard/coach" className="nav-link">Players</a>
-          <a href="/dashboard" className="nav-link">Dashboard</a>
-          <form action="/auth/signout" method="post">
-            <button type="submit" className="signout-btn">Sign out</button>
-          </form>
-        </div>
-      </nav>
 
       <div className="content">
         <p className="page-label">COACH PORTAL</p>
