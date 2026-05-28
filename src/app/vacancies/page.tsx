@@ -99,7 +99,7 @@ export default function VacanciesPage() {
     if (hasProfile && playerToken) {
       return (
         <a href={`/cv/${playerToken}`} className="vac-cta vac-cta-green" target="_blank" rel="noopener noreferrer">
-          Apply with my Gainline CV
+          Submit my Player Card
         </a>
       )
     }
