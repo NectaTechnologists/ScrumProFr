@@ -37,6 +37,7 @@ export default function OnboardingPage() {
   const [shareUrl, setShareUrl] = useState('')
   const [copied, setCopied] = useState(false)
   const [avatarUploading, setAvatarUploading] = useState(false)
+  const [welcomeEmailSent, setWelcomeEmailSent] = useState(false)
 
   const [form, setForm] = useState({
     first_name: '', last_name: '', position_primary: 'HOOKER',
@@ -159,10 +160,19 @@ export default function OnboardingPage() {
       bio: form.bio || null,
       avatar_url: form.avatar_url || null,
     }).eq('profile_id', user.id)
-    const { data: player } = await supabase.from('players').select('share_token').eq('profile_id', user.id).single()
+    const { data: player } = await supabase.from('players').select('id, share_token').eq('profile_id', user.id).single()
     if (player?.share_token) setShareUrl(`${window.location.origin}/cv/${player.share_token}`)
     setSaving(false)
     setStep(4)
+    // Fire-and-forget welcome email (once only)
+    if (player?.id && !welcomeEmailSent) {
+      setWelcomeEmailSent(true)
+      fetch('/api/send-welcome-player', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ player_id: player.id }),
+      }).catch(() => {/* silent */})
+    }
   }
 
   async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {

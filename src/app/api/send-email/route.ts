@@ -1,15 +1,14 @@
-import { Resend } from 'resend'
 import { NextResponse } from 'next/server'
+import { resend, FROM } from '@/lib/resend'
 
 export async function POST(req: Request) {
-  const resend = new Resend(process.env.RESEND_API_KEY)
   const body = await req.json()
   const { fullName, email, organisation, role, country, message } = body
 
   try {
-    // Email to you (admin notification)
+    // Admin notification
     await resend.emails.send({
-      from: 'Gainline <noreply@gainline.pro>',
+      from: FROM,
       to: 'bruce@necta.co.za',
       subject: `New coach joined — ${fullName}`,
       html: `
@@ -34,9 +33,9 @@ export async function POST(req: Request) {
       `,
     })
 
-    // Confirmation email to the coach
+    // Confirmation to coach
     await resend.emails.send({
-      from: 'Gainline <noreply@gainline.pro>',
+      from: FROM,
       to: email,
       subject: 'Your Gainline coach application has been received',
       html: `
@@ -48,11 +47,8 @@ export async function POST(req: Request) {
             <p style="font-size: 14px; color: #5F5E5A; line-height: 1.7; margin-bottom: 16px;">
               Your Gainline coach account is now active. You can log in straight away and start browsing players.
             </p>
-            <p style="font-size: 14px; color: #5F5E5A; line-height: 1.7; margin-bottom: 16px;">
-              Your Gainline coach account is now active. You can log in straight away and start browsing players.
-            </p>
             <p style="font-size: 14px; color: #5F5E5A; line-height: 1.7;">
-              In the meantime, if you have any questions feel free to reply to this email.
+              If you have any questions feel free to reply to this email.
             </p>
             <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid #D3D1C7; font-size: 12px; color: #888780;">
               Gainline · gainline.pro

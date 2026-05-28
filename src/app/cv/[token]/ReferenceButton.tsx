@@ -45,14 +45,23 @@ export default function ReferenceButton({ playerId }: { playerId: string }) {
     if (!content.trim() || !user || !profile) return
     setSubmitting(true)
 
-    await supabase.from('references').insert({
+    const { data: newRef } = await supabase.from('references').insert({
       player_id: playerId,
       coach_id: user.id,
       coach_name: profile.full_name || user.email,
       organisation_name: profile.organisation_name,
       content: content.trim(),
       status: 'pending',
-    })
+    }).select('id').single()
+
+    // Fire-and-forget — notify the player
+    if (newRef?.id) {
+      fetch('/api/notify-reference-received', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reference_id: newRef.id }),
+      }).catch(() => {/* silent */})
+    }
 
     setSubmitted(true)
     setSubmitting(false)

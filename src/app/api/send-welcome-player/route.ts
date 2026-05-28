@@ -1,25 +1,21 @@
-import { createClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
 import { resend, FROM } from '@/lib/resend'
-import { cvRequested } from '@/emails/cv-requested'
+import { welcomePlayer } from '@/emails/welcome-player'
 
 export async function POST(req: Request) {
   try {
-    const { player_id, coach_name, coach_org } = await req.json()
-
-    if (!player_id || !coach_name) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
-    }
+    const { player_id } = await req.json()
+    if (!player_id) return NextResponse.json({ error: 'Missing player_id' }, { status: 400 })
 
     const supabaseAdmin = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     )
 
-    // Get player name and profile_id
     const { data: player, error: playerError } = await supabaseAdmin
       .from('players')
-      .select('first_name, last_name, profile_id')
+      .select('first_name, share_token, profile_id')
       .eq('id', player_id)
       .single()
 
@@ -27,31 +23,29 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Player not found' }, { status: 404 })
     }
 
-    // Get player email via admin API
     const { data: { user }, error: userError } = await supabaseAdmin.auth.admin.getUserById(player.profile_id)
-
     if (userError || !user?.email) {
-      return NextResponse.json({ error: 'Player email not found' }, { status: 404 })
+      return NextResponse.json({ error: 'User email not found' }, { status: 404 })
     }
-
-    const playerName = `${player.first_name} ${player.last_name}`
 
     const result = await resend.emails.send({
       from: FROM,
       to: user.email,
-      subject: `${coach_name} wants to see your Player Card`,
-      html: cvRequested({ playerName, coachName: coach_name, coachOrg: coach_org || null }),
+      subject: 'Your Gainline Player Card is live 🟢',
+      html: welcomePlayer({
+        firstName: player.first_name || 'there',
+        shareToken: player.share_token,
+      }),
     })
 
     if (result.error) {
       console.error('Resend error:', result.error)
-      return NextResponse.json({ error: result.error.message || 'Email send failed' }, { status: 500 })
+      return NextResponse.json({ error: result.error.message }, { status: 500 })
     }
 
     return NextResponse.json({ success: true, id: result.data?.id })
-
   } catch (error: any) {
-    console.error('notify-cv-request error:', error)
+    console.error('send-welcome-player error:', error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }

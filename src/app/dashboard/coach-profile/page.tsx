@@ -51,6 +51,7 @@ export default function CoachProfilePage() {
   const [coachId, setCoachId] = useState<string | null>(null)
   const [shareToken, setShareToken] = useState<string>('')
   const [copiedCoachLink, setCopiedCoachLink] = useState(false)
+  const [welcomeEmailSent, setWelcomeEmailSent] = useState(false)
 
   const [form, setForm] = useState({
     full_name: '',
@@ -149,6 +150,15 @@ export default function CoachProfilePage() {
     }).eq('id', coachId)
     setSaving(false)
     flash()
+    // Fire-and-forget welcome email on first save only
+    if (!welcomeEmailSent) {
+      setWelcomeEmailSent(true)
+      fetch('/api/send-welcome-coach', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ coach_id: coachId }),
+      }).catch(() => {/* silent */})
+    }
   }
 
   async function saveCredentials() {
