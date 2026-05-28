@@ -10,13 +10,13 @@ type CoachData = { name: string; club: string; initials: string } | null
 const PAGE_TITLES: Record<string, string> = {
   '/dashboard/coach':              'Players',
   '/dashboard/coach/applications': 'Applications',
+  '/dashboard/coach/vacancies':    'My Vacancies',
   '/dashboard/coach/card':         'My Coach Card',
   '/dashboard/coach/settings':     'Settings',
 }
 
 function getPageTitle(pathname: string) {
   if (PAGE_TITLES[pathname]) return PAGE_TITLES[pathname]
-  if (pathname.startsWith('/dashboard/coach/vacancies/new')) return 'Post Vacancy'
   if (pathname.startsWith('/dashboard/coach/vacancies/')) return 'Vacancy Applications'
   return 'Coach Portal'
 }

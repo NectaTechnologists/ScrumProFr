@@ -11,13 +11,13 @@ interface Props {
 }
 
 const NAV_ITEMS = [
-  { label: 'Dashboard',    href: '/dashboard/coach',              exact: true },
-  { label: 'Players',      href: '/dashboard/coach',              exact: true },
-  { label: 'My Vacancies', href: '/dashboard/coach/vacancies',    exact: false },
-  { label: 'Applications', href: '/dashboard/coach/applications', exact: false, badge: true },
-  { label: 'Post Vacancy', href: '/dashboard/coach/vacancies/new',exact: false },
-  { label: 'My Coach Card',href: '/dashboard/coach/card',         exact: false },
-  { label: 'Settings',     href: '/dashboard/coach/settings',     exact: false },
+  { label: 'Dashboard',    href: '/dashboard/coach',                   exact: true },
+  { label: 'Players',      href: '/dashboard/coach',                   exact: true },
+  { label: 'My Vacancies', href: '/dashboard/coach/vacancies',         exact: true },
+  { label: 'Applications', href: '/dashboard/coach/applications',      exact: false, badge: true },
+  { label: 'Post Vacancy', href: '/dashboard/coach/vacancies',         exact: true },
+  { label: 'My Coach Card',href: '/dashboard/coach/card',              exact: false },
+  { label: 'Settings',     href: '/dashboard/coach/settings',          exact: false },
 ]
 
 export default function CoachSideNav({ coachData, newAppsCount, onClose }: Props) {
