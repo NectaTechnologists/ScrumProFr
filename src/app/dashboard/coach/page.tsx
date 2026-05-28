@@ -127,6 +127,7 @@ export default function CoachDashboard() {
   const [viewCounts, setViewCounts] = useState<Record<string, number>>({})
   const [coachProfile, setCoachProfile] = useState<any>(null)
   const [heroCollapsed, setHeroCollapsed] = useState(false)
+  const [newApplicationsCount, setNewApplicationsCount] = useState(0)
 
   const [activeFilters, setActiveFilters] = useState<{
     positions: string[]
@@ -153,7 +154,16 @@ export default function CoachDashboard() {
     if (profile && !profile.approved && !profile.is_coach) { router.push('/dashboard'); return }
     // Fetch coach profile row
     const { data: coachRow } = await supabase.from('coaches').select('*').eq('profile_id', user.id).single()
-    if (coachRow) setCoachProfile(coachRow)
+    if (coachRow) {
+      setCoachProfile(coachRow)
+      // Count unreviewed applications across all coach's vacancies
+      const { count: appCount } = await supabase
+        .from('vacancy_applications')
+        .select('id', { count: 'exact', head: true })
+        .eq('coach_id', coachRow.id)
+        .eq('status', 'new')
+      setNewApplicationsCount(appCount || 0)
+    }
 
     if (profile?.approved) {
       await fetchPlayers({ positions: [], nationalities: [], ages: [], categories: [] }, '')
@@ -582,6 +592,14 @@ export default function CoachDashboard() {
           </div>
           <a href="/dashboard/coach-profile" style={{ color: '#D4A843', fontSize: '13px', fontWeight: '700', textDecoration: 'none', whiteSpace: 'nowrap' }}>My Coach Card</a>
           <a href="/dashboard/vacancies" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', textDecoration: 'none', whiteSpace: 'nowrap' }}>Post Vacancy</a>
+          <a href="/dashboard/coach/applications" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', textDecoration: 'none', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '5px' }}>
+            Applications
+            {newApplicationsCount > 0 && (
+              <span style={{ background: '#1D9E75', color: 'white', fontSize: '10px', fontWeight: 700, padding: '1px 6px', borderRadius: '10px', fontFamily: 'Arial, sans-serif' }}>
+                {newApplicationsCount}
+              </span>
+            )}
+          </a>
           <a href="/dashboard" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', textDecoration: 'none', whiteSpace: 'nowrap' }}>Dashboard</a>
           <form action="/auth/signout" method="post">
             <a href="/dashboard/settings" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', textDecoration: 'none', marginRight: '8px' }}>Settings</a>
@@ -671,6 +689,12 @@ export default function CoachDashboard() {
               <span style={{ fontSize: '11px', color: '#5A564F', background: 'rgba(255,255,255,0.05)', padding: '4px 10px', borderRadius: '20px', fontFamily: 'Arial, sans-serif' }}>
                 {Object.keys(notes).length} notes
               </span>
+              {newApplicationsCount > 0 && (
+                <a href="/dashboard/coach/applications" style={{ fontSize: '11px', color: '#1D9E75', background: 'rgba(29,158,117,0.1)', border: '1px solid rgba(29,158,117,0.2)', padding: '4px 10px', borderRadius: '20px', fontFamily: 'Arial, sans-serif', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#1D9E75', display: 'inline-block' }}></span>
+                  {newApplicationsCount} new {newApplicationsCount === 1 ? 'application' : 'applications'}
+                </a>
+              )}
             </div>
             {/* Buttons */}
             <div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexShrink: 0 }}>

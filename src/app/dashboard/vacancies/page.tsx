@@ -386,6 +386,7 @@ export default function VacanciesPortal() {
                     >
                       {v.is_active ? 'Live' : 'Hidden'}
                     </span>
+                    <a href={`/dashboard/coach/vacancies/${v.id}`} style={{ background: 'transparent', border: '1.5px solid rgba(29,158,117,0.3)', color: '#5DCAA5', padding: '5px 12px', borderRadius: '6px', fontSize: '12px', fontWeight: 700, fontFamily: 'Arial, sans-serif', textDecoration: 'none', whiteSpace: 'nowrap' }}>Applications</a>
                     <button className="vac-edit-btn" onClick={() => startEdit(v)}>Edit</button>
                   </div>
                 </div>

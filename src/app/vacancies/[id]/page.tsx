@@ -16,6 +16,7 @@ type Vacancy = {
   contact_info: string
   closing_date: string
   is_active: boolean
+  coach_id: string   // coaches.id
 }
 
 export default function VacancyDetailPage() {
@@ -26,14 +27,21 @@ export default function VacancyDetailPage() {
   const [vacancy, setVacancy] = useState<Vacancy | null>(null)
   const [loading, setLoading] = useState(true)
   const [notFound, setNotFound] = useState(false)
+
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [hasProfile, setHasProfile] = useState(false)
+  const [playerId, setPlayerId] = useState<string | null>(null)
   const [playerToken, setPlayerToken] = useState<string | null>(null)
-  const [copied, setCopied] = useState(false)
+  const [playerPosition, setPlayerPosition] = useState<string | null>(null)
+  const [playerNationality, setPlayerNationality] = useState<string | null>(null)
 
-  useEffect(() => {
-    load()
-  }, [id])
+  // Application state
+  const [alreadyApplied, setAlreadyApplied] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const [applying, setApplying] = useState(false)
+  const [applied, setApplied] = useState(false)
+
+  useEffect(() => { load() }, [id])
 
   async function load() {
     const [{ data: vac }, { data: { user } }] = await Promise.all([
@@ -41,43 +49,72 @@ export default function VacancyDetailPage() {
       supabase.auth.getUser(),
     ])
 
-    if (!vac) {
-      setNotFound(true)
-      setLoading(false)
-      return
-    }
-
+    if (!vac) { setNotFound(true); setLoading(false); return }
     setVacancy(vac)
 
     if (user) {
       setIsLoggedIn(true)
-      const { data: player } = await supabase.from('players').select('share_token').eq('profile_id', user.id).single()
+      const { data: player } = await supabase
+        .from('players')
+        .select('id, share_token, position_primary, nationality_primary')
+        .eq('profile_id', user.id)
+        .single()
+
       if (player?.share_token) {
         setHasProfile(true)
+        setPlayerId(player.id)
         setPlayerToken(player.share_token)
+        setPlayerPosition(player.position_primary || null)
+        setPlayerNationality(player.nationality_primary || null)
+
+        // Check existing application
+        const { data: existing } = await supabase
+          .from('vacancy_applications')
+          .select('id')
+          .eq('player_id', player.id)
+          .eq('vacancy_id', id)
+          .single()
+
+        if (existing) setAlreadyApplied(true)
       }
     }
-
     setLoading(false)
   }
 
-  async function handleApply() {
-    if (!hasProfile || !playerToken) return
-    const cvUrl = `${window.location.origin}/cv/${playerToken}`
-    try {
-      await navigator.clipboard.writeText(cvUrl)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 3000)
-    } catch {
-      // fallback for older browsers
-      const el = document.createElement('textarea')
-      el.value = cvUrl
-      document.body.appendChild(el)
-      el.select()
-      document.execCommand('copy')
-      document.body.removeChild(el)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 3000)
+  async function confirmApply() {
+    if (!playerId || !vacancy) return
+    setApplying(true)
+
+    const { data: newApp, error } = await supabase
+      .from('vacancy_applications')
+      .insert({
+        player_id: playerId,
+        vacancy_id: vacancy.id,
+        coach_id: vacancy.coach_id,
+        status: 'new',
+      })
+      .select('id')
+      .single()
+
+    if (error) {
+      // unique constraint — already applied
+      if (error.code === '23505') { setAlreadyApplied(true); setShowModal(false); setApplying(false); return }
+      console.error('Apply error:', error)
+      setApplying(false)
+      return
+    }
+
+    setApplied(true)
+    setShowModal(false)
+    setApplying(false)
+
+    // Fire-and-forget coach notification
+    if (newApp?.id) {
+      fetch('/api/notify-vacancy-application', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ application_id: newApp.id }),
+      }).catch(() => {/* silent */})
     }
   }
 
@@ -109,6 +146,7 @@ export default function VacancyDetailPage() {
   )
 
   const v = vacancy!
+  const primaryPos = v.positions?.[0] || 'Player'
 
   return (
     <>
@@ -143,9 +181,19 @@ export default function VacancyDetailPage() {
         .vd-btn-green:hover { background: #18875F; }
         .vd-btn-dark { background: #1C2338; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.1); }
         .vd-btn-dark:hover { background: #232D47; }
-        .vd-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1D9E75; color: white; padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 700; font-family: Arial, sans-serif; white-space: nowrap; z-index: 999; box-shadow: 0 4px 20px rgba(0,0,0,0.4); animation: slideUp 0.2s ease; }
-        @keyframes slideUp { from { opacity: 0; transform: translateX(-50%) translateY(8px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+        .vd-btn-success { background: rgba(29,158,117,0.12); color: #5DCAA5; border: 1px solid rgba(29,158,117,0.25); cursor: default; }
+        .vd-btn-disabled { background: #1C2338; color: rgba(255,255,255,0.3); cursor: default; }
         .vd-content { max-width: 720px; margin: 0 auto; padding: 0 16px 80px; }
+        /* Modal */
+        .vd-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .vd-modal { background: #161C2A; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 28px; max-width: 400px; width: 100%; }
+        .vd-modal-title { font-size: 17px; font-weight: 900; color: white; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 10px; }
+        .vd-modal-body { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.6; margin-bottom: 20px; }
+        .vd-modal-highlight { color: white; font-weight: 700; }
+        .vd-modal-actions { display: flex; gap: 10px; }
+        .vd-modal-confirm { flex: 1; padding: 12px; background: #1D9E75; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; }
+        .vd-modal-confirm:disabled { opacity: 0.6; cursor: not-allowed; }
+        .vd-modal-cancel { padding: 12px 20px; background: transparent; color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; font-size: 14px; cursor: pointer; font-family: Arial, sans-serif; }
         @media (min-width: 640px) {
           .vd-nav { padding: 0 28px; height: 64px; }
           .vd-logo-text { font-size: 20px; }
@@ -153,6 +201,29 @@ export default function VacancyDetailPage() {
           .vd-club { font-size: 32px; }
         }
       `}</style>
+
+      {/* Confirmation modal */}
+      {showModal && (
+        <div className="vd-modal-overlay" onClick={() => !applying && setShowModal(false)}>
+          <div className="vd-modal" onClick={e => e.stopPropagation()}>
+            <div className="vd-modal-title">Confirm application</div>
+            <div className="vd-modal-body">
+              You're applying for <span className="vd-modal-highlight">{primaryPos}</span> at{' '}
+              <span className="vd-modal-highlight">{v.club_name}</span>.
+              <br /><br />
+              Your Gainline Player Card will be shared with the coach immediately.
+            </div>
+            <div className="vd-modal-actions">
+              <button className="vd-modal-cancel" onClick={() => setShowModal(false)} disabled={applying}>
+                Cancel
+              </button>
+              <button className="vd-modal-confirm" onClick={confirmApply} disabled={applying}>
+                {applying ? 'Submitting…' : 'Submit Player Card'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <nav className="vd-nav">
         <a href="/" className="vd-logo">
@@ -222,43 +293,56 @@ export default function VacancyDetailPage() {
           </div>
         )}
 
+        {/* ── CTA block ── */}
         <div className="vd-cta-block">
           {!isLoggedIn && (
             <>
               <div className="vd-cta-title">Interested in this vacancy?</div>
-              <div className="vd-cta-sub">Create a free Gainline profile and share your CV link with the club.</div>
+              <div className="vd-cta-sub">Create a free Gainline Player Card and apply in one tap.</div>
               <a href="/register" className="vd-btn vd-btn-green">Create your free profile</a>
             </>
           )}
+
           {isLoggedIn && !hasProfile && (
             <>
               <div className="vd-cta-title">Complete your profile first</div>
-              <div className="vd-cta-sub">Build your Gainline Player CV to apply for this vacancy.</div>
-              <a href="/onboarding" className="vd-btn vd-btn-green">Create your CV</a>
+              <div className="vd-cta-sub">Build your Gainline Player Card to apply for this vacancy.</div>
+              <a href="/onboarding" className="vd-btn vd-btn-green">Create your Player Card</a>
             </>
           )}
-          {isLoggedIn && hasProfile && (
+
+          {isLoggedIn && hasProfile && applied && (
             <>
-              <div className="vd-cta-title">Apply with your Gainline CV</div>
-              <div className="vd-cta-sub">Click below to copy your CV link — then send it directly to the club via the contact details above.</div>
-              <button className="vd-btn vd-btn-green" onClick={handleApply}>
-                {copied ? '✓ CV link copied!' : 'Copy my CV link'}
+              <div className="vd-cta-title">Application submitted ✓</div>
+              <div className="vd-cta-sub">{v.club_name} will be in touch if you're a match.</div>
+              <div className="vd-btn vd-btn-success">Your Player Card has been shared</div>
+            </>
+          )}
+
+          {isLoggedIn && hasProfile && alreadyApplied && !applied && (
+            <>
+              <div className="vd-cta-title">Already applied</div>
+              <div className="vd-cta-sub">You've submitted your Player Card for this vacancy.</div>
+              <div className="vd-btn vd-btn-disabled">Application submitted</div>
+            </>
+          )}
+
+          {isLoggedIn && hasProfile && !applied && !alreadyApplied && (
+            <>
+              <div className="vd-cta-title">Apply with your Player Card</div>
+              <div className="vd-cta-sub">Your Gainline Player Card will be shared directly with the coach — no cover letter needed.</div>
+              <button className="vd-btn vd-btn-green" onClick={() => setShowModal(true)}>
+                Submit my Player Card
               </button>
-              <div style={{ marginTop: '8px' }}>
+              {playerToken && (
                 <a href={`/cv/${playerToken}`} target="_blank" rel="noopener noreferrer" className="vd-btn vd-btn-dark" style={{ display: 'block', marginTop: '8px' }}>
-                  Preview my CV
+                  Preview my card first
                 </a>
-              </div>
+              )}
             </>
           )}
         </div>
       </div>
-
-      {copied && (
-        <div className="vd-toast">
-          Your CV link has been copied — share it with the club
-        </div>
-      )}
     </>
   )
 }
