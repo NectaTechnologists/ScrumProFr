@@ -21,12 +21,15 @@ export default function CoachSettingsPage() {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) { router.push('/login'); return }
 
-    const { data: prof } = await supabase.from('profiles').select('is_coach, role, notify_applications, notify_vacancy_matches').eq('id', user.id).single()
+    const { data: prof } = await supabase.from('profiles').select('is_coach, role').eq('id', user.id).single()
     if (!prof?.is_coach && prof?.role !== 'org_user') { router.push('/dashboard'); return }
 
     setEmail(user.email || '')
-    setNotifyApplications(prof?.notify_applications ?? true)
-    setNotifyMatches(prof?.notify_vacancy_matches ?? true)
+
+    // Load notification prefs separately — columns may not exist yet, default to true
+    const { data: prefs } = await supabase.from('profiles').select('notify_applications, notify_vacancy_matches').eq('id', user.id).single()
+    setNotifyApplications(prefs?.notify_applications ?? true)
+    setNotifyMatches(prefs?.notify_vacancy_matches ?? true)
     setLoading(false)
   }
 
