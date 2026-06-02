@@ -277,7 +277,6 @@ export default function DashboardPage() {
         </div>
         <div className="dash-nav-right">
           <a href="/vacancies" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', textDecoration: 'none', whiteSpace: 'nowrap' }} className="dash-nav-hide-sm">Vacancies</a>
-          <a href={isCoach ? '/dashboard/coach' : '/dashboard'} style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', textDecoration: 'none', whiteSpace: 'nowrap' }} className="dash-nav-hide-sm">Players</a>
           {isCoach && <a href="/dashboard/vacancies" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', textDecoration: 'none', whiteSpace: 'nowrap' }} className="dash-nav-hide-sm">Post Vacancy</a>}
           <div className="lang-toggle">
             <button className={`lang-btn ${lang === 'en' ? 'lang-btn-active' : ''}`} onClick={() => toggleLang('en')}>{FLAG_EN}</button>
@@ -701,15 +700,17 @@ export default function DashboardPage() {
             </svg>
             Vacancies
           </a>
-          <a href={isCoach ? '/dashboard/coach' : '/dashboard'} className="mob-nav-item">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="7" cy="6" r="3"/>
-              <path d="M1 18c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
-              <circle cx="15" cy="7" r="2.5"/>
-              <path d="M13 18c0-2.2 0.9-4.2 2.3-5.5"/>
-            </svg>
-            Players
-          </a>
+          {isCoach && (
+            <a href="/dashboard/coach" className="mob-nav-item">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="7" cy="6" r="3"/>
+                <path d="M1 18c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
+                <circle cx="15" cy="7" r="2.5"/>
+                <path d="M13 18c0-2.2 0.9-4.2 2.3-5.5"/>
+              </svg>
+              Players
+            </a>
+          )}
           <a href={playerShareToken ? `/cv/${playerShareToken}` : '/onboarding'} className="mob-nav-item">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="10" cy="6" r="3.5"/>
