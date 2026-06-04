@@ -121,7 +121,7 @@ export default function VacanciesPage() {
         .dir-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
         .dir-logo-text { color: white; font-weight: 900; font-size: 17px; letter-spacing: -0.5px; font-family: 'Arial Black', Arial, sans-serif; }
         .dir-nav-right { display: flex; align-items: center; gap: 8px; }
-        .dir-nav-btn { background: #1D9E75; color: white; border: none; border-radius: 20px; padding: 7px 16px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; text-decoration: none; display: inline-block; white-space: nowrap; }
+        .dir-nav-btn { background: #2ec97e; color: white; border: none; border-radius: 20px; padding: 7px 16px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; text-decoration: none; display: inline-block; white-space: nowrap; }
         .dir-nav-login { background: transparent; color: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 6px 14px; font-size: 13px; cursor: pointer; font-family: Arial, sans-serif; text-decoration: none; display: inline-block; white-space: nowrap; }
         .dir-nav-login:hover { color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.3); }
         .dir-hero { background: #0D1B2E; padding: 40px 16px; text-align: center; border-bottom: 0.5px solid rgba(255,255,255,0.06); }
@@ -130,7 +130,7 @@ export default function VacanciesPage() {
         .dir-hero-sub { font-size: 14px; color: rgba(255,255,255,0.45); max-width: 480px; margin: 0 auto; line-height: 1.6; }
         .filter-bar { background: #111520; border-bottom: 0.5px solid rgba(255,255,255,0.06); padding: 12px 16px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
         .filter-select { padding: 7px 10px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: 13px; color: #F0EDE4; background: #1C2338; outline: none; font-family: Arial, sans-serif; cursor: pointer; flex: 1; min-width: 0; }
-        .filter-select:focus { border-color: #1D9E75; }
+        .filter-select:focus { border-color: #2ec97e; }
         .filter-select option { background: #1C2338; color: #F0EDE4; }
         .filter-clear { background: none; border: none; font-size: 12px; color: rgba(255,255,255,0.4); cursor: pointer; font-family: Arial, sans-serif; padding: 0 4px; white-space: nowrap; }
         .filter-clear:hover { color: rgba(255,255,255,0.7); }
@@ -150,22 +150,22 @@ export default function VacanciesPage() {
         .vac-eligibility { font-size: 11px; color: rgba(255,255,255,0.3); margin-bottom: 12px; }
         .vac-cta { display: block; width: 100%; padding: 9px; background: #1C2338; color: rgba(255,255,255,0.65); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: 12px; font-weight: 700; font-family: 'Arial Black', Arial, sans-serif; text-decoration: none; text-align: center; cursor: pointer; transition: background 0.15s; }
         .vac-cta:hover { background: #232D47; color: rgba(255,255,255,0.85); }
-        .vac-cta-green { background: #1D9E75; color: white; border-color: transparent; }
+        .vac-cta-green { background: #2ec97e; color: white; border-color: transparent; }
         .vac-cta-green:hover { background: #18875F; }
         .vote-section { border-top: 0.5px solid rgba(255,255,255,0.06); margin-top: 56px; padding-top: 32px; text-align: center; }
         .vote-label { font-size: 10px; color: rgba(255,255,255,0.25); letter-spacing: 0.14em; font-weight: 700; margin-bottom: 10px; }
         .vote-text { font-size: 14px; color: rgba(255,255,255,0.45); margin-bottom: 18px; line-height: 1.6; max-width: 360px; margin-left: auto; margin-right: auto; }
         .vote-btn { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.12); border-radius: 20px; padding: 9px 20px; font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.6); cursor: pointer; font-family: Arial, sans-serif; transition: border-color 0.15s, color 0.15s; }
-        .vote-btn:hover:not(:disabled) { border-color: #1D9E75; color: #5DCAA5; }
+        .vote-btn:hover:not(:disabled) { border-color: #2ec97e; color: #5DCAA5; }
         .vote-btn-voted { background: rgba(29,158,117,0.1); border-color: rgba(29,158,117,0.3); color: #5DCAA5; cursor: default; }
-        .vote-count { background: #1D9E75; color: white; border-radius: 20px; font-size: 11px; font-weight: 700; padding: 2px 8px; }
+        .vote-count { background: #2ec97e; color: white; border-radius: 20px; font-size: 11px; font-weight: 700; padding: 2px 8px; }
         .empty-state { text-align: center; padding: 60px 20px; }
         .empty-state h3 { font-size: 18px; font-weight: 900; color: rgba(255,255,255,0.75); font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 8px; }
         .empty-state p { font-size: 14px; color: rgba(255,255,255,0.35); }
         .dir-footer { background: #111520; border-top: 0.5px solid rgba(255,255,255,0.06); padding: 32px 16px; text-align: center; }
         .dir-footer-brand { font-size: 18px; font-weight: 900; color: white; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 6px; }
         .dir-footer-tag { font-size: 12px; color: rgba(255,255,255,0.25); margin-bottom: 16px; }
-        .dir-footer-cta { display: inline-block; background: #1D9E75; color: white; font-size: 13px; font-weight: 700; padding: 10px 24px; border-radius: 20px; text-decoration: none; font-family: Arial, sans-serif; }
+        .dir-footer-cta { display: inline-block; background: #2ec97e; color: white; font-size: 13px; font-weight: 700; padding: 10px 24px; border-radius: 20px; text-decoration: none; font-family: Arial, sans-serif; }
         @media (max-width: 639px) {
           .dir-nav-login { display: none; }
           .filter-bar { flex-direction: column; gap: 8px; }
@@ -193,9 +193,9 @@ export default function VacanciesPage() {
           <svg width="28" height="26" viewBox="0 0 32 30" style={{ display: 'block' }}>
             <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
             <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-            <line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
+            <line x1="24" y1="28" x2="31" y2="0" stroke="#2ec97e" strokeWidth="5" strokeLinecap="round"/>
           </svg>
-          <span className="dir-logo-text">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
+          <span className="dir-logo-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
         </a>
         <div className="dir-nav-right">
           <a href="/players" className="dir-nav-login">Players</a>
@@ -282,7 +282,7 @@ export default function VacanciesPage() {
       </div>
 
       <div className="dir-footer">
-        <div className="dir-footer-brand">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></div>
+        <div className="dir-footer-brand">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></div>
         <div className="dir-footer-tag">No talent goes unseen</div>
         <a href="/register" className="dir-footer-cta">Create your free profile</a>
       </div>

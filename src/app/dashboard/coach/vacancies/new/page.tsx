@@ -141,23 +141,23 @@ function PostVacancyForm() {
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: Arial, sans-serif; background: #0C0F16; color: #F0EDE4; }
         .page { max-width: 720px; margin: 0 auto; padding: 32px 20px 60px; }
-        .page-label { font-size: 10px; color: #1D9E75; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 6px; }
+        .page-label { font-size: 10px; color: #2ec97e; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 6px; }
         .page-title { font-size: 22px; font-weight: 900; color: #F0EDE4; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -0.5px; margin-bottom: 24px; }
         .form-card { background: #161C2A; border-radius: 12px; border: 0.5px solid rgba(255,255,255,0.07); padding: 24px; margin-bottom: 12px; }
-        .form-section-label { font-size: 11px; color: #1D9E75; letter-spacing: 0.12em; font-weight: 700; margin-bottom: 16px; }
+        .form-section-label { font-size: 11px; color: #2ec97e; letter-spacing: 0.12em; font-weight: 700; margin-bottom: 16px; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
         .form-field { display: flex; flex-direction: column; gap: 6px; }
         .form-label { font-size: 11px; font-weight: 700; color: #888780; letter-spacing: 0.08em; text-transform: uppercase; }
         .form-input { padding: 9px 12px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: 13px; color: #F0EDE4; background: #1C2338; outline: none; font-family: Arial, sans-serif; width: 100%; }
-        .form-input:focus { border-color: #1D9E75; }
+        .form-input:focus { border-color: #2ec97e; }
         .form-input::placeholder { color: #5F5E5A; }
         .form-select { padding: 9px 12px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: 13px; color: #F0EDE4; background: #1C2338; outline: none; font-family: Arial, sans-serif; width: 100%; cursor: pointer; }
-        .form-select:focus { border-color: #1D9E75; }
+        .form-select:focus { border-color: #2ec97e; }
         .form-textarea { padding: 9px 12px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: 13px; color: #F0EDE4; background: #1C2338; outline: none; font-family: Arial, sans-serif; width: 100%; resize: vertical; min-height: 80px; }
-        .form-textarea:focus { border-color: #1D9E75; }
+        .form-textarea:focus { border-color: #2ec97e; }
         .pos-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
         .pos-option { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 7px 10px; border-radius: 6px; border: 1.5px solid rgba(255,255,255,0.07); background: #1C2338; transition: border-color 0.1s; }
-        .pos-option-active { border-color: #1D9E75; background: rgba(29,158,117,0.1); }
+        .pos-option-active { border-color: #2ec97e; background: rgba(29,158,117,0.1); }
         .pos-option span { font-size: 12px; color: #A8A398; pointer-events: none; }
         .pos-option-active span { color: #F0EDE4; }
         .toggle-row { display: flex; align-items: center; justify-content: space-between; }
@@ -167,7 +167,7 @@ function PostVacancyForm() {
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
         .toggle-slider { position: absolute; inset: 0; background: #2A3347; border-radius: 22px; cursor: pointer; transition: background 0.2s; }
         .toggle-slider:before { content: ''; position: absolute; width: 16px; height: 16px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: transform 0.2s; }
-        .toggle-switch input:checked + .toggle-slider { background: #1D9E75; }
+        .toggle-switch input:checked + .toggle-slider { background: #2ec97e; }
         .toggle-switch input:checked + .toggle-slider:before { transform: translateX(18px); }
         .save-btn { width: 100%; padding: 12px; background: #D4A843; color: #0C0F16; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: Arial, sans-serif; cursor: pointer; margin-top: 4px; }
         .save-btn:disabled { opacity: 0.6; cursor: not-allowed; }

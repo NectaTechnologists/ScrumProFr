@@ -59,7 +59,7 @@ export default async function PlayersPage() {
         .dir-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; min-width: 0; flex-shrink: 0; }
         .dir-logo-text { color: white; font-weight: 900; font-size: 20px; letter-spacing: -0.5px; font-family: 'Arial Black', Arial, sans-serif; white-space: nowrap; }
         .dir-nav-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-        .dir-nav-btn { background: #1D9E75; color: white; border: none; border-radius: 20px; padding: 8px 18px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; text-decoration: none; display: inline-block; white-space: nowrap; }
+        .dir-nav-btn { background: #2ec97e; color: white; border: none; border-radius: 20px; padding: 8px 18px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; text-decoration: none; display: inline-block; white-space: nowrap; }
         .dir-nav-login { background: transparent; color: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 7px 16px; font-size: 13px; cursor: pointer; font-family: Arial, sans-serif; text-decoration: none; display: inline-block; white-space: nowrap; }
 
         /* HERO */
@@ -70,7 +70,7 @@ export default async function PlayersPage() {
         .dir-hero-stats { display: flex; justify-content: center; gap: 32px; margin-bottom: 28px; }
         .dir-stat-val { font-size: 28px; font-weight: 900; color: white; font-family: 'Arial Black', Arial, sans-serif; line-height: 1; }
         .dir-stat-lbl { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 3px; }
-        .dir-cta { display: inline-flex; align-items: center; gap: 7px; background: #1D9E75; color: white; border: none; border-radius: 20px; padding: 12px 28px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; text-decoration: none; }
+        .dir-cta { display: inline-flex; align-items: center; gap: 7px; background: #2ec97e; color: white; border: none; border-radius: 20px; padding: 12px 28px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; text-decoration: none; }
 
         /* GRID */
         .dir-content { max-width: 1300px; margin: 0 auto; padding: 32px 28px 60px; }
@@ -122,7 +122,7 @@ export default async function PlayersPage() {
         .dir-footer { background: #111520; border-top: 0.5px solid rgba(255,255,255,0.06); padding: 32px 28px; text-align: center; }
         .dir-footer-brand { font-size: 18px; font-weight: 900; color: white; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 6px; }
         .dir-footer-tag { font-size: 12px; color: rgba(255,255,255,0.25); margin-bottom: 16px; }
-        .dir-footer-cta { display: inline-block; background: #1D9E75; color: white; font-size: 13px; font-weight: 700; padding: 10px 24px; border-radius: 20px; text-decoration: none; font-family: Arial, sans-serif; }
+        .dir-footer-cta { display: inline-block; background: #2ec97e; color: white; font-size: 13px; font-weight: 700; padding: 10px 24px; border-radius: 20px; text-decoration: none; font-family: Arial, sans-serif; }
 
         /* Responsive */
         @media (max-width: 900px) {
@@ -144,9 +144,9 @@ export default async function PlayersPage() {
           <svg width="28" height="26" viewBox="0 0 32 30" style={{ display: 'block', flexShrink: 0 }}>
             <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
             <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-            <line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
+            <line x1="24" y1="28" x2="31" y2="0" stroke="#2ec97e" strokeWidth="5" strokeLinecap="round"/>
           </svg>
-          <span className="dir-logo-text">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
+          <span className="dir-logo-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
         </a>
         <div className="dir-nav-right">
           <a href="/vacancies" className="dir-nav-login">Vacancies</a>
@@ -309,7 +309,7 @@ export default async function PlayersPage() {
       </div>
 
       <div className="dir-footer">
-        <div className="dir-footer-brand">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></div>
+        <div className="dir-footer-brand">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></div>
         <div className="dir-footer-tag">No talent goes unseen</div>
         <a href="/login" className="dir-footer-cta">Create your free profile</a>
       </div>

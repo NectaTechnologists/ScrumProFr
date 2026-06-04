@@ -255,14 +255,14 @@ export default function CoachProfilePage() {
         .cp-tab-active { background: #D4A843; color: #0C0F16; }
         /* form card */
         .cp-section { background: #161C2A; border-radius: 12px; padding: 28px; border: 1px solid rgba(255,255,255,0.07); margin-bottom: 16px; }
-        .cp-section-title { font-size: 11px; color: #1D9E75; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 16px; margin-top: 8px; }
+        .cp-section-title { font-size: 11px; color: #2ec97e; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 16px; margin-top: 8px; }
         .cp-row { display: grid; gap: 16px; margin-bottom: 16px; }
         .cp-row-2 { grid-template-columns: 1fr 1fr; }
         .cp-row-3 { grid-template-columns: 1fr 1fr 1fr; }
         .cp-field { display: flex; flex-direction: column; gap: 6px; }
         .cp-label { font-size: 13px; font-weight: 600; color: #F0EDE4; }
         .cp-input { width: 100%; padding: 10px 14px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: 14px; outline: none; font-family: system-ui; background: #1C2338; color: #F0EDE4; }
-        .cp-input:focus { border-color: #1D9E75; }
+        .cp-input:focus { border-color: #2ec97e; }
         .cp-input::placeholder { color: #B4B2A9; }
         .cp-textarea { resize: vertical; min-height: 90px; }
         /* save */
@@ -289,9 +289,9 @@ export default function CoachProfilePage() {
           <svg width="32" height="30" viewBox="0 0 32 30" style={{ display: 'block' }}>
             <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
             <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-            <line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
+            <line x1="24" y1="28" x2="31" y2="0" stroke="#2ec97e" strokeWidth="5" strokeLinecap="round"/>
           </svg>
-          <span className="cp-logo-text">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
+          <span className="cp-logo-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
         </div>
         <div className="cp-nav-right">
           {shareToken && (

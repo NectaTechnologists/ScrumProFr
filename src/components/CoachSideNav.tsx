@@ -53,7 +53,7 @@ export default function CoachSideNav({ coachData, newAppsCount, onClose }: Props
         <svg width="24" height="22" viewBox="0 0 32 30" style={{ display: 'block', flexShrink: 0 }}>
           <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
           <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-          <line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
+          <line x1="24" y1="28" x2="31" y2="0" stroke="#2ec97e" strokeWidth="5" strokeLinecap="round"/>
         </svg>
         <span style={{
           color: 'white',
@@ -62,7 +62,7 @@ export default function CoachSideNav({ coachData, newAppsCount, onClose }: Props
           letterSpacing: '-0.5px',
           fontFamily: 'Arial Black, Arial, sans-serif',
         }}>
-          GAIN<span style={{ color: '#1D9E75' }}>LINE</span>
+          GAIN<span style={{ color: '#2ec97e' }}>LINE</span>
         </span>
       </a>
 
@@ -93,7 +93,7 @@ export default function CoachSideNav({ coachData, newAppsCount, onClose }: Props
               {item.label}
               {item.badge && newAppsCount > 0 && (
                 <span style={{
-                  background: '#1D9E75',
+                  background: '#2ec97e',
                   color: 'white',
                   fontSize: '10px',
                   fontWeight: 700,

@@ -94,8 +94,8 @@ export default function ResetPasswordPage() {
         .card .sub { font-size: 13px; color: #888780; margin-bottom: 28px; }
         .label { display: block; font-size: 12px; color: #5F5E5A; margin-bottom: 6px; letter-spacing: 0.04em; }
         .input { width: 100%; padding: 12px 14px; border-radius: 8px; border: 1px solid #D3D1C7; font-size: 14px; font-family: Arial, sans-serif; outline: none; margin-bottom: 16px; color: #0D1B2E; }
-        .input:focus { border-color: #1D9E75; }
-        .btn { width: 100%; background: #1D9E75; color: white; border: none; border-radius: 8px; padding: 14px; font-size: 15px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; cursor: pointer; margin-top: 8px; }
+        .input:focus { border-color: #2ec97e; }
+        .btn { width: 100%; background: #2ec97e; color: white; border: none; border-radius: 8px; padding: 14px; font-size: 15px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; cursor: pointer; margin-top: 8px; }
         .btn:disabled { background: #5DCAA5; cursor: not-allowed; }
         .error-box { background: #FCEBEB; border: 1px solid #F09595; color: #A32D2D; border-radius: 8px; padding: 12px 14px; font-size: 13px; margin-bottom: 16px; }
         .success-box { background: #E1F5EE; border: 1px solid #5DCAA5; color: #0F6E56; border-radius: 8px; padding: 12px 14px; font-size: 13px; margin-bottom: 16px; }
@@ -113,9 +113,9 @@ export default function ResetPasswordPage() {
           <svg width="44" height="40" viewBox="0 0 44 40" style={{ display: 'block' }}>
             <line x1="4" y1="38" x2="13" y2="8" stroke="white" strokeWidth="6" strokeLinecap="round" opacity="0.28"/>
             <line x1="18" y1="38" x2="27" y2="2" stroke="white" strokeWidth="6" strokeLinecap="round" opacity="0.58"/>
-            <line x1="32" y1="38" x2="41" y2="0" stroke="#1D9E75" strokeWidth="6" strokeLinecap="round"/>
+            <line x1="32" y1="38" x2="41" y2="0" stroke="#2ec97e" strokeWidth="6" strokeLinecap="round"/>
           </svg>
-          <span className="logo-text">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
+          <span className="logo-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
         </div>
 
         <div className="card">

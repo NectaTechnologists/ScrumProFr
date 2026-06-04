@@ -67,7 +67,7 @@ export default function VacanciesListPage() {
         body { font-family: Arial, sans-serif; background: #0C0F16; color: #F0EDE4; }
         .page { max-width: 800px; margin: 0 auto; padding: 32px 20px 60px; }
         .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-        .page-label { font-size: 10px; color: #1D9E75; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 4px; }
+        .page-label { font-size: 10px; color: #2ec97e; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 4px; }
         .page-title { font-size: 22px; font-weight: 900; color: #F0EDE4; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -0.5px; }
         .post-btn { background: #D4A843; color: #0C0F16; font-size: 13px; font-weight: 700; padding: 9px 18px; border-radius: 8px; text-decoration: none; font-family: Arial, sans-serif; white-space: nowrap; flex-shrink: 0; }
         .vac-list { display: flex; flex-direction: column; gap: 10px; }
@@ -80,7 +80,7 @@ export default function VacanciesListPage() {
         .vac-stats { display: flex; gap: 16px; margin-bottom: 14px; }
         .vac-stat { font-size: 12px; color: #888780; }
         .vac-stat strong { color: #F0EDE4; font-weight: 700; margin-right: 4px; }
-        .vac-stat-new { color: #1D9E75; font-weight: 700; }
+        .vac-stat-new { color: #2ec97e; font-weight: 700; }
         .vac-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding-top: 12px; border-top: 0.5px solid rgba(255,255,255,0.06); }
         .status-badge { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 10px; cursor: pointer; user-select: none; }
         .status-live { background: rgba(29,158,117,0.15); color: #5DCAA5; border: 1px solid rgba(29,158,117,0.25); }

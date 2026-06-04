@@ -132,15 +132,15 @@ export default function VacancyDetailPage() {
           <svg width="28" height="26" viewBox="0 0 32 30" style={{ display: 'block' }}>
             <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
             <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-            <line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
+            <line x1="24" y1="28" x2="31" y2="0" stroke="#2ec97e" strokeWidth="5" strokeLinecap="round"/>
           </svg>
-          <span style={{ color: 'white', fontWeight: 900, fontSize: '20px', letterSpacing: '-0.5px', fontFamily: 'Arial Black, Arial, sans-serif' }}>GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
+          <span style={{ color: 'white', fontWeight: 900, fontSize: '20px', letterSpacing: '-0.5px', fontFamily: 'Arial Black, Arial, sans-serif' }}>GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
         </a>
       </nav>
       <div style={{ textAlign: 'center', padding: '80px 20px' }}>
         <h2 style={{ fontSize: '22px', fontWeight: 900, color: 'rgba(255,255,255,0.7)', fontFamily: 'Arial Black, Arial, sans-serif', marginBottom: '10px' }}>Vacancy not found</h2>
         <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '14px', marginBottom: '24px' }}>This vacancy may have been filled or removed.</p>
-        <a href="/vacancies" style={{ display: 'inline-block', background: '#1D9E75', color: 'white', padding: '10px 24px', borderRadius: '20px', textDecoration: 'none', fontSize: '13px', fontWeight: 700, fontFamily: 'Arial, sans-serif' }}>Browse all vacancies</a>
+        <a href="/vacancies" style={{ display: 'inline-block', background: '#2ec97e', color: 'white', padding: '10px 24px', borderRadius: '20px', textDecoration: 'none', fontSize: '13px', fontWeight: 700, fontFamily: 'Arial, sans-serif' }}>Browse all vacancies</a>
       </div>
     </>
   )
@@ -157,7 +157,7 @@ export default function VacancyDetailPage() {
         .vd-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
         .vd-logo-text { color: white; font-weight: 900; font-size: 17px; letter-spacing: -0.5px; font-family: 'Arial Black', Arial, sans-serif; }
         .vd-nav-right { display: flex; align-items: center; gap: 8px; }
-        .vd-nav-btn { background: #1D9E75; color: white; border: none; border-radius: 20px; padding: 7px 16px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; text-decoration: none; display: inline-block; }
+        .vd-nav-btn { background: #2ec97e; color: white; border: none; border-radius: 20px; padding: 7px 16px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; text-decoration: none; display: inline-block; }
         .vd-nav-ghost { background: transparent; color: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 6px 14px; font-size: 13px; text-decoration: none; display: inline-block; }
         .vd-back { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.4); font-size: 13px; text-decoration: none; font-family: Arial, sans-serif; padding: 24px 0 20px; }
         .vd-back:hover { color: rgba(255,255,255,0.7); }
@@ -177,7 +177,7 @@ export default function VacancyDetailPage() {
         .vd-cta-title { font-size: 15px; font-weight: 900; color: white; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 6px; }
         .vd-cta-sub { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 16px; line-height: 1.5; }
         .vd-btn { display: block; width: 100%; padding: 13px; border-radius: 10px; border: none; font-size: 14px; font-weight: 700; font-family: 'Arial Black', Arial, sans-serif; text-align: center; cursor: pointer; text-decoration: none; transition: background 0.15s; }
-        .vd-btn-green { background: #1D9E75; color: white; }
+        .vd-btn-green { background: #2ec97e; color: white; }
         .vd-btn-green:hover { background: #18875F; }
         .vd-btn-dark { background: #1C2338; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.1); }
         .vd-btn-dark:hover { background: #232D47; }
@@ -191,7 +191,7 @@ export default function VacancyDetailPage() {
         .vd-modal-body { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.6; margin-bottom: 20px; }
         .vd-modal-highlight { color: white; font-weight: 700; }
         .vd-modal-actions { display: flex; gap: 10px; }
-        .vd-modal-confirm { flex: 1; padding: 12px; background: #1D9E75; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; }
+        .vd-modal-confirm { flex: 1; padding: 12px; background: #2ec97e; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; }
         .vd-modal-confirm:disabled { opacity: 0.6; cursor: not-allowed; }
         .vd-modal-cancel { padding: 12px 20px; background: transparent; color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; font-size: 14px; cursor: pointer; font-family: Arial, sans-serif; }
         @media (min-width: 640px) {
@@ -230,9 +230,9 @@ export default function VacancyDetailPage() {
           <svg width="28" height="26" viewBox="0 0 32 30" style={{ display: 'block' }}>
             <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
             <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-            <line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
+            <line x1="24" y1="28" x2="31" y2="0" stroke="#2ec97e" strokeWidth="5" strokeLinecap="round"/>
           </svg>
-          <span className="vd-logo-text">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
+          <span className="vd-logo-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
         </a>
         <div className="vd-nav-right">
           {isLoggedIn ? (

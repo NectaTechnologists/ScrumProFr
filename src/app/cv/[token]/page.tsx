@@ -67,7 +67,7 @@ export default async function CVPage(props: any) {
       <div style={{ textAlign: 'center' }}>
         <div style={{ color: 'white', fontSize: '22px', fontWeight: '900', fontFamily: 'Arial Black, Arial, sans-serif', marginBottom: '8px' }}>Player not found</div>
         <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '14px', marginBottom: '24px' }}>This CV link may have expired or been removed.</div>
-        <a href="/" style={{ background: '#1D9E75', color: 'white', padding: '10px 20px', borderRadius: '6px', textDecoration: 'none', fontSize: '13px', fontWeight: '700', fontFamily: 'Arial Black, Arial, sans-serif' }}>Go to Gainline</a>
+        <a href="/" style={{ background: '#2ec97e', color: 'white', padding: '10px 20px', borderRadius: '6px', textDecoration: 'none', fontSize: '13px', fontWeight: '700', fontFamily: 'Arial Black, Arial, sans-serif' }}>Go to Gainline</a>
       </div>
     </div>
   )
@@ -85,7 +85,7 @@ export default async function CVPage(props: any) {
   const fields = ['first_name','last_name','date_of_birth','nationality_primary','position_primary','height_cm','weight_kg','school_attended','bio','video_url','avatar_url']
   const filled = fields.filter(f => player[f] && player[f] !== '').length
   const completion = Math.round((filled / fields.length) * 100)
-  const ringColor = completion < 40 ? '#F0A500' : '#1D9E75'
+  const ringColor = completion < 40 ? '#F0A500' : '#2ec97e'
   const r = 20
   const circ = 2 * Math.PI * r
   const offset = circ - (completion / 100) * circ
@@ -118,13 +118,13 @@ export default async function CVPage(props: any) {
         .cv-hero { background: linear-gradient(160deg, #0D1B2E 0%, #0F2E1E 100%); padding: 36px 20px 0; }
         .cv-hero-inner { max-width: 680px; margin: 0 auto; }
         .cv-profile-row { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 28px; }
-        .cv-avatar { width: 88px; height: 88px; border-radius: 16px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; border: 3px solid rgba(255,255,255,0.1); }
+        .cv-avatar { width: 88px; height: 88px; border-radius: 16px; background: #2ec97e; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; border: 3px solid rgba(255,255,255,0.1); }
         .cv-avatar span { color: white; font-size: 30px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; }
         .cv-avatar img { width: 100%; height: 100%; object-fit: cover; }
         .cv-profile-info { flex: 1; padding-top: 4px; }
         .cv-name { color: white; font-size: 28px; font-weight: 900; margin-bottom: 8px; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -0.5px; line-height: 1.1; }
         .cv-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
-        .cv-position-badge { background: #1D9E75; color: white; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 4px; letter-spacing: 0.08em; }
+        .cv-position-badge { background: #2ec97e; color: white; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 4px; letter-spacing: 0.08em; }
         .cv-position-badge-alt { background: rgba(29,158,117,0.2); color: #5DCAA5; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 4px; letter-spacing: 0.08em; border: 1px solid rgba(29,158,117,0.3); }
         .cv-meta-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
         .cv-meta-item { color: rgba(255,255,255,0.45); font-size: 12px; }
@@ -141,7 +141,7 @@ export default async function CVPage(props: any) {
         /* ── Content — dark ── */
         .cv-content { max-width: 680px; margin: 0 auto; padding: 20px 20px 60px; }
         .cv-card { background: #131720; border-radius: 12px; padding: 24px; border: 0.5px solid #1e2330; margin-bottom: 12px; }
-        .cv-card-label { font-size: 10px; color: #1D9E75; letter-spacing: 0.14em; margin-bottom: 14px; font-weight: 700; }
+        .cv-card-label { font-size: 10px; color: #2ec97e; letter-spacing: 0.14em; margin-bottom: 14px; font-weight: 700; }
         .cv-bio { font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.75; }
 
         /* Detail grid */
@@ -163,11 +163,11 @@ export default async function CVPage(props: any) {
         /* Video */
         .cv-video-list { display: flex; flex-direction: column; gap: 8px; }
         .cv-video-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: rgba(255,255,255,0.05); border-radius: 8px; text-decoration: none; border: 0.5px solid rgba(255,255,255,0.08); transition: border-color 0.15s; }
-        .cv-video-item:hover { border-color: #1D9E75; }
-        .cv-video-icon { width: 32px; height: 32px; border-radius: 6px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .cv-video-item:hover { border-color: #2ec97e; }
+        .cv-video-icon { width: 32px; height: 32px; border-radius: 6px; background: #2ec97e; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .cv-video-title { font-size: 13px; font-weight: 700; color: #F0EDE4; margin-bottom: 2px; }
         .cv-video-source { font-size: 11px; color: rgba(255,255,255,0.35); }
-        .cv-video-watch { font-size: 11px; color: #1D9E75; font-weight: 700; margin-left: auto; white-space: nowrap; border: 1.5px solid #1D9E75; border-radius: 20px; padding: 4px 12px; display: flex; align-items: center; gap: 5px; }
+        .cv-video-watch { font-size: 11px; color: #2ec97e; font-weight: 700; margin-left: auto; white-space: nowrap; border: 1.5px solid #2ec97e; border-radius: 20px; padding: 4px 12px; display: flex; align-items: center; gap: 5px; }
 
         /* Agent */
         .cv-agent-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 0.5px solid rgba(255,255,255,0.06); }
@@ -181,7 +181,7 @@ export default async function CVPage(props: any) {
         .cv-footer-label { font-size: 10px; color: #5DCAA5; letter-spacing: 0.14em; margin-bottom: 8px; }
         .cv-footer-brand { font-size: 20px; font-weight: 900; color: white; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -0.5px; margin-bottom: 6px; }
         .cv-footer-tag { font-size: 12px; color: rgba(255,255,255,0.35); margin-bottom: 16px; }
-        .cv-footer-cta { background: #1D9E75; color: white; font-size: 13px; font-weight: 700; padding: 10px 22px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; display: inline-block; }
+        .cv-footer-cta { background: #2ec97e; color: white; font-size: 13px; font-weight: 700; padding: 10px 22px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; display: inline-block; }
 
         @media (max-width: 600px) {
           .lang-toggle { display: none; }
@@ -204,9 +204,9 @@ export default async function CVPage(props: any) {
           <svg width="28" height="26" viewBox="0 0 32 30" style={{ display: 'block' }}>
             <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
             <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-            <line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
+            <line x1="24" y1="28" x2="31" y2="0" stroke="#2ec97e" strokeWidth="5" strokeLinecap="round"/>
           </svg>
-          <span className="cv-logo-text">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
+          <span className="cv-logo-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
         </div>
         <div className="cv-nav-right">
           <span className="cv-nav-label" id="cv-nav-label">PLAYER CV</span>
@@ -304,7 +304,7 @@ export default async function CVPage(props: any) {
                     <div className="cv-video-title" id="vid-1-label">Highlight reel</div>
                     <div className="cv-video-source">{player.video_url.includes('youtube') ? 'YouTube' : 'Vimeo'}</div>
                   </div>
-                  <div className="cv-video-watch" id="vid-watch-1">Watch<svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></div>
+                  <div className="cv-video-watch" id="vid-watch-1">Watch<svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="#2ec97e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></div>
                 </a>
               )}
               {player.video_url_2 && (
@@ -314,7 +314,7 @@ export default async function CVPage(props: any) {
                     <div className="cv-video-title" id="vid-2-label">Match footage</div>
                     <div className="cv-video-source">{player.video_url_2.includes('youtube') ? 'YouTube' : 'Vimeo'}</div>
                   </div>
-                  <div className="cv-video-watch" id="vid-watch-2">Watch<svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></div>
+                  <div className="cv-video-watch" id="vid-watch-2">Watch<svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="#2ec97e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></div>
                 </a>
               )}
               {player.video_url_3 && (
@@ -324,7 +324,7 @@ export default async function CVPage(props: any) {
                     <div className="cv-video-title" id="vid-3-label">Additional footage</div>
                     <div className="cv-video-source">{player.video_url_3.includes('youtube') ? 'YouTube' : 'Vimeo'}</div>
                   </div>
-                  <div className="cv-video-watch" id="vid-watch-3">Watch<svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></div>
+                  <div className="cv-video-watch" id="vid-watch-3">Watch<svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="#2ec97e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></div>
                 </a>
               )}
             </div>
@@ -492,7 +492,7 @@ export default async function CVPage(props: any) {
                 <div key={ref.id} style={{ paddingBottom: '16px', borderBottom: '0.5px solid rgba(255,255,255,0.06)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
                     <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(29,158,117,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#2ec97e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M3 8l3 3 7-7"/>
                       </svg>
                     </div>
@@ -525,7 +525,7 @@ export default async function CVPage(props: any) {
                 <div className="cv-agent-icon">✉️</div>
                 <div>
                   <div className="cv-agent-label" id="lbl-agent-email">Email</div>
-                  <a href={`mailto:${player.agent_email}`} className="cv-agent-value" style={{ textDecoration: 'none', color: '#1D9E75' }}>{player.agent_email}</a>
+                  <a href={`mailto:${player.agent_email}`} className="cv-agent-value" style={{ textDecoration: 'none', color: '#2ec97e' }}>{player.agent_email}</a>
                 </div>
               </div>
             )}
@@ -534,7 +534,7 @@ export default async function CVPage(props: any) {
                 <div className="cv-agent-icon">📞</div>
                 <div>
                   <div className="cv-agent-label" id="lbl-agent-phone">Phone</div>
-                  <a href={`tel:${player.agent_phone}`} className="cv-agent-value" style={{ textDecoration: 'none', color: '#1D9E75' }}>{player.agent_phone}</a>
+                  <a href={`tel:${player.agent_phone}`} className="cv-agent-value" style={{ textDecoration: 'none', color: '#2ec97e' }}>{player.agent_phone}</a>
                 </div>
               </div>
             )}
@@ -543,7 +543,7 @@ export default async function CVPage(props: any) {
 
         <div className="cv-footer-card">
           <p className="cv-footer-label" id="footer-powered">POWERED BY</p>
-          <p className="cv-footer-brand">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></p>
+          <p className="cv-footer-brand">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></p>
           <p className="cv-footer-tag" id="footer-tagline">No talent goes unseen</p>
           <a href="/" className="cv-footer-cta" id="footer-cta">Build your free profile →</a>
         </div>

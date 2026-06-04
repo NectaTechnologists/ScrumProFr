@@ -407,37 +407,37 @@ export default function CoachDashboard() {
         .lang-btn { background: transparent; border: none; cursor: pointer; font-size: 15px; width: 28px; height: 24px; border-radius: 5px; display: flex; align-items: center; justify-content: center; }
         .lang-btn-active { background: rgba(255,255,255,0.15); }
         .page-header { max-width: 1400px; margin: 0 auto; padding: 24px 16px 0; }
-        .page-label { font-size: 10px; color: #1D9E75; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 6px; }
+        .page-label { font-size: 10px; color: #2ec97e; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 6px; }
         .page-title { font-size: 22px; font-weight: 900; color: #F0EDE4; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -0.5px; margin-bottom: 2px; }
         .page-sub { font-size: 12px; color: #888780; margin-bottom: 16px; }
         .tabs { display: flex; gap: 2px; background: #111520; padding: 3px; border-radius: 10px; border: 0.5px solid #D3D1C7; margin-bottom: 0; width: fit-content; }
         .tab { padding: 7px 14px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; font-weight: 700; font-family: Arial, sans-serif; background: transparent; color: #888780; }
         .tab-active { background: #D4A843; color: #0C0F16; }
-        .tab-count { display: inline-block; background: #1D9E75; color: white; border-radius: 10px; font-size: 10px; padding: 1px 6px; margin-left: 5px; }
+        .tab-count { display: inline-block; background: #2ec97e; color: white; border-radius: 10px; font-size: 10px; padding: 1px 6px; margin-left: 5px; }
         .main-layout { max-width: 1400px; margin: 0 auto; padding: 16px; display: flex; gap: 16px; align-items: flex-start; }
         .filter-panel { width: 180px; flex-shrink: 0; background: #161C2A; border-radius: 12px; border: 0.5px solid rgba(255,255,255,0.07); overflow: hidden; display: none; }
         .filter-panel-header { padding: 12px 16px; border-bottom: 0.5px solid rgba(255,255,255,0.07); display: flex; justify-content: space-between; align-items: center; }
         .filter-panel-title { font-size: 13px; font-weight: 700; color: #F0EDE4; }
-        .filter-clear-all { font-size: 12px; color: #1D9E75; cursor: pointer; background: none; border: none; font-family: Arial, sans-serif; }
+        .filter-clear-all { font-size: 12px; color: #2ec97e; cursor: pointer; background: none; border: none; font-family: Arial, sans-serif; }
         .filter-section { padding: 12px 16px; border-bottom: 0.5px solid rgba(255,255,255,0.07); }
         .filter-section:last-child { border-bottom: none; }
         .filter-section-title { font-size: 10px; font-weight: 700; color: #888780; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
         .filter-option { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; cursor: pointer; }
         .filter-option:last-child { margin-bottom: 0; }
-        .filter-option input[type="checkbox"] { accent-color: #1D9E75; width: 14px; height: 14px; flex-shrink: 0; cursor: pointer; }
+        .filter-option input[type="checkbox"] { accent-color: #2ec97e; width: 14px; height: 14px; flex-shrink: 0; cursor: pointer; }
         .filter-option-label { font-size: 13px; color: #A8A398; flex: 1; cursor: pointer; }
         .nat-search { width: 100%; padding: 6px 10px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 6px; font-size: 12px; outline: none; font-family: Arial, sans-serif; margin-bottom: 8px; color: #F0EDE4; background: #1C2338; }
-        .nat-search:focus { border-color: #1D9E75; }
+        .nat-search:focus { border-color: #2ec97e; }
         .results-area { flex: 1; min-width: 0; }
         .results-toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
         .search-input { flex: 1; min-width: 0; padding: 8px 14px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: 13px; color: #F0EDE4; background: #161C2A; outline: none; font-family: Arial, sans-serif; }
-        .search-input:focus { border-color: #1D9E75; }
+        .search-input:focus { border-color: #2ec97e; }
         .search-input::placeholder { color: #B4B2A9; }
         .view-toggle { display: flex; gap: 2px; background: #111520; padding: 3px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.07); flex-shrink: 0; }
         .toggle-btn { padding: 5px 10px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; font-weight: 700; font-family: Arial, sans-serif; background: transparent; color: #888780; }
         .toggle-active { background: #D4A843; color: #0C0F16; }
         .mobile-filter-btn { display: flex; align-items: center; gap: 6px; padding: 8px 12px; border: 1.5px solid rgba(255,255,255,0.15); border-radius: 8px; background: rgba(255,255,255,0.08); font-size: 12px; font-weight: 700; color: #F0EDE4; cursor: pointer; font-family: Arial, sans-serif; flex-shrink: 0; }
-        .mobile-filter-badge { background: #1D9E75; color: white; border-radius: 10px; font-size: 10px; padding: 1px 5px; }
+        .mobile-filter-badge { background: #2ec97e; color: white; border-radius: 10px; font-size: 10px; padding: 1px 5px; }
         .active-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
         .active-tag { display: flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; background: #E1F5EE; color: #0F6E56; border: 1px solid rgba(29,158,117,0.2); }
         .active-tag-x { cursor: pointer; opacity: 0.6; font-size: 13px; line-height: 1; }
@@ -449,7 +449,7 @@ export default function CoachDashboard() {
         .player-list { display: flex; flex-direction: column; gap: 8px; }
         .player-row { background: #161C2A; border-radius: 10px; padding: 12px 14px; border: 0.5px solid rgba(255,255,255,0.07); }
         .player-row-main { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
-        .row-avatar { width: 36px; height: 36px; border-radius: 8px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+        .row-avatar { width: 36px; height: 36px; border-radius: 8px; background: #2ec97e; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
         .row-avatar span { color: white; font-size: 13px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; }
         .row-avatar img { width: 100%; height: 100%; object-fit: cover; }
         .row-info { flex: 1; min-width: 120px; }
@@ -465,8 +465,8 @@ export default function CoachDashboard() {
         .category-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; border: 1px solid; }
         .row-note-panel { display: flex; gap: 8px; align-items: flex-start; }
         .row-note-textarea { flex: 1; padding: 7px 10px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 6px; font-size: 12px; font-family: Arial, sans-serif; resize: none; height: 56px; outline: none; color: #F0EDE4; background: #1C2338; }
-        .row-note-textarea:focus { border-color: #1D9E75; }
-        .row-note-save { padding: 7px 12px; background: #1D9E75; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; align-self: flex-end; }
+        .row-note-textarea:focus { border-color: #2ec97e; }
+        .row-note-save { padding: 7px 12px; background: #2ec97e; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; align-self: flex-end; }
         .row-note-preview { font-size: 11px; color: #A8A398; font-style: italic; background: #1C2338; padding: 5px 8px; border-radius: 6px; }
         .row-cv-btn-request { background: transparent; color: #D4A843; border: 1.5px solid rgba(212,168,67,0.35); cursor: pointer; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 6px; font-family: 'Arial Black', Arial, sans-serif; white-space: nowrap; }
         .row-cv-btn-requested { background: rgba(29,158,117,0.08); color: #5DCAA5; border: 1.5px solid rgba(29,158,117,0.2); cursor: default; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 6px; font-family: 'Arial Black', Arial, sans-serif; white-space: nowrap; }
@@ -478,12 +478,12 @@ export default function CoachDashboard() {
         .mobile-filter-overlay-title { font-size: 16px; font-weight: 700; color: #F0EDE4; }
         .mobile-filter-close { background: none; border: none; font-size: 24px; color: #888780; cursor: pointer; line-height: 1; padding: 0 4px; }
         .mobile-filter-footer { padding: 16px; border-top: 0.5px solid rgba(255,255,255,0.07); display: flex; gap: 8px; position: sticky; bottom: 0; background: #111520; }
-        .mobile-filter-apply { flex: 1; padding: 12px; background: #1D9E75; color: white; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; }
+        .mobile-filter-apply { flex: 1; padding: 12px; background: #2ec97e; color: white; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; }
         .mobile-filter-clear { padding: 12px 16px; background: rgba(255,255,255,0.08); color: #F0EDE4; border: 1.5px solid rgba(255,255,255,0.15); border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; }
         .upgrade-banner { background: #0D1B2E; border-radius: 12px; padding: 18px; margin-top: 16px; }
         .upgrade-text h3 { font-size: 14px; font-weight: 900; color: white; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 4px; }
         .upgrade-text p { font-size: 12px; color: rgba(255,255,255,0.55); margin-bottom: 10px; }
-        .upgrade-btn { display: block; background: #1D9E75; color: white; font-size: 12px; font-weight: 700; padding: 9px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; text-align: center; }
+        .upgrade-btn { display: block; background: #2ec97e; color: white; font-size: 12px; font-weight: 700; padding: 9px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; text-align: center; }
 
         /* New card design */
         .player-grid { display: grid; grid-template-columns: 1fr; gap: 14px; align-items: stretch; }
@@ -654,8 +654,8 @@ export default function CoachDashboard() {
                 {Object.keys(notes).length} notes
               </span>
               {newApplicationsCount > 0 && (
-                <a href="/dashboard/coach/applications" style={{ fontSize: '11px', color: '#1D9E75', background: 'rgba(29,158,117,0.1)', border: '1px solid rgba(29,158,117,0.2)', padding: '4px 10px', borderRadius: '20px', fontFamily: 'Arial, sans-serif', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#1D9E75', display: 'inline-block' }}></span>
+                <a href="/dashboard/coach/applications" style={{ fontSize: '11px', color: '#2ec97e', background: 'rgba(29,158,117,0.1)', border: '1px solid rgba(29,158,117,0.2)', padding: '4px 10px', borderRadius: '20px', fontFamily: 'Arial, sans-serif', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#2ec97e', display: 'inline-block' }}></span>
                   {newApplicationsCount} new {newApplicationsCount === 1 ? 'application' : 'applications'}
                 </a>
               )}

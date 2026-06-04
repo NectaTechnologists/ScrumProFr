@@ -58,10 +58,10 @@ export default function CoachSettingsPage() {
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: Arial, sans-serif; background: #0C0F16; color: #F0EDE4; }
         .page { max-width: 600px; margin: 0 auto; padding: 32px 20px 60px; }
-        .page-label { font-size: 10px; color: #1D9E75; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 4px; }
+        .page-label { font-size: 10px; color: #2ec97e; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 4px; }
         .page-title { font-size: 22px; font-weight: 900; color: #F0EDE4; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -0.5px; margin-bottom: 24px; }
         .section { background: #161C2A; border-radius: 12px; border: 0.5px solid rgba(255,255,255,0.07); padding: 24px; margin-bottom: 12px; }
-        .section-label { font-size: 11px; color: #1D9E75; letter-spacing: 0.12em; font-weight: 700; margin-bottom: 16px; }
+        .section-label { font-size: 11px; color: #2ec97e; letter-spacing: 0.12em; font-weight: 700; margin-bottom: 16px; }
         .field { display: flex; flex-direction: column; gap: 6px; }
         .field-label { font-size: 11px; font-weight: 700; color: #888780; letter-spacing: 0.08em; text-transform: uppercase; }
         .field-value { padding: 9px 12px; border: 1.5px solid rgba(255,255,255,0.07); border-radius: 8px; font-size: 13px; color: #5F5E5A; background: #12161F; font-family: Arial, sans-serif; }
@@ -78,7 +78,7 @@ export default function CoachSettingsPage() {
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
         .toggle-slider { position: absolute; inset: 0; background: #2A3347; border-radius: 22px; cursor: pointer; transition: background 0.2s; }
         .toggle-slider:before { content: ''; position: absolute; width: 16px; height: 16px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: transform 0.2s; }
-        .toggle-switch input:checked + .toggle-slider { background: #1D9E75; }
+        .toggle-switch input:checked + .toggle-slider { background: #2ec97e; }
         .toggle-switch input:checked + .toggle-slider:before { transform: translateX(18px); }
         .save-btn { padding: 11px 28px; background: #D4A843; color: #0C0F16; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: Arial, sans-serif; cursor: pointer; }
         .save-btn:disabled { opacity: 0.6; cursor: not-allowed; }

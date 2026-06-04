@@ -272,7 +272,7 @@ export default function AdminPage() {
         .nav { background: #0D1B2E; padding: 0 28px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
         .nav-logo-text { color: white; font-weight: 900; font-size: 20px; letter-spacing: -1px; font-family: 'Arial Black', Arial, sans-serif; }
         .content { max-width: 1000px; margin: 0 auto; padding: 40px 28px; }
-        .page-label { font-size: 10px; color: #1D9E75; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 8px; }
+        .page-label { font-size: 10px; color: #2ec97e; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 8px; }
         .page-title { font-size: 28px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -0.5px; margin-bottom: 28px; }
         .stat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 24px; }
         .stat-card { background: #E8E6DF; border-radius: 8px; padding: 1rem; }
@@ -285,7 +285,7 @@ export default function AdminPage() {
         .bar-row { margin-bottom: 10px; }
         .bar-label-row { display: flex; justify-content: space-between; font-size: 11px; color: #5F5E5A; margin-bottom: 3px; }
         .bar-track { height: 6px; background: #F1EFE8; border-radius: 4px; }
-        .bar-fill-green { height: 6px; background: #1D9E75; border-radius: 4px; }
+        .bar-fill-green { height: 6px; background: #2ec97e; border-radius: 4px; }
         .bar-fill-dark { height: 6px; background: #0D1B2E; border-radius: 4px; }
         .bar-fill-gray { height: 6px; background: #888780; border-radius: 4px; }
         .table-card { background: white; border-radius: 12px; padding: 1.25rem; border: 0.5px solid #D3D1C7; }
@@ -307,7 +307,7 @@ export default function AdminPage() {
       `}</style>
 
       <nav className="nav">
-        <span className="nav-logo-text">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
+        <span className="nav-logo-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
         <a href="/dashboard" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', textDecoration: 'none' }}>← Dashboard</a>
       </nav>
 

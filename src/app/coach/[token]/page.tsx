@@ -47,7 +47,7 @@ export default async function CoachCardPage({ params }: { params: Promise<{ toke
         <style>{`* { box-sizing: border-box; margin: 0; padding: 0; } body { font-family: Arial, sans-serif; background: #F5F2EB; }`}</style>
         <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
           <p style={{ fontSize: '16px', color: '#5F5E5A' }}>Coach card not found.</p>
-          <a href="/" style={{ fontSize: '13px', color: '#1D9E75' }}>Back to Gainline</a>
+          <a href="/" style={{ fontSize: '13px', color: '#2ec97e' }}>Back to Gainline</a>
         </div>
       </>
     )
@@ -160,13 +160,13 @@ export default async function CoachCardPage({ params }: { params: Promise<{ toke
           <svg width="28" height="26" viewBox="0 0 28 26">
             <line x1="2" y1="24" x2="8" y2="5" stroke="white" strokeWidth="4" strokeLinecap="round" opacity="0.28"/>
             <line x1="11" y1="24" x2="17" y2="2" stroke="white" strokeWidth="4" strokeLinecap="round" opacity="0.58"/>
-            <line x1="20" y1="24" x2="26" y2="0" stroke="#1D9E75" strokeWidth="4" strokeLinecap="round"/>
+            <line x1="20" y1="24" x2="26" y2="0" stroke="#2ec97e" strokeWidth="4" strokeLinecap="round"/>
           </svg>
           <span style={{ color: 'white', fontWeight: 900, fontSize: '17px', fontFamily: 'Arial Black, Arial, sans-serif', letterSpacing: '-0.3px' }}>
-            GAIN<span style={{ color: '#1D9E75' }}>LINE</span>
+            GAIN<span style={{ color: '#2ec97e' }}>LINE</span>
           </span>
         </a>
-        <a href="/register/coach" style={{ padding: '6px 16px', borderRadius: '20px', background: '#1D9E75', color: 'white', fontSize: '12px', fontWeight: '700', textDecoration: 'none' }}>
+        <a href="/register/coach" style={{ padding: '6px 16px', borderRadius: '20px', background: '#2ec97e', color: 'white', fontSize: '12px', fontWeight: '700', textDecoration: 'none' }}>
           Join Gainline →
         </a>
       </div>
@@ -369,9 +369,9 @@ export default async function CoachCardPage({ params }: { params: Promise<{ toke
             <svg width="22" height="20" viewBox="0 0 22 20">
               <line x1="1" y1="18" x2="6" y2="4" stroke="#888780" strokeWidth="3" strokeLinecap="round" opacity="0.4"/>
               <line x1="9" y1="18" x2="14" y2="2" stroke="#888780" strokeWidth="3" strokeLinecap="round" opacity="0.65"/>
-              <line x1="17" y1="18" x2="22" y2="0" stroke="#1D9E75" strokeWidth="3" strokeLinecap="round"/>
+              <line x1="17" y1="18" x2="22" y2="0" stroke="#2ec97e" strokeWidth="3" strokeLinecap="round"/>
             </svg>
-            <span className="cc-footer-text">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
+            <span className="cc-footer-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
           </a>
           <p style={{ fontSize: '12px', color: '#B4B2A9', marginTop: '8px' }}>Rugby coach profiles & player management</p>
         </div>

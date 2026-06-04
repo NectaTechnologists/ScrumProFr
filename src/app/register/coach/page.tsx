@@ -105,9 +105,9 @@ export default function CoachRegisterPage() {
         <div style={{ background: 'white', borderRadius: '16px', padding: '48px 40px', maxWidth: '480px', width: '100%', textAlign: 'center' }}>
           <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: '#E1F5EE', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
             <svg width="28" height="28" viewBox="0 0 28 28">
-              <line x1="2" y1="22" x2="7" y2="8" stroke="#1D9E75" strokeWidth="3.5" strokeLinecap="round" opacity="0.35"/>
-              <line x1="11" y1="22" x2="16" y2="2" stroke="#1D9E75" strokeWidth="3.5" strokeLinecap="round" opacity="0.68"/>
-              <line x1="20" y1="22" x2="25" y2="0" stroke="#1D9E75" strokeWidth="3.5" strokeLinecap="round"/>
+              <line x1="2" y1="22" x2="7" y2="8" stroke="#2ec97e" strokeWidth="3.5" strokeLinecap="round" opacity="0.35"/>
+              <line x1="11" y1="22" x2="16" y2="2" stroke="#2ec97e" strokeWidth="3.5" strokeLinecap="round" opacity="0.68"/>
+              <line x1="20" y1="22" x2="25" y2="0" stroke="#2ec97e" strokeWidth="3.5" strokeLinecap="round"/>
             </svg>
           </div>
           <h1 style={{ fontSize: '22px', fontWeight: '900', color: '#0D1B2E', fontFamily: 'Arial Black, Arial, sans-serif', marginBottom: '12px' }}>You're in!</h1>
@@ -135,10 +135,10 @@ export default function CoachRegisterPage() {
         .form-field { display: flex; flex-direction: column; gap: 6px; }
         .form-label { font-size: 12px; font-weight: 700; color: #0D1B2E; letter-spacing: 0.04em; }
         .form-input { padding: 10px 14px; border: 1.5px solid #E8E4F0; border-radius: 8px; font-size: 14px; outline: none; font-family: Arial, sans-serif; color: #0D1B2E; background: white; width: 100%; }
-        .form-input:focus { border-color: #1D9E75; }
+        .form-input:focus { border-color: #2ec97e; }
         .form-full { margin-bottom: 14px; }
         .divider { border: none; border-top: 1px solid #F1EFE8; margin: 20px 0; }
-        .submit-btn { width: 100%; padding: 13px; background: #1D9E75; color: white; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; font-family: Arial, sans-serif; cursor: pointer; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 7px; }
+        .submit-btn { width: 100%; padding: 13px; background: #2ec97e; color: white; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; font-family: Arial, sans-serif; cursor: pointer; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 7px; }
         .submit-btn:disabled { opacity: 0.65; cursor: not-allowed; }
         .error-box { background: #FCEBEB; border: 1px solid #F09595; border-radius: 8px; padding: 12px 14px; font-size: 13px; color: #A32D2D; margin-bottom: 16px; }
         .reg-note { font-size: 12px; color: #B4B2A9; text-align: center; margin-top: 16px; line-height: 1.6; }
@@ -154,21 +154,21 @@ export default function CoachRegisterPage() {
           <svg width="36" height="32" viewBox="0 0 36 32" style={{ display: 'block' }}>
             <line x1="3" y1="30" x2="10" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
             <line x1="15" y1="30" x2="22" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-            <line x1="27" y1="30" x2="34" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
+            <line x1="27" y1="30" x2="34" y2="0" stroke="#2ec97e" strokeWidth="5" strokeLinecap="round"/>
           </svg>
-          <span className="reg-logo-text">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
+          <span className="reg-logo-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
         </a>
 
         <div className="reg-card">
           <div className="reg-badge">
-            <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#1D9E75' }}></div>
+            <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#2ec97e' }}></div>
             <span>COACHES & RECRUITERS</span>
           </div>
           <h1>Join Gainline</h1>
           <p className="subtitle">Register your details below and get instant access to the player browser.</p>
 
           <form onSubmit={handleSubmit}>
-            <p style={{ fontSize: '11px', color: '#1D9E75', letterSpacing: '0.12em', fontWeight: '700', marginBottom: '12px' }}>YOUR ACCOUNT</p>
+            <p style={{ fontSize: '11px', color: '#2ec97e', letterSpacing: '0.12em', fontWeight: '700', marginBottom: '12px' }}>YOUR ACCOUNT</p>
 
             <div className="form-full form-field">
               <label className="form-label">FULL NAME</label>
@@ -188,7 +188,7 @@ export default function CoachRegisterPage() {
 
             <hr className="divider" />
 
-            <p style={{ fontSize: '11px', color: '#1D9E75', letterSpacing: '0.12em', fontWeight: '700', marginBottom: '12px' }}>YOUR ORGANISATION</p>
+            <p style={{ fontSize: '11px', color: '#2ec97e', letterSpacing: '0.12em', fontWeight: '700', marginBottom: '12px' }}>YOUR ORGANISATION</p>
 
             <div className="form-row">
               <div className="form-field">
@@ -221,7 +221,7 @@ export default function CoachRegisterPage() {
                 id="alsoPlayer"
                 checked={alsoPlayer}
                 onChange={e => setAlsoPlayer(e.target.checked)}
-                style={{ marginTop: '2px', accentColor: '#1D9E75', width: '16px', height: '16px', flexShrink: 0, cursor: 'pointer' }}
+                style={{ marginTop: '2px', accentColor: '#2ec97e', width: '16px', height: '16px', flexShrink: 0, cursor: 'pointer' }}
               />
               <label htmlFor="alsoPlayer" style={{ fontSize: '13px', color: '#5F5E5A', lineHeight: '1.5', cursor: 'pointer' }}>
                 I also play rugby — set up a Player Card too
@@ -241,7 +241,7 @@ export default function CoachRegisterPage() {
           </form>
 
           <p className="reg-note">
-            Already have an account? <a href="/login" style={{ color: '#1D9E75' }}>Sign in here</a>
+            Already have an account? <a href="/login" style={{ color: '#2ec97e' }}>Sign in here</a>
           </p>
         </div>
       </div>

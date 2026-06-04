@@ -1,18 +1,19 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { t, Lang } from '@/lib/translations'
 
 const FLAG_EN = '🇬🇧'
 const FLAG_FR = '🇫🇷'
 
 const CAROUSEL_PLAYERS = [
-  { name: 'James Okafor',   initials: 'JO', color: '#1D9E75', position: 'PROP',      flag: 'ng',     nat: 'Nigerian',      age: 24, height: 188, weight: 118, views: 47 },
+  { name: 'James Okafor',   initials: 'JO', color: '#2ec97e', position: 'PROP',      flag: 'ng',     nat: 'Nigerian',      age: 24, height: 188, weight: 118, views: 47 },
   { name: 'Callum Fraser',  initials: 'CF', color: '#4A7FD4', position: 'FLANKER',   flag: 'gb-sct', nat: 'Scottish',      age: 22, height: 192, weight: 105, views: 31 },
   { name: 'Sipho Dlamini',  initials: 'SD', color: '#E05252', position: 'SCRUMHALF', flag: 'za',     nat: 'South African', age: 26, height: 174, weight: 82,  views: 58 },
   { name: 'Ciarán Murphy',  initials: 'CM', color: '#8B5CF6', position: 'FULLBACK',  flag: 'ie',     nat: 'Irish',         age: 21, height: 183, weight: 90,  views: 22 },
   { name: 'Baptiste Girard',initials: 'BG', color: '#D4A843', position: 'NUMBER 8',  flag: 'fr',     nat: 'French',        age: 28, height: 196, weight: 112, views: 64 },
-  { name: 'Tapiwa Mutasa',  initials: 'TM', color: '#1D9E75', position: 'LOCK',      flag: 'zw',     nat: 'Zimbabwean',    age: 25, height: 201, weight: 120, views: 19 },
+  { name: 'Tapiwa Mutasa',  initials: 'TM', color: '#2ec97e', position: 'LOCK',      flag: 'zw',     nat: 'Zimbabwean',    age: 25, height: 201, weight: 120, views: 19 },
   { name: 'Owen Davies',    initials: 'OD', color: '#E05252', position: 'FLYHALF',   flag: 'gb-wls', nat: 'Welsh',         age: 23, height: 179, weight: 88,  views: 36 },
   { name: 'Marcus Webb',    initials: 'MW', color: '#4A7FD4', position: 'HOOKER',    flag: 'gb-eng', nat: 'English',       age: 27, height: 181, weight: 102, views: 42 },
 ]
@@ -67,7 +68,7 @@ export default function Home() {
         .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
         .nav-links { display: flex; gap: 20px; align-items: center; }
         .nav-link { color: rgba(255,255,255,0.65); font-size: 13px; text-decoration: none; }
-        .nav-cta { background: #1D9E75; color: white; font-size: 13px; padding: 10px 18px; border-radius: 6px; text-decoration: none; font-weight: 700; white-space: nowrap; font-family: 'Arial Black', Arial, sans-serif; }
+        .nav-cta { background: #2ec97e; color: white; font-size: 13px; padding: 10px 18px; border-radius: 6px; text-decoration: none; font-weight: 700; white-space: nowrap; font-family: 'Arial Black', Arial, sans-serif; }
 
         .lang-toggle { display: flex; gap: 2px; background: rgba(255,255,255,0.08); padding: 3px; border-radius: 8px; margin-left: 8px; }
         .lang-btn { background: transparent; border: none; cursor: pointer; font-size: 18px; width: 32px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: background 0.15s; line-height: 1; }
@@ -78,19 +79,19 @@ export default function Home() {
         .hero h1 { font-size: 52px; font-weight: 900; color: white; letter-spacing: -2px; line-height: 1.06; margin-bottom: 18px; font-family: 'Arial Black', Arial, sans-serif; }
         .hero p { font-size: 17px; color: rgba(255,255,255,0.56); line-height: 1.75; max-width: 520px; margin: 0 auto 32px; }
         .hero p.hero-note { margin-top: 40px; }        .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-        .btn-primary { background: #1D9E75; color: white; font-size: 15px; font-weight: 700; padding: 14px 28px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; }
+        .btn-primary { background: #2ec97e; color: white; font-size: 15px; font-weight: 700; padding: 14px 28px; border-radius: 6px; text-decoration: none; font-family: 'Arial Black', Arial, sans-serif; }
         .btn-ghost { background: transparent; color: white; font-size: 14px; padding: 13px 22px; border-radius: 6px; text-decoration: none; border: 1.5px solid rgba(255,255,255,0.25); }
         .hero-note { margin-top: 40px; font-size: 11px; color: rgba(255,255,255,0.26); letter-spacing: 0.06em; }
         .badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(29,158,117,0.14); border: 1px solid rgba(29,158,117,0.3); border-radius: 20px; padding: 5px 14px; margin-bottom: 26px; }
-        .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #1D9E75; flex-shrink: 0; }
+        .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #2ec97e; flex-shrink: 0; }
         .badge-text { font-size: 11px; color: #5DCAA5; letter-spacing: 0.12em; }
 
-        .pull-quote { background: #1D9E75; padding: 32px 40px; text-align: center; }
+        .pull-quote { background: #2ec97e; padding: 32px 40px; text-align: center; }
         .pull-quote p { font-size: 19px; color: white; max-width: 680px; margin: 0 auto; line-height: 1.45; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -0.2px; }
 
         .split { display: grid; grid-template-columns: 1fr 1fr; }
         .split-player { background: #0F2438; padding: 52px 44px; }
-        .split-agent { background: #1D9E75; padding: 52px 44px; }
+        .split-agent { background: #2ec97e; padding: 52px 44px; }
         .split-label { font-size: 10px; letter-spacing: 0.14em; margin-bottom: 24px; }
         .split-player .split-label { color: #5DCAA5; }
         .split-agent .split-label { color: rgba(255,255,255,0.65); }
@@ -101,12 +102,12 @@ export default function Home() {
         .bullet-list { display: flex; flex-direction: column; gap: 11px; margin-bottom: 30px; }
         .bullet-item { display: flex; align-items: flex-start; gap: 9px; }
         .bullet-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
-        .split-player .bullet-dot { background: #1D9E75; }
+        .split-player .bullet-dot { background: #2ec97e; }
         .split-agent .bullet-dot { background: rgba(255,255,255,0.9); }
         .bullet-item span { font-size: 13px; }
         .split-player .bullet-item span { color: rgba(255,255,255,0.62); }
         .split-agent .bullet-item span { color: rgba(255,255,255,0.85); }
-        .btn-teal { background: #1D9E75; color: white; font-size: 12px; padding: 11px 22px; border-radius: 6px; text-decoration: none; font-weight: 700; font-family: 'Arial Black', Arial, sans-serif; display: inline-block; }
+        .btn-teal { background: #2ec97e; color: white; font-size: 12px; padding: 11px 22px; border-radius: 6px; text-decoration: none; font-weight: 700; font-family: 'Arial Black', Arial, sans-serif; display: inline-block; }
         .btn-dark { background: #0D1B2E; color: white; font-size: 12px; padding: 11px 22px; border-radius: 6px; text-decoration: none; font-weight: 700; font-family: 'Arial Black', Arial, sans-serif; display: inline-block; }
 
         .pathway { background: #F1EFE8; padding: 72px 40px; }
@@ -116,7 +117,7 @@ export default function Home() {
         .section-body { font-size: 14px; color: #5F5E5A; line-height: 1.75; max-width: 560px; margin: 20px auto 0; text-align: center; }
         .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 44px; }
         .card { background: white; border-radius: 12px; padding: 26px; border: 0.5px solid #D3D1C7; }
-        .card-bar { border-top: 3px solid #1D9E75; margin-bottom: 16px; }
+        .card-bar { border-top: 3px solid #2ec97e; margin-bottom: 16px; }
         .card h3 { font-size: 14px; font-weight: 900; color: #0D1B2E; margin-bottom: 8px; font-family: 'Arial Black', Arial, sans-serif; }
         .card p { font-size: 13px; color: #5F5E5A; line-height: 1.65; }
 
@@ -126,7 +127,7 @@ export default function Home() {
         .cta-sub { font-size: 14px; color: #5F5E5A; margin-top: 10px; line-height: 1.7; text-align: center; margin-bottom: 32px; }
         .cta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         .cta-card-dark { background: #0D1B2E; border-radius: 12px; padding: 36px; }
-        .cta-card-teal { background: #1D9E75; border-radius: 12px; padding: 36px; }
+        .cta-card-teal { background: #2ec97e; border-radius: 12px; padding: 36px; }
         .cta-label { font-size: 10px; letter-spacing: 0.14em; margin-bottom: 10px; }
         .cta-card-dark .cta-label { color: #5DCAA5; }
         .cta-card-teal .cta-label { color: rgba(255,255,255,0.65); }
@@ -165,7 +166,7 @@ export default function Home() {
         .hiw-step:hover { background: rgba(255,255,255,0.04); }
         .hiw-step-active { background: rgba(29,158,117,0.1) !important; border-color: rgba(29,158,117,0.25) !important; }
         .hiw-num { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px; border: 1.5px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.4); transition: all 0.2s; font-family: 'Arial Black', Arial, sans-serif; }
-        .hiw-step-active .hiw-num { border-color: #1D9E75; color: #1D9E75; background: rgba(29,158,117,0.12); }
+        .hiw-step-active .hiw-num { border-color: #2ec97e; color: #2ec97e; background: rgba(29,158,117,0.12); }
         .hiw-step-content { flex: 1; }
         .hiw-step-label { font-size: 9px; letter-spacing: 0.16em; color: rgba(255,255,255,0.3); margin-bottom: 3px; font-weight: 700; transition: color 0.2s; }
         .hiw-step-active .hiw-step-label { color: #5DCAA5; }
@@ -186,7 +187,7 @@ export default function Home() {
         .hiw-progress-row { margin-bottom: 12px; }
         .hiw-progress-label { display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 5px; }
         .hiw-progress-track { height: 5px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
-        .hiw-progress-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, #1D9E75, #5DCAA5); }
+        .hiw-progress-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, #2ec97e, #5DCAA5); }
         .hiw-share-btn { display: flex; align-items: center; gap: 9px; padding: 10px 14px; border-radius: 8px; margin-bottom: 8px; font-size: 12px; font-weight: 600; cursor: default; }
         .hiw-view-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .hiw-view-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
@@ -232,14 +233,7 @@ export default function Home() {
       {/* NAV */}
       <nav className="nav">
         <a href="/" className="nav-logo">
-          <svg width="36" height="32" viewBox="0 0 36 32" style={{ display: 'block' }}>
-            <line x1="3" y1="30" x2="10" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
-            <line x1="15" y1="30" x2="22" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-            <line x1="27" y1="30" x2="34" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
-          </svg>
-          <span style={{ color: 'white', fontWeight: '900', fontSize: '20px', letterSpacing: '-1px', fontFamily: 'Arial Black, Arial, sans-serif' }}>
-            GAIN<span style={{ color: '#1D9E75' }}>LINE</span>
-          </span>
+          <Image src="/gainline-logo-final.svg" alt="Gainline" width={160} height={48} priority />
         </a>
         <div className="nav-links">
           <a href="/players" className="nav-link">Browse players</a>
@@ -260,7 +254,7 @@ export default function Home() {
             <div className="badge-dot"></div>
             <span className="badge-text">{T.hero_badge}</span>
           </div>
-          <h1>{T.hero_title_1}<br/>{T.hero_title_2} <span style={{ color: '#1D9E75' }}>{T.hero_title_highlight}</span></h1>
+          <h1>{T.hero_title_1}<br/>{T.hero_title_2} <span style={{ color: '#2ec97e' }}>{T.hero_title_highlight}</span></h1>
           <p>{T.hero_sub}</p>
           <div className="hero-btns">
             <a href="/login" className="btn-primary">{T.hero_btn_player}</a>
@@ -384,7 +378,7 @@ export default function Home() {
                       <div key={item.label} className="hiw-progress-row">
                         <div className="hiw-progress-label">
                           <span>{item.label}</span>
-                          <span style={{ color: '#1D9E75' }}>{item.pct}%</span>
+                          <span style={{ color: '#2ec97e' }}>{item.pct}%</span>
                         </div>
                         <div className="hiw-progress-track">
                           <div className="hiw-progress-fill" style={{ width: `${item.pct}%` }}></div>
@@ -399,7 +393,7 @@ export default function Home() {
                     <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em', marginBottom: '12px' }}>SHARE YOUR CARD</p>
                     <div style={{ background: 'rgba(255,255,255,0.04)', borderRadius: '8px', padding: '9px 12px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>gainline.pro/cv/j-okafor-xk4</span>
-                      <span style={{ fontSize: '10px', color: '#1D9E75', fontWeight: '700', cursor: 'default', fontFamily: "'Arial Black', Arial, sans-serif" }}>COPY</span>
+                      <span style={{ fontSize: '10px', color: '#2ec97e', fontWeight: '700', cursor: 'default', fontFamily: "'Arial Black', Arial, sans-serif" }}>COPY</span>
                     </div>
                     {[
                       { icon: '💬', label: 'Share via WhatsApp', bg: 'rgba(37,211,102,0.12)', color: '#25D366' },
@@ -421,7 +415,7 @@ export default function Home() {
                       <span style={{ fontSize: '11px', color: '#5DCAA5', fontWeight: '700' }}>3 this week</span>
                     </div>
                     {[
-                      { initials: 'MR', name: 'Marc Roussel', org: 'Clermont Auvergne', time: '2h ago', bg: '#1D9E75' },
+                      { initials: 'MR', name: 'Marc Roussel', org: 'Clermont Auvergne', time: '2h ago', bg: '#2ec97e' },
                       { initials: 'TK', name: 'Tom Keane', org: 'Leicester Tigers', time: 'Yesterday', bg: '#4A90D9' },
                       { initials: 'JL', name: 'Jean Lebrun', org: 'Stade Français', time: '3 days ago', bg: '#8B5CF6' },
                     ].map(view => (
@@ -460,7 +454,7 @@ export default function Home() {
               <svg width="14" height="12" viewBox="0 0 26 24">
                 <line x1="2" y1="22" x2="7" y2="4" stroke="white" strokeWidth="4" strokeLinecap="round" opacity="0.28"/>
                 <line x1="11" y1="22" x2="16" y2="1" stroke="white" strokeWidth="4" strokeLinecap="round" opacity="0.58"/>
-                <line x1="20" y1="22" x2="25" y2="0" stroke="#1D9E75" strokeWidth="4" strokeLinecap="round"/>
+                <line x1="20" y1="22" x2="25" y2="0" stroke="#2ec97e" strokeWidth="4" strokeLinecap="round"/>
               </svg>
               <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.25)' }}>Gainline Player Card</span>
             </div>
@@ -564,9 +558,9 @@ export default function Home() {
           <svg width="26" height="24" viewBox="0 0 26 24" style={{ display: 'block' }}>
             <line x1="2" y1="22" x2="7" y2="4" stroke="white" strokeWidth="4" strokeLinecap="round" opacity="0.28"/>
             <line x1="11" y1="22" x2="16" y2="1" stroke="white" strokeWidth="4" strokeLinecap="round" opacity="0.58"/>
-            <line x1="20" y1="22" x2="25" y2="0" stroke="#1D9E75" strokeWidth="4" strokeLinecap="round"/>
+            <line x1="20" y1="22" x2="25" y2="0" stroke="#2ec97e" strokeWidth="4" strokeLinecap="round"/>
           </svg>
-          <span style={{ fontSize: '13px', fontWeight: '900', color: 'white', letterSpacing: '-0.5px', fontFamily: 'Arial Black, Arial, sans-serif' }}>GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
+          <span style={{ fontSize: '13px', fontWeight: '900', color: 'white', letterSpacing: '-0.5px', fontFamily: 'Arial Black, Arial, sans-serif' }}>GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
         </div>
         <span className="footer-copy">gainline.pro &nbsp;·&nbsp; 2026</span>
         <div className="footer-links">

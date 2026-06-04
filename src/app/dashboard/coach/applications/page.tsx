@@ -14,7 +14,7 @@ function timeAgo(dateStr: string) {
 function pos(s: string) { return s?.replace(/_/g, ' ') || '–' }
 
 const STATUS_LABELS: Record<string, { label: string; color: string; bg: string }> = {
-  new:          { label: 'New',         color: '#1D9E75', bg: 'rgba(29,158,117,0.12)' },
+  new:          { label: 'New',         color: '#2ec97e', bg: 'rgba(29,158,117,0.12)' },
   reviewing:    { label: 'Reviewing',   color: '#D4A843', bg: 'rgba(212,168,67,0.12)' },
   shortlisted:  { label: 'Shortlisted', color: '#4A7FD4', bg: 'rgba(74,127,212,0.12)' },
   not_suitable: { label: 'Not suitable',color: '#6b7280', bg: 'rgba(107,114,128,0.12)' },
@@ -79,15 +79,15 @@ export default function CoachApplicationsPage() {
         .nav-link { color: rgba(255,255,255,0.5); font-size: 13px; text-decoration: none; white-space: nowrap; }
         .signout-btn { background: transparent; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; }
         .content { max-width: 960px; margin: 0 auto; padding: 28px 16px 80px; }
-        .page-label { font-size: 10px; color: #1D9E75; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 6px; }
+        .page-label { font-size: 10px; color: #2ec97e; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 6px; }
         .page-title { font-size: 22px; font-weight: 900; color: #F0EDE4; font-family: 'Arial Black', Arial, sans-serif; letter-spacing: -0.5px; margin-bottom: 20px; }
         .vac-group { margin-bottom: 20px; }
         .vac-group-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
         .vac-group-title { font-size: 14px; font-weight: 700; color: #F0EDE4; }
         .vac-group-meta { font-size: 12px; color: #888780; }
-        .vac-group-link { font-size: 12px; color: #1D9E75; text-decoration: none; }
+        .vac-group-link { font-size: 12px; color: #2ec97e; text-decoration: none; }
         .app-row { background: #161C2A; border-radius: 10px; padding: 12px 14px; border: 0.5px solid rgba(255,255,255,0.07); display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
-        .app-avatar { width: 32px; height: 32px; border-radius: 7px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+        .app-avatar { width: 32px; height: 32px; border-radius: 7px; background: #2ec97e; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
         .app-avatar img { width: 100%; height: 100%; object-fit: cover; }
         .app-avatar span { color: white; font-size: 11px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; }
         .app-info { flex: 1; min-width: 100px; }
@@ -106,7 +106,7 @@ export default function CoachApplicationsPage() {
         <h1 className="page-title">
           Applications
           {totalNew > 0 && (
-            <span style={{ marginLeft: '10px', fontSize: '14px', background: '#1D9E75', color: 'white', padding: '3px 10px', borderRadius: '20px', fontFamily: 'Arial, sans-serif', fontWeight: 700 }}>
+            <span style={{ marginLeft: '10px', fontSize: '14px', background: '#2ec97e', color: 'white', padding: '3px 10px', borderRadius: '20px', fontFamily: 'Arial, sans-serif', fontWeight: 700 }}>
               {totalNew} new
             </span>
           )}
@@ -129,7 +129,7 @@ export default function CoachApplicationsPage() {
                       <span className="vac-group-meta"> · {vacancy.positions[0]}</span>
                     )}
                     {newCount > 0 && (
-                      <span style={{ marginLeft: '8px', fontSize: '10px', background: 'rgba(29,158,117,0.15)', color: '#1D9E75', padding: '2px 7px', borderRadius: '10px', fontWeight: 700 }}>
+                      <span style={{ marginLeft: '8px', fontSize: '10px', background: 'rgba(29,158,117,0.15)', color: '#2ec97e', padding: '2px 7px', borderRadius: '10px', fontWeight: 700 }}>
                         {newCount} new
                       </span>
                     )}
@@ -160,7 +160,7 @@ export default function CoachApplicationsPage() {
                   )
                 })}
                 {apps.length > 5 && (
-                  <a href={`/dashboard/coach/vacancies/${vacancy.id}`} style={{ display: 'block', textAlign: 'center', padding: '10px', fontSize: '12px', color: '#1D9E75', textDecoration: 'none' }}>
+                  <a href={`/dashboard/coach/vacancies/${vacancy.id}`} style={{ display: 'block', textAlign: 'center', padding: '10px', fontSize: '12px', color: '#2ec97e', textDecoration: 'none' }}>
                     +{apps.length - 5} more — view all
                   </a>
                 )}

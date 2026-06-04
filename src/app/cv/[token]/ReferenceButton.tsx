@@ -113,7 +113,7 @@ export default function ReferenceButton({ playerId }: { playerId: string }) {
               <button onClick={() => { setShowForm(false); setContent('') }} style={{ height: '28px', padding: '0 12px', borderRadius: '20px', border: '1.5px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'rgba(255,255,255,0.6)', fontSize: '12px', cursor: 'pointer', fontFamily: 'Arial, sans-serif' }}>
                 Cancel
               </button>
-              <button onClick={handleSubmit} disabled={!content.trim() || submitting} style={{ height: '28px', padding: '0 14px', borderRadius: '20px', border: 'none', background: '#1D9E75', color: 'white', fontSize: '12px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Arial, sans-serif', opacity: !content.trim() ? 0.5 : 1 }}>
+              <button onClick={handleSubmit} disabled={!content.trim() || submitting} style={{ height: '28px', padding: '0 14px', borderRadius: '20px', border: 'none', background: '#2ec97e', color: 'white', fontSize: '12px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Arial, sans-serif', opacity: !content.trim() ? 0.5 : 1 }}>
                 {submitting ? 'Sending...' : 'Submit reference'}
               </button>
             </div>

@@ -60,8 +60,8 @@ export default function ForgotPasswordPage() {
         .card .sub { font-size: 13px; color: #888780; margin-bottom: 28px; line-height: 1.6; }
         .label { display: block; font-size: 12px; color: #5F5E5A; margin-bottom: 6px; letter-spacing: 0.04em; }
         .input { width: 100%; padding: 12px 14px; border-radius: 8px; border: 1px solid #D3D1C7; font-size: 14px; font-family: Arial, sans-serif; outline: none; margin-bottom: 20px; color: #0D1B2E; }
-        .input:focus { border-color: #1D9E75; }
-        .btn { width: 100%; background: #1D9E75; color: white; border: none; border-radius: 8px; padding: 14px; font-size: 15px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; cursor: pointer; }
+        .input:focus { border-color: #2ec97e; }
+        .btn { width: 100%; background: #2ec97e; color: white; border: none; border-radius: 8px; padding: 14px; font-size: 15px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; cursor: pointer; }
         .btn:disabled { background: #5DCAA5; cursor: not-allowed; }
         .error { background: #FCEBEB; border: 1px solid #F09595; color: #A32D2D; border-radius: 8px; padding: 12px 14px; font-size: 13px; margin-bottom: 16px; }
         .success { text-align: center; padding: 8px 0; }
@@ -69,7 +69,7 @@ export default function ForgotPasswordPage() {
         .success h2 { font-size: 18px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 8px; }
         .success p { font-size: 13px; color: #5F5E5A; line-height: 1.65; }
         .back { margin-top: 20px; text-align: center; }
-        .back a { font-size: 13px; color: #1D9E75; text-decoration: none; }
+        .back a { font-size: 13px; color: #2ec97e; text-decoration: none; }
         .back-home { margin-top: 24px; font-size: 12px; color: rgba(255,255,255,0.35); text-decoration: none; display: block; text-align: center; }
         @media (max-width: 480px) {
           .wrap { padding: 32px 16px; }
@@ -82,9 +82,9 @@ export default function ForgotPasswordPage() {
           <svg width="44" height="40" viewBox="0 0 44 40" style={{ display: 'block' }}>
             <line x1="4" y1="38" x2="13" y2="8" stroke="white" strokeWidth="6" strokeLinecap="round" opacity="0.28"/>
             <line x1="18" y1="38" x2="27" y2="2" stroke="white" strokeWidth="6" strokeLinecap="round" opacity="0.58"/>
-            <line x1="32" y1="38" x2="41" y2="0" stroke="#1D9E75" strokeWidth="6" strokeLinecap="round"/>
+            <line x1="32" y1="38" x2="41" y2="0" stroke="#2ec97e" strokeWidth="6" strokeLinecap="round"/>
           </svg>
-          <span className="logo-text">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
+          <span className="logo-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
           <div className="lang-toggle">
             <button className={`lang-btn ${lang === 'en' ? 'lang-btn-active' : ''}`} onClick={() => toggleLang('en')}>{FLAG_EN}</button>
             <button className={`lang-btn ${lang === 'fr' ? 'lang-btn-active' : ''}`} onClick={() => toggleLang('fr')}>{FLAG_FR}</button>
@@ -114,7 +114,7 @@ export default function ForgotPasswordPage() {
             <div className="success">
               <div className="success-icon">
                 <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                  <path d="M6 14L11 19L22 8" stroke="#1D9E75" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M6 14L11 19L22 8" stroke="#2ec97e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
               <h2>{lang === 'fr' ? 'E-mail envoyé !' : 'Email sent!'}</h2>

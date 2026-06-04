@@ -37,7 +37,7 @@ export default function PrivacyPolicy() {
 
         .legal-label {
           font-size: 11px;
-          color: #1D9E75;
+          color: #2ec97e;
           letter-spacing: 0.14em;
           font-weight: 700;
           margin-bottom: 12px;
@@ -93,7 +93,7 @@ export default function PrivacyPolicy() {
 
         .legal-highlight {
           background: white;
-          border-left: 3px solid #1D9E75;
+          border-left: 3px solid #2ec97e;
           border-radius: 0 8px 8px 0;
           padding: 16px 20px;
           margin: 16px 0;
@@ -125,7 +125,7 @@ export default function PrivacyPolicy() {
         }
 
         .legal-contact a {
-          color: #1D9E75;
+          color: #2ec97e;
           text-decoration: none;
         }
 
@@ -144,9 +144,9 @@ export default function PrivacyPolicy() {
           <svg width="32" height="30" viewBox="0 0 32 30" style={{ display: 'block' }}>
             <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
             <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-            <line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
+            <line x1="24" y1="28" x2="31" y2="0" stroke="#2ec97e" strokeWidth="5" strokeLinecap="round"/>
           </svg>
-          <span className="legal-logo-text">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
+          <span className="legal-logo-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
         </a>
         <a href="/" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', textDecoration: 'none' }}>← Back to home</a>
       </nav>

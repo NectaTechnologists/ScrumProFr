@@ -1,0 +1,33 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    GAINLINE — Open Graph / social preview image
+    1200x630
+  -->
+  <rect width="1200" height="630" fill="#0f1e2e"/>
+
+  <!-- Subtle grid texture -->
+  <line x1="0" y1="315" x2="1200" y2="315" stroke="#ffffff" stroke-opacity="0.03" stroke-width="1"/>
+  <line x1="600" y1="0" x2="600" y2="630" stroke="#ffffff" stroke-opacity="0.03" stroke-width="1"/>
+
+  <!-- Bars -->
+  <rect x="258" y="248" width="32" height="64"  rx="6" fill="#455060" transform="rotate(12 274 312)"/>
+  <rect x="300" y="218" width="32" height="94"  rx="6" fill="#5a6a7a" transform="rotate(12 316 312)"/>
+  <rect x="342" y="184" width="32" height="128" rx="6" fill="#2ec97e" transform="rotate(12 358 312)"/>
+
+  <!-- Wordmark -->
+  <text y="318"
+        font-family="Inter, -apple-system, sans-serif"
+        font-size="112"
+        font-weight="600"
+        letter-spacing="0.01em">
+    <tspan x="392" fill="#ffffff">Gain</tspan><tspan fill="#2ec97e">line</tspan>
+  </text>
+
+  <!-- Tagline -->
+  <text x="396" y="360"
+        font-family="Inter, -apple-system, sans-serif"
+        font-size="22"
+        font-weight="400"
+        fill="#4a5a6a"
+        letter-spacing="0.18em">rugby recruitment right</text>
+</svg>

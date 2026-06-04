@@ -301,7 +301,7 @@ export default function ProfilePage() {
   const r = 36
   const circ = 2 * Math.PI * r
   const offset = circ - (completion / 100) * circ
-  const ringColor = completion < 40 ? '#F0A500' : completion < 70 ? '#1D9E75' : '#0F6E56'
+  const ringColor = completion < 40 ? '#F0A500' : completion < 70 ? '#2ec97e' : '#0F6E56'
 
   const fieldLabels: Record<string, string> = {
     first_name: T.profile_first_name, last_name: T.profile_last_name,
@@ -334,9 +334,9 @@ export default function ProfilePage() {
         .prof-subtitle { color: #888780; margin-bottom: 20px; font-size: 14px; }
         .share-box { background: rgba(29,158,117,0.08); border: 1px solid rgba(29,158,117,0.3); border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
         .share-box-inner { flex: 1; min-width: 0; }
-        .share-label { font-size: 12px; font-weight: 700; color: #1D9E75; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
+        .share-label { font-size: 12px; font-weight: 700; color: #2ec97e; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
         .share-url { font-size: 13px; color: #0D1B2E; font-family: monospace; word-break: break-all; }
-        .copy-btn { background: #1D9E75; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+        .copy-btn { background: #2ec97e; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
         .tabs { display: flex; gap: 2px; background: #111520; padding: 3px; border-radius: 10px; border: 0.5px solid #D3D1C7; margin-bottom: 20px; overflow-x: auto; }
         .tab { flex: 1; padding: 10px 8px; border-radius: 8px; border: none; cursor: pointer; font-size: 12px; font-weight: 700; font-family: Arial, sans-serif; background: transparent; color: #888780; text-align: center; white-space: nowrap; }
         .tab-active { background: #D4A843; color: #0C0F16; }
@@ -346,30 +346,30 @@ export default function ProfilePage() {
         .form-label { font-size: 13px; font-weight: 600; color: #F0EDE4; }
         .form-hint { font-size: 11px; color: #888780; margin-top: 4px; }
         .form-input { width: 100%; padding: 10px 14px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: 14px; outline: none; font-family: system-ui; background: #1C2338; color: #F0EDE4; }
-        .form-input:focus { border-color: #1D9E75; }
+        .form-input:focus { border-color: #2ec97e; }
         .form-input::placeholder { color: #B4B2A9; }
         .form-full { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
         .form-textarea { width: 100%; padding: 10px 14px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: 14px; outline: none; font-family: system-ui; height: 100px; resize: none; color: #F0EDE4; background: #1C2338; }
-        .form-textarea:focus { border-color: #1D9E75; }
+        .form-textarea:focus { border-color: #2ec97e; }
         .form-textarea::placeholder { color: #B4B2A9; }
-        .save-btn { width: 100%; padding: 11px; background: #1D9E75; color: white; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 7px; }
+        .save-btn { width: 100%; padding: 11px; background: #2ec97e; color: white; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 7px; }
         .save-btn:disabled { opacity: 0.7; cursor: not-allowed; }
-        .section-title { font-size: 11px; color: #1D9E75; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 16px; margin-top: 8px; }
+        .section-title { font-size: 11px; color: #2ec97e; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 16px; margin-top: 8px; }
         .section-divider { border: none; border-top: 1px solid #F1EFE8; margin: 24px 0; }
         .video-hint { font-size: 12px; color: #888780; margin-top: 6px; }
         .avatar-section { display: flex; align-items: center; gap: 20px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #F1EFE8; }
-        .avatar-preview { width: 80px; height: 80px; border-radius: 16px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+        .avatar-preview { width: 80px; height: 80px; border-radius: 16px; background: #2ec97e; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
         .avatar-preview img { width: 100%; height: 100%; object-fit: cover; }
         .avatar-initials { color: white; font-size: 26px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; }
         .avatar-upload-area { flex: 1; }
         .avatar-upload-label { font-size: 13px; font-weight: 600; color: #0D1B2E; margin-bottom: 6px; display: block; }
         .avatar-upload-hint { font-size: 12px; color: #888780; margin-bottom: 10px; }
         .avatar-upload-btn { background: white; border: 1.5px solid #D3D1C7; color: #0D1B2E; font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 20px; cursor: pointer; font-family: Arial, sans-serif; display: inline-flex; align-items: center; gap: 6px; }
-        .avatar-upload-btn:hover { border-color: #1D9E75; }
+        .avatar-upload-btn:hover { border-color: #2ec97e; }
         .doc-upload-area { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #F1EFE8; }
         .doc-type-row { display: flex; gap: 10px; margin-bottom: 12px; align-items: flex-end; flex-wrap: wrap; }
         .doc-type-select { flex: 1; padding: 10px 14px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: 14px; outline: none; font-family: system-ui; background: #1C2338; color: #F0EDE4; min-width: 160px; }
-        .doc-upload-btn { background: #1D9E75; color: white; border: none; border-radius: 20px; padding: 9px 16px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; }
+        .doc-upload-btn { background: #2ec97e; color: white; border: none; border-radius: 20px; padding: 9px 16px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; }
         .doc-upload-btn:disabled { opacity: 0.6; cursor: not-allowed; }
         .doc-hint { font-size: 12px; color: #888780; }
         .doc-list { display: flex; flex-direction: column; gap: 10px; }
@@ -404,9 +404,9 @@ export default function ProfilePage() {
           <svg width="32" height="30" viewBox="0 0 32 30" style={{ display: 'block' }}>
             <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
             <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-            <line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
+            <line x1="24" y1="28" x2="31" y2="0" stroke="#2ec97e" strokeWidth="5" strokeLinecap="round"/>
           </svg>
-          <span className="prof-logo-text">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
+          <span className="prof-logo-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
         </div>
         <div className="prof-nav-right">
           <div className="lang-toggle">
@@ -477,7 +477,7 @@ export default function ProfilePage() {
                 <label className="avatar-upload-label">{lang === 'fr' ? 'Photo de profil' : 'Profile photo'}</label>
                 <p className="avatar-upload-hint">{lang === 'fr' ? 'JPG ou PNG, max 5MB' : 'JPG or PNG, max 5MB'}</p>
                 {avatarUploading
-                  ? <span style={{ fontSize: '13px', color: '#1D9E75' }}>{lang === 'fr' ? 'Téléversement...' : 'Uploading...'}</span>
+                  ? <span style={{ fontSize: '13px', color: '#2ec97e' }}>{lang === 'fr' ? 'Téléversement...' : 'Uploading...'}</span>
                   : <button type="button" className="avatar-upload-btn" onClick={() => fileInputRef.current?.click()}><PhotoIcon />{form.avatar_url ? (lang === 'fr' ? 'Changer la photo' : 'Change photo') : (lang === 'fr' ? 'Ajouter une photo' : 'Add photo')}</button>
                 }
                 <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleAvatarUpload} />
@@ -628,7 +628,7 @@ export default function ProfilePage() {
                   </div>
                 ))}
                 {passportEntries.length < 3 && (
-                  <button type="button" onClick={addPassportEntry} style={{ background: 'none', border: 'none', color: '#1D9E75', fontSize: '13px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Arial, sans-serif', textAlign: 'left', padding: '2px 0' }}>
+                  <button type="button" onClick={addPassportEntry} style={{ background: 'none', border: 'none', color: '#2ec97e', fontSize: '13px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Arial, sans-serif', textAlign: 'left', padding: '2px 0' }}>
                     + {lang === 'fr' ? 'Ajouter un autre passeport' : 'Add another passport'}
                   </button>
                 )}
@@ -680,8 +680,8 @@ export default function ProfilePage() {
           <div className="prof-form">
             <div className="doc-private-note">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: '2px' }}>
-                <rect x="3" y="7" width="10" height="8" rx="2" stroke="#1D9E75" strokeWidth="1.5"/>
-                <path d="M5 7V5a3 3 0 016 0v2" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round"/>
+                <rect x="3" y="7" width="10" height="8" rx="2" stroke="#2ec97e" strokeWidth="1.5"/>
+                <path d="M5 7V5a3 3 0 016 0v2" stroke="#2ec97e" strokeWidth="1.5" strokeLinecap="round"/>
               </svg>
               <p>{lang === 'fr' ? 'Vos documents sont privés et ne sont visibles que par les entraîneurs et agents vérifiés sur Gainline.' : 'Your documents are private and only visible to verified coaches and agents on Gainline — never on your public CV.'}</p>
             </div>
@@ -705,10 +705,10 @@ export default function ProfilePage() {
                   <div key={doc.id} className="doc-item">
                     <div className="doc-icon">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <rect x="2" y="1" width="10" height="14" rx="2" stroke="#1D9E75" strokeWidth="1.5"/>
-                        <line x1="5" y1="5" x2="9" y2="5" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round"/>
-                        <line x1="5" y1="8" x2="9" y2="8" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round"/>
-                        <line x1="5" y1="11" x2="7" y2="11" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round"/>
+                        <rect x="2" y="1" width="10" height="14" rx="2" stroke="#2ec97e" strokeWidth="1.5"/>
+                        <line x1="5" y1="5" x2="9" y2="5" stroke="#2ec97e" strokeWidth="1.5" strokeLinecap="round"/>
+                        <line x1="5" y1="8" x2="9" y2="8" stroke="#2ec97e" strokeWidth="1.5" strokeLinecap="round"/>
+                        <line x1="5" y1="11" x2="7" y2="11" stroke="#2ec97e" strokeWidth="1.5" strokeLinecap="round"/>
                       </svg>
                     </div>
                     <div className="doc-info">
@@ -750,7 +750,7 @@ export default function ProfilePage() {
                     <button onClick={async () => {
                       await supabase.from('references').update({ status: 'approved' }).eq('id', ref.id)
                       setReferences(prev => prev.map(r => r.id === ref.id ? { ...r, status: 'approved' } : r))
-                    }} style={{ height: '28px', padding: '0 12px', borderRadius: '20px', border: 'none', background: '#1D9E75', color: 'white', fontSize: '12px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Arial, sans-serif' }}>
+                    }} style={{ height: '28px', padding: '0 12px', borderRadius: '20px', border: 'none', background: '#2ec97e', color: 'white', fontSize: '12px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Arial, sans-serif' }}>
                       Approve
                     </button>
                     <button onClick={async () => {
@@ -768,7 +768,7 @@ export default function ProfilePage() {
         )}
         {references.filter((r: any) => r.status === 'approved').length > 0 && (
           <>
-            <p style={{ fontSize: '11px', color: '#1D9E75', letterSpacing: '0.12em', fontWeight: '700', marginTop: '8px', marginBottom: '4px' }}>APPROVED — SHOWING ON YOUR CV</p>
+            <p style={{ fontSize: '11px', color: '#2ec97e', letterSpacing: '0.12em', fontWeight: '700', marginTop: '8px', marginBottom: '4px' }}>APPROVED — SHOWING ON YOUR CV</p>
             {references.filter((r: any) => r.status === 'approved').map((ref: any) => (
               <div key={ref.id} style={{ background: '#E1F5EE', border: '1px solid rgba(29,158,117,0.2)', borderRadius: '10px', padding: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>

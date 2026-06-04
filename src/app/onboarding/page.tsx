@@ -208,7 +208,7 @@ export default function OnboardingPage() {
   )
 
   const CheckIcon = () => (
-    <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="#1D9E75" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'inline', marginRight: '4px', verticalAlign: 'middle' }}>
+    <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="#2ec97e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'inline', marginRight: '4px', verticalAlign: 'middle' }}>
       <path d="M3 8l3.5 3.5L13 4"/>
     </svg>
   )
@@ -226,39 +226,39 @@ export default function OnboardingPage() {
         .ob-title { font-size: 22px; font-weight: 900; margin-bottom: 8px; font-family: 'Arial Black', Arial, sans-serif; }
         .ob-sub { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.6; margin-bottom: 24px; }
         .ob-sub-dark { font-size: 13px; color: #888780; line-height: 1.6; margin-bottom: 20px; }
-        .ob-step-label { font-size: 10px; color: #1D9E75; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 4px; }
+        .ob-step-label { font-size: 10px; color: #2ec97e; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 4px; }
         .ob-form-title { font-size: 18px; font-weight: 900; color: #0D1B2E; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 4px; }
         .field-label { font-size: 12px; font-weight: 600; color: #0D1B2E; display: block; margin-bottom: 5px; }
         .field-input { width: 100%; padding: 10px 14px; border: 1.5px solid #E8E4F0; border-radius: 8px; font-size: 14px; outline: none; font-family: Arial, sans-serif; color: #0D1B2E; background: white; }
-        .field-input:focus { border-color: #1D9E75; }
+        .field-input:focus { border-color: #2ec97e; }
         .field-input::placeholder { color: #B4B2A9; }
         .field-input-error { border-color: #e05252 !important; }
         .field-error { font-size: 11px; color: #e05252; margin-top: 4px; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
         .form-field { display: flex; flex-direction: column; gap: 0; }
         .form-full { margin-bottom: 12px; display: flex; flex-direction: column; gap: 0; }
-        .ob-btn { width: 100%; padding: 12px; background: #1D9E75; color: white; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 8px; transition: opacity 0.15s; }
+        .ob-btn { width: 100%; padding: 12px; background: #2ec97e; color: white; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 8px; transition: opacity 0.15s; }
         .ob-btn:disabled { opacity: 0.45; cursor: not-allowed; }
         .ob-btn-outline { width: 100%; padding: 11px; background: white; color: #0D1B2E; border: 1.5px solid #D3D1C7; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; margin-top: 8px; }
         .ob-skip { display: block; text-align: center; margin-top: 14px; font-size: 12px; color: #888780; cursor: pointer; background: none; border: none; font-family: Arial, sans-serif; text-decoration: underline; }
         .dots { display: flex; justify-content: center; align-items: center; gap: 6px; margin-top: 16px; }
         .dot { height: 4px; border-radius: 2px; background: #D3D1C7; }
-        .dot-active { background: #1D9E75; width: 24px; }
-        .dot-done { background: #1D9E75; width: 8px; opacity: 0.5; }
+        .dot-active { background: #2ec97e; width: 24px; }
+        .dot-done { background: #2ec97e; width: 8px; opacity: 0.5; }
         .dot-inactive { width: 8px; }
         .ob-stats { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; }
-        .ob-stat-val { font-size: 20px; font-weight: 900; color: #1D9E75; font-family: 'Arial Black', Arial, sans-serif; }
+        .ob-stat-val { font-size: 20px; font-weight: 900; color: #2ec97e; font-family: 'Arial Black', Arial, sans-serif; }
         .ob-stat-lbl { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 2px; }
         .ob-divider { width: 1px; background: rgba(255,255,255,0.1); }
         .ob-photo-box { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: #F8F7F4; border-radius: 10px; border: 0.5px solid #D3D1C7; margin-bottom: 14px; }
-        .ob-photo-icon { width: 48px; height: 48px; border-radius: 10px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+        .ob-photo-icon { width: 48px; height: 48px; border-radius: 10px; background: #2ec97e; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
         .ob-photo-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
         .ob-upload-btn { margin-left: auto; height: 30px; padding: 0 14px; border-radius: 20px; border: 1.5px solid #D3D1C7; background: white; font-size: 12px; font-weight: 600; color: #0D1B2E; cursor: pointer; font-family: Arial, sans-serif; flex-shrink: 0; }
         .ob-share-box { background: rgba(255,255,255,0.06); border-radius: 8px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
         .ob-share-url { flex: 1; font-size: 12px; color: rgba(255,255,255,0.5); font-family: monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .ob-copy-btn { background: #1D9E75; color: white; border: none; border-radius: 20px; padding: 6px 14px; font-size: 11px; font-weight: 700; cursor: pointer; flex-shrink: 0; }
+        .ob-copy-btn { background: #2ec97e; color: white; border: none; border-radius: 20px; padding: 6px 14px; font-size: 11px; font-weight: 700; cursor: pointer; flex-shrink: 0; }
         .ob-copy-btn-done { background: #0F6E56; }
-        .ob-success-icon { width: 52px; height: 52px; border-radius: 50%; background: rgba(29,158,117,0.15); border: 2px solid #1D9E75; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+        .ob-success-icon { width: 52px; height: 52px; border-radius: 50%; background: rgba(29,158,117,0.15); border: 2px solid #2ec97e; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
         .ob-go-btn { width: 100%; padding: 12px; background: white; color: #0D1B2E; border: none; border-radius: 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; margin-bottom: 10px; }
         .ob-hint { font-size: 11px; color: rgba(255,255,255,0.3); text-align: center; margin-top: 6px; }
         .ob-required-note { font-size: 11px; color: #888780; margin-bottom: 16px; }
@@ -281,9 +281,9 @@ export default function OnboardingPage() {
                   <svg width="24" height="22" viewBox="0 0 32 30">
                     <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
                     <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-                    <line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
+                    <line x1="24" y1="28" x2="31" y2="0" stroke="#2ec97e" strokeWidth="5" strokeLinecap="round"/>
                   </svg>
-                  <span style={{ color: 'white', fontWeight: '900', fontSize: '18px', letterSpacing: '-0.5px', fontFamily: 'Arial Black, Arial, sans-serif' }}>GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
+                  <span style={{ color: 'white', fontWeight: '900', fontSize: '18px', letterSpacing: '-0.5px', fontFamily: 'Arial Black, Arial, sans-serif' }}>GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
                 </div>
                 <p className="ob-label">WELCOME</p>
                 <h1 className="ob-title" style={{ color: 'white' }}>Your profile is your passport to the game.</h1>
@@ -504,7 +504,7 @@ export default function OnboardingPage() {
             <>
               <div className="ob-hero">
                 <div className="ob-success-icon">
-                  <svg width="22" height="22" viewBox="0 0 16 16" fill="none" stroke="#1D9E75" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="22" height="22" viewBox="0 0 16 16" fill="none" stroke="#2ec97e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M3 8l3 3 7-7"/>
                   </svg>
                 </div>

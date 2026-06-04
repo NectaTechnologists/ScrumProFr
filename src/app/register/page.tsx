@@ -36,7 +36,7 @@ export default function RegisterPage() {
         .rg-roles { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
         .rg-role-btn { background: #111520; border: 2px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 28px 20px; cursor: pointer; text-align: left; transition: border-color 0.15s, background 0.15s; display: block; width: 100%; }
         .rg-role-btn:hover { border-color: rgba(255,255,255,0.25); }
-        .rg-role-player-active { border-color: #1D9E75 !important; background: rgba(29,158,117,0.07); }
+        .rg-role-player-active { border-color: #2ec97e !important; background: rgba(29,158,117,0.07); }
         .rg-role-coach-active { border-color: #D4A843 !important; background: rgba(212,168,67,0.07); }
         .rg-role-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
         .rg-role-icon-player { background: rgba(29,158,117,0.15); }
@@ -45,13 +45,13 @@ export default function RegisterPage() {
         .rg-role-desc { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.6; }
         .rg-check { display: flex; align-items: center; justify-content: flex-end; margin-top: 14px; }
         .rg-check-dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; }
-        .rg-check-dot-player { border-color: #1D9E75; background: #1D9E75; }
+        .rg-check-dot-player { border-color: #2ec97e; background: #2ec97e; }
         .rg-check-dot-coach { border-color: #D4A843; background: #D4A843; }
-        .rg-cta { width: 100%; padding: 15px; border-radius: 10px; border: none; font-size: 15px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; cursor: pointer; transition: opacity 0.15s; background: #1D9E75; color: white; }
+        .rg-cta { width: 100%; padding: 15px; border-radius: 10px; border: none; font-size: 15px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; cursor: pointer; transition: opacity 0.15s; background: #2ec97e; color: white; }
         .rg-cta-coach { background: #D4A843; color: #0D1B2E; }
         .rg-cta:disabled { opacity: 0.35; cursor: not-allowed; }
         .rg-footer { text-align: center; margin-top: 20px; font-size: 13px; color: rgba(255,255,255,0.35); }
-        .rg-footer a { color: #1D9E75; text-decoration: none; }
+        .rg-footer a { color: #2ec97e; text-decoration: none; }
         @media (max-width: 480px) {
           .rg-roles { grid-template-columns: 1fr; }
           .rg-heading { font-size: 22px; }
@@ -63,9 +63,9 @@ export default function RegisterPage() {
           <svg width="36" height="32" viewBox="0 0 36 32">
             <line x1="3" y1="30" x2="10" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
             <line x1="15" y1="30" x2="22" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-            <line x1="27" y1="30" x2="34" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
+            <line x1="27" y1="30" x2="34" y2="0" stroke="#2ec97e" strokeWidth="5" strokeLinecap="round"/>
           </svg>
-          <span className="rg-logo-text">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
+          <span className="rg-logo-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
         </a>
 
         <div className="rg-card">
@@ -80,7 +80,7 @@ export default function RegisterPage() {
               onClick={() => setSelected(selected === 'player' ? null : 'player')}
             >
               <div className="rg-role-icon rg-role-icon-player">
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#1D9E75" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#2ec97e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="11" cy="7" r="4"/>
                   <path d="M2 20c0-5 4-9 9-9s9 4 9 9"/>
                 </svg>

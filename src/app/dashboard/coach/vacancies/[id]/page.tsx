@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter, useParams } from 'next/navigation'
 
 const STATUS_OPTIONS = [
-  { value: 'new',          label: 'New',          color: '#1D9E75', bg: 'rgba(29,158,117,0.12)' },
+  { value: 'new',          label: 'New',          color: '#2ec97e', bg: 'rgba(29,158,117,0.12)' },
   { value: 'reviewing',    label: 'Reviewing',     color: '#D4A843', bg: 'rgba(212,168,67,0.12)' },
   { value: 'shortlisted',  label: 'Shortlisted',   color: '#4A7FD4', bg: 'rgba(74,127,212,0.12)' },
   { value: 'not_suitable', label: 'Not suitable',  color: '#6b7280', bg: 'rgba(107,114,128,0.12)' },
@@ -120,12 +120,12 @@ export default function VacancyApplicationsPage() {
         .tabs { display: flex; gap: 2px; background: #111520; padding: 3px; border-radius: 10px; border: 0.5px solid rgba(255,255,255,0.07); margin-bottom: 16px; width: fit-content; }
         .tab { padding: 7px 16px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; font-weight: 700; font-family: Arial, sans-serif; background: transparent; color: #888780; display: flex; align-items: center; gap: 6px; }
         .tab-active { background: #D4A843; color: #0C0F16; }
-        .tab-badge { background: #1D9E75; color: white; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 10px; }
+        .tab-badge { background: #2ec97e; color: white; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 10px; }
         /* Application rows */
         .app-list { display: flex; flex-direction: column; gap: 8px; }
         .app-row { background: #161C2A; border-radius: 10px; padding: 12px 14px; border: 0.5px solid rgba(255,255,255,0.07); }
         .app-row-main { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-        .app-avatar { width: 36px; height: 36px; border-radius: 8px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+        .app-avatar { width: 36px; height: 36px; border-radius: 8px; background: #2ec97e; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
         .app-avatar img { width: 100%; height: 100%; object-fit: cover; }
         .app-avatar span { color: white; font-size: 13px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; }
         .app-info { flex: 1; min-width: 120px; }

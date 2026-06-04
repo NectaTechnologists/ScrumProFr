@@ -78,7 +78,7 @@ export default function CoachDashboardPage() {
   )
 
   const STAT_CARDS = [
-    { label: 'Open Vacancies',      value: stats.openVacancies, href: '/dashboard/coach/vacancies',    color: '#1D9E75' },
+    { label: 'Open Vacancies',      value: stats.openVacancies, href: '/dashboard/coach/vacancies',    color: '#2ec97e' },
     { label: 'New Applications',    value: stats.newApps,       href: '/dashboard/coach/applications', color: '#D4A843' },
     { label: 'Players Shortlisted', value: stats.shortlisted,   href: '/dashboard/coach',              color: '#4A7FD4' },
     { label: 'Card Views',          value: stats.cardViews,     href: null,                            color: '#A8A398' },
@@ -100,7 +100,7 @@ export default function CoachDashboardPage() {
         .section-title { font-size: 10px; color: #888780; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 12px; }
         .activity-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 28px; }
         .activity-row { background: #161C2A; border-radius: 10px; padding: 12px 16px; border: 0.5px solid rgba(255,255,255,0.07); display: flex; align-items: center; gap: 12px; }
-        .activity-avatar { width: 32px; height: 32px; border-radius: 7px; background: #1D9E75; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .activity-avatar { width: 32px; height: 32px; border-radius: 7px; background: #2ec97e; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .activity-avatar span { color: white; font-size: 11px; font-weight: 900; font-family: 'Arial Black', Arial, sans-serif; }
         .activity-info { flex: 1; min-width: 0; }
         .activity-name { font-size: 13px; font-weight: 700; color: #F0EDE4; }
@@ -110,7 +110,7 @@ export default function CoachDashboardPage() {
         .cta-box { background: #0D1B2E; border-radius: 12px; padding: 24px; border: 1px solid rgba(29,158,117,0.15); text-align: center; }
         .cta-box h3 { font-size: 15px; font-weight: 900; color: #F0EDE4; font-family: 'Arial Black', Arial, sans-serif; margin-bottom: 6px; }
         .cta-box p { font-size: 13px; color: #888780; margin-bottom: 16px; }
-        .cta-btn { display: inline-block; background: #1D9E75; color: white; font-size: 13px; font-weight: 700; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-family: Arial, sans-serif; }
+        .cta-btn { display: inline-block; background: #2ec97e; color: white; font-size: 13px; font-weight: 700; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-family: Arial, sans-serif; }
         .empty-activity { background: #161C2A; border-radius: 10px; padding: 24px; border: 0.5px solid rgba(255,255,255,0.07); text-align: center; font-size: 13px; color: #888780; }
         @media (min-width: 640px) {
           .dash { padding: 40px 28px 80px; }
@@ -148,7 +148,7 @@ export default function CoachDashboardPage() {
               const v = app.vacancies
               const initials = [p?.first_name?.[0], p?.last_name?.[0]].filter(Boolean).join('')
               const statusColors: Record<string, { color: string; bg: string }> = {
-                new:          { color: '#1D9E75', bg: 'rgba(29,158,117,0.12)' },
+                new:          { color: '#2ec97e', bg: 'rgba(29,158,117,0.12)' },
                 reviewing:    { color: '#D4A843', bg: 'rgba(212,168,67,0.12)' },
                 shortlisted:  { color: '#4A7FD4', bg: 'rgba(74,127,212,0.12)' },
                 not_suitable: { color: '#6b7280', bg: 'rgba(107,114,128,0.12)' },

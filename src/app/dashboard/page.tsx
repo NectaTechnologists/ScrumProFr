@@ -255,7 +255,7 @@ export default function DashboardPage() {
         .mob-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: #111520; border-top: 0.5px solid rgba(255,255,255,0.08); z-index: 200; padding-bottom: env(safe-area-inset-bottom); }
         .mob-nav-inner { display: flex; align-items: stretch; height: 100%; }
         .mob-nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: rgba(255,255,255,0.4); font-size: 10px; font-weight: 700; font-family: Arial, sans-serif; letter-spacing: 0.04em; transition: color 0.15s; }
-        .mob-nav-item:hover, .mob-nav-item-active { color: #1D9E75; }
+        .mob-nav-item:hover, .mob-nav-item-active { color: #2ec97e; }
         .mob-nav-item svg { display: block; }
         @media (max-width: 768px) {
           .dash-nav { padding: 0 16px; height: 56px; }
@@ -271,9 +271,9 @@ export default function DashboardPage() {
           <svg width="32" height="30" viewBox="0 0 32 30" style={{ display: 'block' }}>
             <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
             <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-            <line x1="24" y1="28" x2="31" y2="0" stroke="#1D9E75" strokeWidth="5" strokeLinecap="round"/>
+            <line x1="24" y1="28" x2="31" y2="0" stroke="#2ec97e" strokeWidth="5" strokeLinecap="round"/>
           </svg>
-          <span className="dash-logo-text">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
+          <span className="dash-logo-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
         </div>
         <div className="dash-nav-right">
           <a href="/vacancies" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', textDecoration: 'none', whiteSpace: 'nowrap' }} className="dash-nav-hide-sm">Vacancies</a>
@@ -381,7 +381,7 @@ export default function DashboardPage() {
                     <>
                       <button
                         onClick={() => setViewsExpanded(v => !v)}
-                        style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '11px', color: '#1D9E75', fontFamily: 'Arial, sans-serif', padding: '0 0 8px', display: 'flex', alignItems: 'center', gap: '4px' }}
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '11px', color: '#2ec97e', fontFamily: 'Arial, sans-serif', padding: '0 0 8px', display: 'flex', alignItems: 'center', gap: '4px' }}
                       >
                         {viewsExpanded ? 'Hide views ↑' : `Show recent views ↓`}
                       </button>
@@ -429,7 +429,7 @@ export default function DashboardPage() {
                   </button>
                   <button
                     onClick={() => setShowShare(true)}
-                    style={{ background: '#1D9E75', color: 'white', border: 'none', padding: '6px 14px', borderRadius: '6px', fontSize: '11px', cursor: 'pointer', fontFamily: 'Arial, sans-serif', whiteSpace: 'nowrap' }}
+                    style={{ background: '#2ec97e', color: 'white', border: 'none', padding: '6px 14px', borderRadius: '6px', fontSize: '11px', cursor: 'pointer', fontFamily: 'Arial, sans-serif', whiteSpace: 'nowrap' }}
                   >
                     Share
                   </button>
@@ -486,7 +486,7 @@ export default function DashboardPage() {
                               </button>
                               <button
                                 onClick={() => shareCard(req.id, req.coach_id, req.coach_org)}
-                                style={{ background: '#1D9E75', color: 'white', border: 'none', padding: '5px 12px', borderRadius: '6px', fontSize: '11px', fontWeight: 700, cursor: 'pointer', fontFamily: 'Arial, sans-serif' }}
+                                style={{ background: '#2ec97e', color: 'white', border: 'none', padding: '5px 12px', borderRadius: '6px', fontSize: '11px', fontWeight: 700, cursor: 'pointer', fontFamily: 'Arial, sans-serif' }}
                               >
                                 Share card
                               </button>
@@ -522,7 +522,7 @@ export default function DashboardPage() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                 <span style={{ fontSize: '10px', textTransform: 'uppercase', color: '#5A564F', letterSpacing: '2px', fontWeight: 700, fontFamily: 'Arial, sans-serif' }}>COMPLETE YOUR PROFILE</span>
                 {playerShareToken && (
-                  <a href={`/cv/${playerShareToken}`} target="_blank" style={{ color: '#1D9E75', fontSize: '12px', textDecoration: 'none', fontFamily: 'Arial, sans-serif' }}>View public card →</a>
+                  <a href={`/cv/${playerShareToken}`} target="_blank" style={{ color: '#2ec97e', fontSize: '12px', textDecoration: 'none', fontFamily: 'Arial, sans-serif' }}>View public card →</a>
                 )}
               </div>
 
@@ -625,7 +625,7 @@ export default function DashboardPage() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                 <span style={{ fontSize: '10px', textTransform: 'uppercase', color: '#5A564F', letterSpacing: '2px', fontWeight: 700, fontFamily: 'Arial, sans-serif' }}>AS A COACH</span>
                 {coachShareToken && (
-                  <a href={`/coach/${coachShareToken}`} style={{ color: '#1D9E75', fontSize: '12px', textDecoration: 'none', fontFamily: 'Arial, sans-serif' }}>Share Coach Card →</a>
+                  <a href={`/coach/${coachShareToken}`} style={{ color: '#2ec97e', fontSize: '12px', textDecoration: 'none', fontFamily: 'Arial, sans-serif' }}>Share Coach Card →</a>
                 )}
               </div>
 

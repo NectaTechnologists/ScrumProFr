@@ -22,7 +22,7 @@ export default function TermsPage() {
       `}</style>
 
       <nav className="terms-nav">
-        <span className="terms-logo-text">GAIN<span style={{ color: '#1D9E75' }}>LINE</span></span>
+        <span className="terms-logo-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
         <button className="terms-back" onClick={() => window.close()}>← Close</button>
       </nav>
 
