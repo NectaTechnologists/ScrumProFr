@@ -1,18 +1,17 @@
-<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
   <!--
-    GAINLINE — Social avatar / profile picture
-    400x400, dark background, bars centred
+    GAINLINE — Favicon / Icon mark only
+    64x64, transparent background
+    Three bars, 12deg tilt, anchored to baseline
   -->
-  <rect width="400" height="400" fill="#0f1e2e"/>
 
-  <!-- Bars centred in canvas, baseline y=260, cap y=140 -->
   <!-- Bar 1: short -->
-  <rect x="118" y="222" width="36" height="52"  rx="7"
-        fill="#455060" transform="rotate(12 136 274)"/>
+  <rect x="8"  y="38" width="11" height="16" rx="2.5"
+        fill="#455060" transform="rotate(12 13.5 54)"/>
   <!-- Bar 2: mid -->
-  <rect x="166" y="192" width="36" height="82"  rx="7"
-        fill="#5a6a7a" transform="rotate(12 184 274)"/>
+  <rect x="24" y="28" width="11" height="26" rx="2.5"
+        fill="#5a6a7a" transform="rotate(12 29.5 54)"/>
   <!-- Bar 3: tall green -->
-  <rect x="214" y="154" width="36" height="120" rx="7"
-        fill="#2ec97e" transform="rotate(12 232 274)"/>
+  <rect x="40" y="14" width="11" height="40" rx="2.5"
+        fill="#2ec97e" transform="rotate(12 45.5 54)"/>
 </svg>
