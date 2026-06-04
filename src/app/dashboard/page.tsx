@@ -269,7 +269,7 @@ export default function DashboardPage() {
 
       <nav className="dash-nav">
         <div className="dash-logo" style={{ display: 'flex', alignItems: 'center' }}>
-          <Image src="/gainline-logo-final.svg" alt="Gainline" width={160} height={48} priority />
+          <Image src="/gainline-logo-final.png" alt="Gainline" width={160} height={48} priority />
         </div>
         <div className="dash-nav-right">
           <a href="/vacancies" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', textDecoration: 'none', whiteSpace: 'nowrap' }} className="dash-nav-hide-sm">Vacancies</a>

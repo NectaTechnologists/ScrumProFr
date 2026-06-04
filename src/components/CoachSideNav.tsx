@@ -51,7 +51,7 @@ export default function CoachSideNav({ coachData, newAppsCount, onClose }: Props
           flexShrink: 0,
         }}
       >
-        <Image src="/gainline-logo-final.svg" alt="Gainline" width={160} height={48} priority />
+        <Image src="/gainline-logo-final.png" alt="Gainline" width={160} height={48} priority />
       </a>
 
       {/* Nav items */}

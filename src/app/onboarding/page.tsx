@@ -279,7 +279,7 @@ export default function OnboardingPage() {
             <>
               <div className="ob-hero">
                 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px' }}>
-                  <Image src="/gainline-logo-final.svg" alt="Gainline" width={160} height={48} priority />
+                  <Image src="/gainline-logo-final.png" alt="Gainline" width={160} height={48} priority />
                 </div>
                 <p className="ob-label">WELCOME</p>
                 <h1 className="ob-title" style={{ color: 'white' }}>Your profile is your passport to the game.</h1>

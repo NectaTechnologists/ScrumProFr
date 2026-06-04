@@ -287,7 +287,7 @@ export default function CoachProfilePage() {
 
       <nav className="cp-nav">
         <div className="cp-logo" style={{ display: 'flex', alignItems: 'center' }}>
-          <Image src="/gainline-logo-final.svg" alt="Gainline" width={160} height={48} priority />
+          <Image src="/gainline-logo-final.png" alt="Gainline" width={160} height={48} priority />
         </div>
         <div className="cp-nav-right">
           {shareToken && (

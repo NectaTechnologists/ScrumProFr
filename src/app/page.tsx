@@ -233,7 +233,7 @@ export default function Home() {
       {/* NAV */}
       <nav className="nav">
         <a href="/" className="nav-logo">
-          <Image src="/gainline-logo-final.svg" alt="Gainline" width={160} height={48} priority />
+          <Image src="/gainline-logo-final.png" alt="Gainline" width={160} height={48} priority />
         </a>
         <div className="nav-links">
           <a href="/players" className="nav-link">Browse players</a>
@@ -555,7 +555,7 @@ export default function Home() {
       {/* FOOTER */}
       <footer className="footer">
         <div className="footer-logo" style={{ display: 'flex', alignItems: 'center' }}>
-          <Image src="/gainline-logo-final.svg" alt="Gainline" width={120} height={36} />
+          <Image src="/gainline-logo-final.png" alt="Gainline" width={120} height={36} />
         </div>
         <span className="footer-copy">gainline.pro &nbsp;·&nbsp; 2026</span>
         <div className="footer-links">

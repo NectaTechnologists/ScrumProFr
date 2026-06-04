@@ -125,7 +125,7 @@ export default function SettingsPage() {
 
       <nav className="settings-nav">
         <div className="settings-logo" style={{ display: 'flex', alignItems: 'center' }}>
-          <Image src="/gainline-logo-final.svg" alt="Gainline" width={160} height={48} priority />
+          <Image src="/gainline-logo-final.png" alt="Gainline" width={160} height={48} priority />
         </div>
         <button className="settings-back" onClick={() => router.back()}>
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">

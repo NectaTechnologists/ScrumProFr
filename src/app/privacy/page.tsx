@@ -142,7 +142,7 @@ export default function PrivacyPolicy() {
       {/* NAV */}
       <nav className="legal-nav">
         <a href="/" className="legal-logo" style={{ display: 'flex', alignItems: 'center' }}>
-          <Image src="/gainline-logo-final.svg" alt="Gainline" width={160} height={48} priority />
+          <Image src="/gainline-logo-final.png" alt="Gainline" width={160} height={48} priority />
         </a>
         <a href="/" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', textDecoration: 'none' }}>← Back to home</a>
       </nav>

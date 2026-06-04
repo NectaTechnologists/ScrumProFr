@@ -158,7 +158,7 @@ export default async function CoachCardPage({ params }: { params: Promise<{ toke
       {/* Nav strip */}
       <div style={{ background: '#0D1B2E', padding: '0 24px', height: '52px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-          <Image src="/gainline-logo-final.svg" alt="Gainline" width={120} height={36} />
+          <Image src="/gainline-logo-final.png" alt="Gainline" width={120} height={36} />
         </a>
         <a href="/register/coach" style={{ padding: '6px 16px', borderRadius: '20px', background: '#2ec97e', color: 'white', fontSize: '12px', fontWeight: '700', textDecoration: 'none' }}>
           Join Gainline →
@@ -360,7 +360,7 @@ export default async function CoachCardPage({ params }: { params: Promise<{ toke
         {/* ── FOOTER ── */}
         <div className="cc-footer">
           <a href="/" className="cc-footer-logo" style={{ display: 'flex', alignItems: 'center' }}>
-            <Image src="/gainline-logo-final.svg" alt="Gainline" width={120} height={36} />
+            <Image src="/gainline-logo-final.png" alt="Gainline" width={120} height={36} />
           </a>
           <p style={{ fontSize: '12px', color: '#B4B2A9', marginTop: '8px' }}>Rugby coach profiles & player management</p>
         </div>
