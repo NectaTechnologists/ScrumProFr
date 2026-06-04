@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import ReferenceButton from './ReferenceButton'
 
 export const dynamic = 'force-dynamic'
@@ -200,13 +201,8 @@ export default async function CVPage(props: any) {
       `}</style>
 
       <nav className="cv-nav">
-        <div className="cv-logo">
-          <svg width="28" height="26" viewBox="0 0 32 30" style={{ display: 'block' }}>
-            <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
-            <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-            <line x1="24" y1="28" x2="31" y2="0" stroke="#2ec97e" strokeWidth="5" strokeLinecap="round"/>
-          </svg>
-          <span className="cv-logo-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
+        <div className="cv-logo" style={{ display: 'flex', alignItems: 'center' }}>
+          <Image src="/gainline-logo-final.svg" alt="Gainline" width={120} height={36} />
         </div>
         <div className="cv-nav-right">
           <span className="cv-nav-label" id="cv-nav-label">PLAYER CV</span>
@@ -543,7 +539,7 @@ export default async function CVPage(props: any) {
 
         <div className="cv-footer-card">
           <p className="cv-footer-label" id="footer-powered">POWERED BY</p>
-          <p className="cv-footer-brand">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></p>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '4px 0' }}><Image src="/gainline-logo-final.svg" alt="Gainline" width={120} height={36} /></div>
           <p className="cv-footer-tag" id="footer-tagline">No talent goes unseen</p>
           <a href="/" className="cv-footer-cta" id="footer-cta">Build your free profile →</a>
         </div>

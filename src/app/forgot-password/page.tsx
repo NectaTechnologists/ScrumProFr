@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image'
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -79,12 +80,7 @@ export default function ForgotPasswordPage() {
 
       <div className="wrap">
         <div className="logo">
-          <svg width="44" height="40" viewBox="0 0 44 40" style={{ display: 'block' }}>
-            <line x1="4" y1="38" x2="13" y2="8" stroke="white" strokeWidth="6" strokeLinecap="round" opacity="0.28"/>
-            <line x1="18" y1="38" x2="27" y2="2" stroke="white" strokeWidth="6" strokeLinecap="round" opacity="0.58"/>
-            <line x1="32" y1="38" x2="41" y2="0" stroke="#2ec97e" strokeWidth="6" strokeLinecap="round"/>
-          </svg>
-          <span className="logo-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
+          <Image src="/gainline-logo-final.svg" alt="Gainline" width={160} height={48} priority />
           <div className="lang-toggle">
             <button className={`lang-btn ${lang === 'en' ? 'lang-btn-active' : ''}`} onClick={() => toggleLang('en')}>{FLAG_EN}</button>
             <button className={`lang-btn ${lang === 'fr' ? 'lang-btn-active' : ''}`} onClick={() => toggleLang('fr')}>{FLAG_FR}</button>

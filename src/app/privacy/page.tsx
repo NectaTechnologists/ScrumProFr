@@ -1,3 +1,4 @@
+import Image from 'next/image'
 export default function PrivacyPolicy() {
   return (
     <>
@@ -140,13 +141,8 @@ export default function PrivacyPolicy() {
 
       {/* NAV */}
       <nav className="legal-nav">
-        <a href="/" className="legal-logo">
-          <svg width="32" height="30" viewBox="0 0 32 30" style={{ display: 'block' }}>
-            <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
-            <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-            <line x1="24" y1="28" x2="31" y2="0" stroke="#2ec97e" strokeWidth="5" strokeLinecap="round"/>
-          </svg>
-          <span className="legal-logo-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
+        <a href="/" className="legal-logo" style={{ display: 'flex', alignItems: 'center' }}>
+          <Image src="/gainline-logo-final.svg" alt="Gainline" width={160} height={48} priority />
         </a>
         <a href="/" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', textDecoration: 'none' }}>← Back to home</a>
       </nav>

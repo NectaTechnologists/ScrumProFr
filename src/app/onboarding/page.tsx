@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image'
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -277,13 +278,8 @@ export default function OnboardingPage() {
           {step === 1 && (
             <>
               <div className="ob-hero">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '24px' }}>
-                  <svg width="24" height="22" viewBox="0 0 32 30">
-                    <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
-                    <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-                    <line x1="24" y1="28" x2="31" y2="0" stroke="#2ec97e" strokeWidth="5" strokeLinecap="round"/>
-                  </svg>
-                  <span style={{ color: 'white', fontWeight: '900', fontSize: '18px', letterSpacing: '-0.5px', fontFamily: 'Arial Black, Arial, sans-serif' }}>GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px' }}>
+                  <Image src="/gainline-logo-final.svg" alt="Gainline" width={160} height={48} priority />
                 </div>
                 <p className="ob-label">WELCOME</p>
                 <h1 className="ob-title" style={{ color: 'white' }}>Your profile is your passport to the game.</h1>

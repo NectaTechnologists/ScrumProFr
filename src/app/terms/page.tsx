@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image'
 
 import { useRouter } from 'next/navigation'
 
@@ -22,7 +23,7 @@ export default function TermsPage() {
       `}</style>
 
       <nav className="terms-nav">
-        <span className="terms-logo-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
+        <div style={{ display: 'flex', alignItems: 'center' }}><Image src="/gainline-logo-final.svg" alt="Gainline" width={160} height={48} /></div>
         <button className="terms-back" onClick={() => window.close()}>← Close</button>
       </nav>
 

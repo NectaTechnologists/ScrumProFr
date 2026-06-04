@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image'
 
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -150,13 +151,8 @@ export default function CoachRegisterPage() {
       `}</style>
 
       <div className="reg-wrap">
-        <a href="/" className="reg-logo">
-          <svg width="36" height="32" viewBox="0 0 36 32" style={{ display: 'block' }}>
-            <line x1="3" y1="30" x2="10" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
-            <line x1="15" y1="30" x2="22" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-            <line x1="27" y1="30" x2="34" y2="0" stroke="#2ec97e" strokeWidth="5" strokeLinecap="round"/>
-          </svg>
-          <span className="reg-logo-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
+        <a href="/" className="reg-logo" style={{ display: 'flex', alignItems: 'center' }}>
+          <Image src="/gainline-logo-final.svg" alt="Gainline" width={160} height={48} priority />
         </a>
 
         <div className="reg-card">

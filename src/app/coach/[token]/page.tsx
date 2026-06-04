@@ -1,3 +1,4 @@
+import Image from 'next/image'
 export const dynamic = 'force-dynamic'
 
 async function getCoach(token: string) {
@@ -156,15 +157,8 @@ export default async function CoachCardPage({ params }: { params: Promise<{ toke
 
       {/* Nav strip */}
       <div style={{ background: '#0D1B2E', padding: '0 24px', height: '52px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
-          <svg width="28" height="26" viewBox="0 0 28 26">
-            <line x1="2" y1="24" x2="8" y2="5" stroke="white" strokeWidth="4" strokeLinecap="round" opacity="0.28"/>
-            <line x1="11" y1="24" x2="17" y2="2" stroke="white" strokeWidth="4" strokeLinecap="round" opacity="0.58"/>
-            <line x1="20" y1="24" x2="26" y2="0" stroke="#2ec97e" strokeWidth="4" strokeLinecap="round"/>
-          </svg>
-          <span style={{ color: 'white', fontWeight: 900, fontSize: '17px', fontFamily: 'Arial Black, Arial, sans-serif', letterSpacing: '-0.3px' }}>
-            GAIN<span style={{ color: '#2ec97e' }}>LINE</span>
-          </span>
+        <a href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+          <Image src="/gainline-logo-final.svg" alt="Gainline" width={120} height={36} />
         </a>
         <a href="/register/coach" style={{ padding: '6px 16px', borderRadius: '20px', background: '#2ec97e', color: 'white', fontSize: '12px', fontWeight: '700', textDecoration: 'none' }}>
           Join Gainline →
@@ -365,13 +359,8 @@ export default async function CoachCardPage({ params }: { params: Promise<{ toke
 
         {/* ── FOOTER ── */}
         <div className="cc-footer">
-          <a href="/" className="cc-footer-logo">
-            <svg width="22" height="20" viewBox="0 0 22 20">
-              <line x1="1" y1="18" x2="6" y2="4" stroke="#888780" strokeWidth="3" strokeLinecap="round" opacity="0.4"/>
-              <line x1="9" y1="18" x2="14" y2="2" stroke="#888780" strokeWidth="3" strokeLinecap="round" opacity="0.65"/>
-              <line x1="17" y1="18" x2="22" y2="0" stroke="#2ec97e" strokeWidth="3" strokeLinecap="round"/>
-            </svg>
-            <span className="cc-footer-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
+          <a href="/" className="cc-footer-logo" style={{ display: 'flex', alignItems: 'center' }}>
+            <Image src="/gainline-logo-final.svg" alt="Gainline" width={120} height={36} />
           </a>
           <p style={{ fontSize: '12px', color: '#B4B2A9', marginTop: '8px' }}>Rugby coach profiles & player management</p>
         </div>

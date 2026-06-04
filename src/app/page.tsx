@@ -554,13 +554,8 @@ export default function Home() {
 
       {/* FOOTER */}
       <footer className="footer">
-        <div className="footer-logo">
-          <svg width="26" height="24" viewBox="0 0 26 24" style={{ display: 'block' }}>
-            <line x1="2" y1="22" x2="7" y2="4" stroke="white" strokeWidth="4" strokeLinecap="round" opacity="0.28"/>
-            <line x1="11" y1="22" x2="16" y2="1" stroke="white" strokeWidth="4" strokeLinecap="round" opacity="0.58"/>
-            <line x1="20" y1="22" x2="25" y2="0" stroke="#2ec97e" strokeWidth="4" strokeLinecap="round"/>
-          </svg>
-          <span style={{ fontSize: '13px', fontWeight: '900', color: 'white', letterSpacing: '-0.5px', fontFamily: 'Arial Black, Arial, sans-serif' }}>GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
+        <div className="footer-logo" style={{ display: 'flex', alignItems: 'center' }}>
+          <Image src="/gainline-logo-final.svg" alt="Gainline" width={120} height={36} />
         </div>
         <span className="footer-copy">gainline.pro &nbsp;·&nbsp; 2026</span>
         <div className="footer-links">

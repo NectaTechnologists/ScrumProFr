@@ -1,3 +1,4 @@
+import Image from 'next/image'
 export const dynamic = 'force-dynamic'
 
 async function getPlayers() {
@@ -140,13 +141,8 @@ export default async function PlayersPage() {
       `}</style>
 
       <nav className="dir-nav">
-        <a href="/" className="dir-logo">
-          <svg width="28" height="26" viewBox="0 0 32 30" style={{ display: 'block', flexShrink: 0 }}>
-            <line x1="2" y1="28" x2="9" y2="6" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.28"/>
-            <line x1="13" y1="28" x2="20" y2="2" stroke="white" strokeWidth="5" strokeLinecap="round" opacity="0.58"/>
-            <line x1="24" y1="28" x2="31" y2="0" stroke="#2ec97e" strokeWidth="5" strokeLinecap="round"/>
-          </svg>
-          <span className="dir-logo-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
+        <a href="/" className="dir-logo" style={{ display: 'flex', alignItems: 'center' }}>
+          <Image src="/gainline-logo-final.svg" alt="Gainline" width={160} height={48} priority />
         </a>
         <div className="dir-nav-right">
           <a href="/vacancies" className="dir-nav-login">Vacancies</a>
@@ -309,7 +305,7 @@ export default async function PlayersPage() {
       </div>
 
       <div className="dir-footer">
-        <div className="dir-footer-brand">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></div>
+        <div className="dir-footer-brand" style={{ display: 'flex', alignItems: 'center' }}><Image src="/gainline-logo-final.svg" alt="Gainline" width={120} height={36} /></div>
         <div className="dir-footer-tag">No talent goes unseen</div>
         <a href="/login" className="dir-footer-cta">Create your free profile</a>
       </div>

@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image'
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -307,7 +308,7 @@ export default function AdminPage() {
       `}</style>
 
       <nav className="nav">
-        <span className="nav-logo-text">GAIN<span style={{ color: '#2ec97e' }}>LINE</span></span>
+        <div style={{ display: 'flex', alignItems: 'center' }}><Image src="/gainline-logo-final.svg" alt="Gainline" width={160} height={48} /></div>
         <a href="/dashboard" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', textDecoration: 'none' }}>← Dashboard</a>
       </nav>
 
