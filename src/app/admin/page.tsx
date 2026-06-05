@@ -308,7 +308,7 @@ export default function AdminPage() {
       `}</style>
 
       <nav className="nav">
-        <div style={{ display: 'flex', alignItems: 'center' }}><Image src="/gainline-logo-final.png" alt="Gainline" width={160} height={48} /></div>
+        <div style={{ display: 'flex', alignItems: 'center' }}><Image src="/gainline-logo-final.svg" alt="Gainline" width={200} height={50} /></div>
         <a href="/dashboard" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', textDecoration: 'none' }}>← Dashboard</a>
       </nav>
 

@@ -402,7 +402,7 @@ export default function ProfilePage() {
 
       <nav className="prof-nav">
         <div className="prof-logo" style={{ display: 'flex', alignItems: 'center' }}>
-          <Image src="/gainline-logo-final.png" alt="Gainline" width={160} height={48} priority />
+          <Image src="/gainline-logo-final.svg" alt="Gainline" width={200} height={50} priority />
         </div>
         <div className="prof-nav-right">
           <div className="lang-toggle">

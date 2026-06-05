@@ -191,7 +191,7 @@ export default function VacanciesPage() {
 
       <nav className="dir-nav">
         <a href="/" className="dir-logo" style={{ display: 'flex', alignItems: 'center' }}>
-          <Image src="/gainline-logo-final.png" alt="Gainline" width={160} height={48} priority />
+          <Image src="/gainline-logo-final.svg" alt="Gainline" width={200} height={50} priority />
         </a>
         <div className="dir-nav-right">
           <a href="/players" className="dir-nav-login">Players</a>
@@ -278,7 +278,7 @@ export default function VacanciesPage() {
       </div>
 
       <div className="dir-footer">
-        <div className="dir-footer-brand" style={{ display: 'flex', alignItems: 'center' }}><Image src="/gainline-logo-final.png" alt="Gainline" width={120} height={36} /></div>
+        <div className="dir-footer-brand" style={{ display: 'flex', alignItems: 'center' }}><Image src="/gainline-logo-final.svg" alt="Gainline" width={120} height={36} /></div>
         <div className="dir-footer-tag">No talent goes unseen</div>
         <a href="/register" className="dir-footer-cta">Create your free profile</a>
       </div>

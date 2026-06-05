@@ -80,7 +80,7 @@ export default function ForgotPasswordPage() {
 
       <div className="wrap">
         <div className="logo">
-          <Image src="/gainline-logo-final.png" alt="Gainline" width={160} height={48} priority />
+          <Image src="/gainline-logo-final.svg" alt="Gainline" width={200} height={50} priority />
           <div className="lang-toggle">
             <button className={`lang-btn ${lang === 'en' ? 'lang-btn-active' : ''}`} onClick={() => toggleLang('en')}>{FLAG_EN}</button>
             <button className={`lang-btn ${lang === 'fr' ? 'lang-btn-active' : ''}`} onClick={() => toggleLang('fr')}>{FLAG_FR}</button>

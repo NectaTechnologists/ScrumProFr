@@ -202,7 +202,7 @@ export default async function CVPage(props: any) {
 
       <nav className="cv-nav">
         <div className="cv-logo" style={{ display: 'flex', alignItems: 'center' }}>
-          <Image src="/gainline-logo-final.png" alt="Gainline" width={120} height={36} />
+          <Image src="/gainline-logo-final.svg" alt="Gainline" width={120} height={36} />
         </div>
         <div className="cv-nav-right">
           <span className="cv-nav-label" id="cv-nav-label">PLAYER CV</span>
@@ -539,7 +539,7 @@ export default async function CVPage(props: any) {
 
         <div className="cv-footer-card">
           <p className="cv-footer-label" id="footer-powered">POWERED BY</p>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '4px 0' }}><Image src="/gainline-logo-final.png" alt="Gainline" width={120} height={36} /></div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '4px 0' }}><Image src="/gainline-logo-final.svg" alt="Gainline" width={120} height={36} /></div>
           <p className="cv-footer-tag" id="footer-tagline">No talent goes unseen</p>
           <a href="/" className="cv-footer-cta" id="footer-cta">Build your free profile →</a>
         </div>

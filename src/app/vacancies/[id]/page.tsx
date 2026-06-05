@@ -130,7 +130,7 @@ export default function VacancyDetailPage() {
       <style>{`* { box-sizing: border-box; margin: 0; padding: 0; } body { font-family: Arial, sans-serif; background: #0C0F16; }`}</style>
       <nav style={{ background: '#111520', borderBottom: '0.5px solid rgba(255,255,255,0.06)', padding: '0 28px', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-          <Image src="/gainline-logo-final.png" alt="Gainline" width={160} height={48} priority />
+          <Image src="/gainline-logo-final.svg" alt="Gainline" width={200} height={50} priority />
         </a>
       </nav>
       <div style={{ textAlign: 'center', padding: '80px 20px' }}>
@@ -223,7 +223,7 @@ export default function VacancyDetailPage() {
 
       <nav className="vd-nav">
         <a href="/" className="vd-logo" style={{ display: 'flex', alignItems: 'center' }}>
-          <Image src="/gainline-logo-final.png" alt="Gainline" width={160} height={48} priority />
+          <Image src="/gainline-logo-final.svg" alt="Gainline" width={200} height={50} priority />
         </a>
         <div className="vd-nav-right">
           {isLoggedIn ? (

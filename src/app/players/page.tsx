@@ -142,7 +142,7 @@ export default async function PlayersPage() {
 
       <nav className="dir-nav">
         <a href="/" className="dir-logo" style={{ display: 'flex', alignItems: 'center' }}>
-          <Image src="/gainline-logo-final.png" alt="Gainline" width={160} height={48} priority />
+          <Image src="/gainline-logo-final.svg" alt="Gainline" width={200} height={50} priority />
         </a>
         <div className="dir-nav-right">
           <a href="/vacancies" className="dir-nav-login">Vacancies</a>
@@ -305,7 +305,7 @@ export default async function PlayersPage() {
       </div>
 
       <div className="dir-footer">
-        <div className="dir-footer-brand" style={{ display: 'flex', alignItems: 'center' }}><Image src="/gainline-logo-final.png" alt="Gainline" width={120} height={36} /></div>
+        <div className="dir-footer-brand" style={{ display: 'flex', alignItems: 'center' }}><Image src="/gainline-logo-final.svg" alt="Gainline" width={120} height={36} /></div>
         <div className="dir-footer-tag">No talent goes unseen</div>
         <a href="/login" className="dir-footer-cta">Create your free profile</a>
       </div>

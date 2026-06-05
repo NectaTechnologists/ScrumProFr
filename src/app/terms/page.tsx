@@ -23,7 +23,7 @@ export default function TermsPage() {
       `}</style>
 
       <nav className="terms-nav">
-        <div style={{ display: 'flex', alignItems: 'center' }}><Image src="/gainline-logo-final.png" alt="Gainline" width={160} height={48} /></div>
+        <div style={{ display: 'flex', alignItems: 'center' }}><Image src="/gainline-logo-final.svg" alt="Gainline" width={200} height={50} /></div>
         <button className="terms-back" onClick={() => window.close()}>← Close</button>
       </nav>
 
