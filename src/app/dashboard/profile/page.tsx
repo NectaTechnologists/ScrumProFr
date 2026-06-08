@@ -108,6 +108,11 @@ export default function ProfilePage() {
   const [selectedDocType, setSelectedDocType] = useState('Fitness Report')
   const [references, setReferences] = useState<any[]>([])
   const [passportEntries, setPassportEntries] = useState<string[]>([''])
+  const [refRequestEmail, setRefRequestEmail] = useState('')
+  const [refRequestName, setRefRequestName] = useState('')
+  const [refRequestSending, setRefRequestSending] = useState(false)
+  const [refRequestSent, setRefRequestSent] = useState(false)
+  const [refRequestError, setRefRequestError] = useState('')
 
   const [form, setForm] = useState({
     first_name: '', last_name: '', date_of_birth: '', nationality_primary: '',
@@ -251,6 +256,32 @@ export default function ProfilePage() {
     await supabase.storage.from('documents').remove([doc.file_url])
     await supabase.from('player_documents').delete().eq('id', doc.id)
     setDocuments(prev => prev.filter(d => d.id !== doc.id))
+  }
+
+  async function handleReferenceRequest(e: React.FormEvent) {
+    e.preventDefault()
+    if (!refRequestEmail.trim() || !playerId) return
+    setRefRequestSending(true)
+    setRefRequestError('')
+    try {
+      const res = await fetch('/api/notify-reference-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ player_id: playerId, referee_email: refRequestEmail.trim(), referee_name: refRequestName.trim() || undefined }),
+      })
+      const json = await res.json()
+      if (!res.ok) {
+        setRefRequestError(json.error || 'Failed to send')
+      } else {
+        setRefRequestSent(true)
+        setRefRequestEmail('')
+        setRefRequestName('')
+        setTimeout(() => setRefRequestSent(false), 5000)
+      }
+    } catch (err: any) {
+      setRefRequestError(err.message || 'Failed to send')
+    }
+    setRefRequestSending(false)
   }
 
   async function handleSave(e: React.FormEvent) {
@@ -725,6 +756,26 @@ export default function ProfilePage() {
 
         {activeTab === ('references') && (
   <div className="prof-form">
+    <p className="section-title">REQUEST A REFERENCE</p>
+    <p style={{ fontSize: '13px', color: '#5F5E5A', lineHeight: '1.65', marginBottom: '16px' }}>Send a reference request to a coach or someone who knows your game. They'll receive an email with a link to write a reference directly on your Player Card.</p>
+    <form onSubmit={handleReferenceRequest} style={{ marginBottom: '28px', paddingBottom: '24px', borderBottom: '1px solid #F1EFE8' }}>
+      <div className="form-row" style={{ marginBottom: '12px' }}>
+        <div className="form-field">
+          <label className="form-label">Referee name</label>
+          <input className="form-input" value={refRequestName} onChange={e => setRefRequestName(e.target.value)} placeholder="Coach John Smith" />
+        </div>
+        <div className="form-field">
+          <label className="form-label">Referee email <span style={{ color: '#E05252' }}>*</span></label>
+          <input className="form-input" type="email" value={refRequestEmail} onChange={e => setRefRequestEmail(e.target.value)} placeholder="coach@example.com" required />
+        </div>
+      </div>
+      {refRequestError && <p style={{ fontSize: '12px', color: '#E05252', marginBottom: '8px' }}>{refRequestError}</p>}
+      {refRequestSent && <p style={{ fontSize: '12px', color: '#2ec97e', marginBottom: '8px' }}>Reference request sent.</p>}
+      <button type="submit" disabled={refRequestSending || !refRequestEmail.trim()} style={{ background: '#2ec97e', color: 'white', border: 'none', borderRadius: '20px', padding: '9px 20px', fontSize: '13px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Arial, sans-serif', opacity: (!refRequestEmail.trim() || refRequestSending) ? 0.6 : 1 }}>
+        {refRequestSending ? 'Sending...' : 'Send reference request'}
+      </button>
+    </form>
+
     <p className="section-title">REFERENCES FROM COACHES</p>
     {references.length === 0 ? (
       <div className="doc-empty">
