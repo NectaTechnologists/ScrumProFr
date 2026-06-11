@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { t, Lang } from '@/lib/translations'
+import ImageLightbox, { LightboxImage } from '@/components/ImageLightbox'
 
 const FLAG_EN = '🇬🇧'
 const FLAG_FR = '🇫🇷'
@@ -93,6 +94,7 @@ export default function ProfilePage() {
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const docInputRef = useRef<HTMLInputElement>(null)
+  const photoInputRef = useRef<HTMLInputElement>(null)
   const [loading, setLoading] = useState(false)
   const [saved, setSaved] = useState(false)
   const [shareUrl, setShareUrl] = useState('')
@@ -113,6 +115,13 @@ export default function ProfilePage() {
   const [refRequestSending, setRefRequestSending] = useState(false)
   const [refRequestSent, setRefRequestSent] = useState(false)
   const [refRequestError, setRefRequestError] = useState('')
+
+  // Additional photos
+  const [playerImages, setPlayerImages] = useState<any[]>([])
+  const [imageUploading, setImageUploading] = useState(false)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [lightboxStart, setLightboxStart] = useState(0)
+  const [avatarLightboxOpen, setAvatarLightboxOpen] = useState(false)
 
   const [form, setForm] = useState({
     first_name: '', last_name: '', date_of_birth: '', nationality_primary: '',
@@ -176,6 +185,11 @@ export default function ProfilePage() {
           .from('references').select('*').eq('player_id', player.id)
           .order('created_at', { ascending: false })
         setReferences(refs || [])
+
+        const { data: imgs } = await supabase
+          .from('player_images').select('*').eq('player_id', user.id)
+          .order('display_order', { ascending: true })
+        setPlayerImages(imgs || [])
       }
     }
     loadProfile()
@@ -282,6 +296,43 @@ export default function ProfilePage() {
       setRefRequestError(err.message || 'Failed to send')
     }
     setRefRequestSending(false)
+  }
+
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file || !userId) return
+    if (photoInputRef.current) photoInputRef.current.value = ''
+    const allowed = ['image/jpeg', 'image/png', 'image/webp']
+    if (!allowed.includes(file.type)) { alert('Please upload a JPG, PNG, or WebP image'); return }
+    if (file.size > 5 * 1024 * 1024) { alert('Image must be under 5MB'); return }
+    if (playerImages.length >= 6) { alert('Maximum 6 photos allowed'); return }
+    setImageUploading(true)
+    const fileExt = file.name.split('.').pop()
+    const uuid = crypto.randomUUID()
+    const filePath = `${userId}/${uuid}.${fileExt}`
+    const { error: uploadError } = await supabase.storage.from('player-images').upload(filePath, file)
+    if (uploadError) { alert('Upload failed: ' + uploadError.message); setImageUploading(false); return }
+    const { data: { publicUrl } } = supabase.storage.from('player-images').getPublicUrl(filePath)
+    const { data: newImg } = await supabase.from('player_images').insert({
+      player_id: userId,
+      storage_path: filePath,
+      public_url: publicUrl,
+      display_order: playerImages.length,
+    }).select().single()
+    if (newImg) setPlayerImages(prev => [...prev, newImg])
+    setImageUploading(false)
+  }
+
+  async function handleDeleteImage(img: any) {
+    if (!confirm('Delete this photo?')) return
+    await supabase.storage.from('player-images').remove([img.storage_path])
+    await supabase.from('player_images').delete().eq('id', img.id)
+    setPlayerImages(prev => prev.filter(i => i.id !== img.id))
+  }
+
+  async function handleCaptionSave(id: string, caption: string) {
+    await supabase.from('player_images').update({ caption: caption || null }).eq('id', id)
+    setPlayerImages(prev => prev.map(i => i.id === id ? { ...i, caption } : i))
   }
 
   async function handleSave(e: React.FormEvent) {
@@ -429,6 +480,10 @@ export default function ProfilePage() {
           .doc-type-row { flex-direction: column; }
           .doc-upload-btn { width: 100%; text-align: center; }
         }
+        @media (min-width: 640px) {
+          .photos-grid { grid-template-columns: repeat(3, 1fr) !important; }
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
       `}</style>
 
       <nav className="prof-nav">
@@ -497,7 +552,12 @@ export default function ProfilePage() {
         {activeTab === 'profile' && (
           <form onSubmit={handleSave} className="prof-form">
             <div className="avatar-section">
-              <div className="avatar-preview">
+              <div
+                className="avatar-preview"
+                onClick={() => form.avatar_url && setAvatarLightboxOpen(true)}
+                style={{ cursor: form.avatar_url ? 'pointer' : 'default' }}
+                title={form.avatar_url ? 'Click to expand' : undefined}
+              >
                 {form.avatar_url ? <img src={form.avatar_url} alt="Profile" /> : <span className="avatar-initials">{initials}</span>}
               </div>
               <div className="avatar-upload-area">
@@ -693,14 +753,137 @@ export default function ProfilePage() {
         )}
 
         {activeTab === 'media' && (
-          <form onSubmit={handleSave} className="prof-form">
-            <p className="section-title">{T.profile_video_title}</p>
-            <p style={{ fontSize: '13px', color: '#5F5E5A', marginBottom: '20px', lineHeight: '1.65' }}>{T.profile_video_sub}</p>
-            <div className="form-full"><label className="form-label">{T.profile_video_1}</label><input className="form-input" type="url" value={form.video_url} onChange={e => setForm({ ...form, video_url: e.target.value })} placeholder="https://youtube.com/watch?v=..."/><p className="video-hint">{T.profile_video_1_hint}</p></div>
-            <div className="form-full"><label className="form-label">{T.profile_video_2}</label><input className="form-input" type="url" value={form.video_url_2} onChange={e => setForm({ ...form, video_url_2: e.target.value })} placeholder="https://youtube.com/watch?v=..."/></div>
-            <div className="form-full"><label className="form-label">{T.profile_video_3}</label><input className="form-input" type="url" value={form.video_url_3} onChange={e => setForm({ ...form, video_url_3: e.target.value })} placeholder="https://vimeo.com/..."/></div>
-            <button type="submit" disabled={loading} className="save-btn"><SaveIcon />{loading ? T.profile_saving : saved ? T.profile_saved : T.profile_video_save}</button>
-          </form>
+          <>
+            <form onSubmit={handleSave} className="prof-form" style={{ marginBottom: 12 }}>
+              <p className="section-title">{T.profile_video_title}</p>
+              <p style={{ fontSize: '13px', color: '#5F5E5A', marginBottom: '20px', lineHeight: '1.65' }}>{T.profile_video_sub}</p>
+              <div className="form-full"><label className="form-label">{T.profile_video_1}</label><input className="form-input" type="url" value={form.video_url} onChange={e => setForm({ ...form, video_url: e.target.value })} placeholder="https://youtube.com/watch?v=..."/><p className="video-hint">{T.profile_video_1_hint}</p></div>
+              <div className="form-full"><label className="form-label">{T.profile_video_2}</label><input className="form-input" type="url" value={form.video_url_2} onChange={e => setForm({ ...form, video_url_2: e.target.value })} placeholder="https://youtube.com/watch?v=..."/></div>
+              <div className="form-full"><label className="form-label">{T.profile_video_3}</label><input className="form-input" type="url" value={form.video_url_3} onChange={e => setForm({ ...form, video_url_3: e.target.value })} placeholder="https://vimeo.com/..."/></div>
+              <button type="submit" disabled={loading} className="save-btn"><SaveIcon />{loading ? T.profile_saving : saved ? T.profile_saved : T.profile_video_save}</button>
+            </form>
+
+            {/* ── Photos section ─────────────────────────────────────── */}
+            <div className="prof-form">
+              <p className="section-title">PHOTOS</p>
+              <p style={{ fontSize: '13px', color: '#5F5E5A', marginBottom: '20px', lineHeight: '1.65' }}>
+                Add photos to show coaches your build, playing style, and athleticism
+              </p>
+
+              {/* Photo grid */}
+              {playerImages.length > 0 && (
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(2, 1fr)',
+                  gap: 10,
+                  marginBottom: 16,
+                }}>
+                  {playerImages.map((img, i) => (
+                    <div key={img.id} style={{ position: 'relative' }}>
+                      {/* Thumbnail */}
+                      <div
+                        style={{ position: 'relative', paddingBottom: '100%', borderRadius: 10, overflow: 'hidden', cursor: 'pointer' }}
+                        onClick={() => { setLightboxStart(i); setLightboxOpen(true) }}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={img.public_url}
+                          alt={img.caption || ''}
+                          style={{
+                            position: 'absolute', inset: 0,
+                            width: '100%', height: '100%',
+                            objectFit: 'cover',
+                            borderRadius: 10,
+                            border: '0.5px solid rgba(255,255,255,0.07)',
+                          }}
+                        />
+                        {/* Delete button */}
+                        <button
+                          type="button"
+                          onClick={e => { e.stopPropagation(); handleDeleteImage(img) }}
+                          style={{
+                            position: 'absolute', top: 6, right: 6,
+                            background: 'rgba(0,0,0,0.7)',
+                            border: '1px solid rgba(255,255,255,0.2)',
+                            borderRadius: '50%', width: 26, height: 26,
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            cursor: 'pointer', color: 'white', fontSize: 13, lineHeight: 1,
+                          }}
+                          title="Delete photo"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                      {/* Caption input */}
+                      <input
+                        type="text"
+                        defaultValue={img.caption || ''}
+                        placeholder="Add a caption..."
+                        onBlur={e => handleCaptionSave(img.id, e.target.value)}
+                        style={{
+                          width: '100%', marginTop: 6,
+                          padding: '5px 8px',
+                          background: '#1C2338',
+                          border: '1px solid rgba(255,255,255,0.08)',
+                          borderRadius: 6,
+                          fontSize: 11, color: '#9EA8B8',
+                          fontFamily: 'Arial, sans-serif',
+                          outline: 'none',
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Upload button or max message */}
+              {playerImages.length >= 6 ? (
+                <p style={{ fontSize: 13, color: '#5A564F', fontFamily: 'Arial, sans-serif', textAlign: 'center', padding: '12px 0' }}>
+                  Maximum 6 photos uploaded
+                </p>
+              ) : (
+                <button
+                  type="button"
+                  disabled={imageUploading}
+                  onClick={() => photoInputRef.current?.click()}
+                  style={{
+                    width: '100%', padding: '10px',
+                    background: 'transparent',
+                    border: '1.5px dashed rgba(255,255,255,0.15)',
+                    borderRadius: 10, cursor: imageUploading ? 'not-allowed' : 'pointer',
+                    color: '#9EA8B8', fontSize: 13, fontFamily: 'Arial, sans-serif',
+                    fontWeight: 700,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                    opacity: imageUploading ? 0.6 : 1,
+                  }}
+                >
+                  {imageUploading ? (
+                    <>
+                      <span style={{ display: 'inline-block', width: 14, height: 14, border: '2px solid rgba(255,255,255,0.2)', borderTopColor: '#2ec97e', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
+                      Uploading...
+                    </>
+                  ) : (
+                    <>
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M8 10V3M5 6l3-3 3 3"/><path d="M3 11v2a1 1 0 001 1h8a1 1 0 001-1v-2"/>
+                      </svg>
+                      Add photo + ({playerImages.length}/6)
+                    </>
+                  )}
+                </button>
+              )}
+              <input
+                ref={photoInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                style={{ display: 'none' }}
+                onChange={handleImageUpload}
+              />
+              <p style={{ fontSize: 11, color: '#5A564F', marginTop: 8, fontFamily: 'Arial, sans-serif' }}>
+                JPG, PNG or WebP · max 5MB per image · up to 6 photos
+              </p>
+            </div>
+          </>
         )}
 
         {activeTab === 'documents' && (
@@ -851,6 +1034,27 @@ export default function ProfilePage() {
   </div>
 )}
       </div>
+
+      {/* Lightbox for additional photos (media tab) */}
+      {lightboxOpen && playerImages.length > 0 && (
+        <ImageLightbox
+          images={playerImages.map((img: any) => ({ url: img.public_url, caption: img.caption || undefined }))}
+          startIndex={lightboxStart}
+          onClose={() => setLightboxOpen(false)}
+        />
+      )}
+
+      {/* Lightbox for profile photo (profile tab) */}
+      {avatarLightboxOpen && form.avatar_url && (
+        <ImageLightbox
+          images={[
+            { url: form.avatar_url, caption: 'Profile photo' },
+            ...playerImages.map((img: any) => ({ url: img.public_url, caption: img.caption || undefined })),
+          ]}
+          startIndex={0}
+          onClose={() => setAvatarLightboxOpen(false)}
+        />
+      )}
     </>
   )
 }

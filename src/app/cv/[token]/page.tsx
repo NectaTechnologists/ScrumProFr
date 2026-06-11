@@ -1,7 +1,25 @@
 import Image from 'next/image'
 import ReferenceButton from './ReferenceButton'
+import CvPhotoSection, { CvAvatarClient } from '@/components/CvPhotoSection'
 
 export const dynamic = 'force-dynamic'
+
+async function getPlayerImages(profileId: string) {
+  try {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL + '/rest/v1/player_images?player_id=eq.' + profileId + '&order=display_order.asc&select=public_url,caption'
+    const res = await fetch(url, {
+      headers: {
+        'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
+        'Authorization': 'Bearer ' + process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      },
+      cache: 'no-store',
+    })
+    if (!res.ok) return []
+    return res.json()
+  } catch {
+    return []
+  }
+}
 
 async function getPlayer(token: string) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL + '/rest/v1/players?share_token=eq.' + token + '&select=*'
@@ -75,7 +93,11 @@ export default async function CVPage(props: any) {
 
   await logView(player.id)
 
-  const references = await getReferences(player.id)
+  const [references, playerImages] = await Promise.all([
+    getReferences(player.id),
+    player.profile_id ? getPlayerImages(player.profile_id) : Promise.resolve([]),
+  ])
+
   const age = player.date_of_birth
     ? Math.floor((new Date().getTime() - new Date(player.date_of_birth).getTime()) / 31557600000)
     : null
@@ -216,9 +238,14 @@ export default async function CVPage(props: any) {
       <div className="cv-hero">
         <div className="cv-hero-inner">
           <div className="cv-profile-row">
-            <div className="cv-avatar">
-              {player.avatar_url ? <img src={player.avatar_url} alt={player.first_name} /> : <span>{initials}</span>}
-            </div>
+            <CvAvatarClient
+              src={player.avatar_url}
+              initials={initials}
+              allImages={[
+                ...(player.avatar_url ? [{ url: player.avatar_url, caption: 'Profile photo' }] : []),
+                ...playerImages.map((img: any) => ({ url: img.public_url, caption: img.caption || undefined })),
+              ]}
+            />
             <div className="cv-profile-info">
               <h1 className="cv-name">{player.first_name} {player.last_name}</h1>
               <div className="cv-badges">
@@ -478,6 +505,14 @@ export default async function CVPage(props: any) {
               </div>
             )}
           </div>
+        )}
+
+        {playerImages && playerImages.length > 0 && (
+          <CvPhotoSection
+            profilePhoto={player.avatar_url}
+            initials={initials}
+            additionalImages={playerImages}
+          />
         )}
 
         {references && references.length > 0 && (
