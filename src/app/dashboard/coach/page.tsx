@@ -120,6 +120,7 @@ export default function CoachDashboard() {
   const [searching, setSearching] = useState(false)
   const [view, setView] = useState<'card' | 'list'>('list')
   const [tab, setTab] = useState<'all' | 'shortlist'>('all')
+  const [shortlistPlayers, setShortlistPlayers] = useState<any[]>([])
   const [lang, setLang] = useState<Lang>('en')
   const [search, setSearch] = useState('')
   const [showMobileFilters, setShowMobileFilters] = useState(false)
@@ -242,12 +243,46 @@ export default function CoachDashboard() {
     setSearching(false)
   }
 
+  async function fetchShortlistPlayers(f: typeof activeFilters, nameSearch: string) {
+    if (shortlistedIds.size === 0) { setShortlistPlayers([]); return }
+    setSearching(true)
+    const ids = Array.from(shortlistedIds)
+    let query = supabase.from('players').select('*').in('id', ids).order('created_at', { ascending: false })
+    if (nameSearch) query = query.or(`first_name.ilike.%${nameSearch}%,last_name.ilike.%${nameSearch}%`)
+    if (f.positions.length === 1) query = query.or(`position_primary.eq.${f.positions[0]},position_secondary.eq.${f.positions[0]}`)
+    else if (f.positions.length > 1) {
+      const orClauses = f.positions.map(p => `position_primary.eq.${p},position_secondary.eq.${p}`).join(',')
+      query = query.or(orClauses)
+    }
+    if (f.nationalities.length === 1) query = query.ilike('nationality_primary', `%${f.nationalities[0]}%`)
+    if (f.ages.length > 0) {
+      const now = new Date()
+      const dobRanges = f.ages.map(age => {
+        if (age === 'Under 18') return { min: new Date(now.getFullYear() - 18, now.getMonth(), now.getDate()).toISOString().split('T')[0], max: null }
+        if (age === '18–21') return { min: new Date(now.getFullYear() - 22, now.getMonth(), now.getDate()).toISOString().split('T')[0], max: new Date(now.getFullYear() - 18, now.getMonth(), now.getDate()).toISOString().split('T')[0] }
+        if (age === '22–25') return { min: new Date(now.getFullYear() - 26, now.getMonth(), now.getDate()).toISOString().split('T')[0], max: new Date(now.getFullYear() - 22, now.getMonth(), now.getDate()).toISOString().split('T')[0] }
+        if (age === '26–30') return { min: new Date(now.getFullYear() - 31, now.getMonth(), now.getDate()).toISOString().split('T')[0], max: new Date(now.getFullYear() - 26, now.getMonth(), now.getDate()).toISOString().split('T')[0] }
+        if (age === '30+') return { min: null, max: new Date(now.getFullYear() - 30, now.getMonth(), now.getDate()).toISOString().split('T')[0] }
+        return null
+      }).filter(Boolean)
+      if (dobRanges.length === 1) {
+        const r = dobRanges[0]!
+        if (r.min) query = query.gte('date_of_birth', r.min)
+        if (r.max) query = query.lte('date_of_birth', r.max)
+      }
+    }
+    const { data } = await query
+    setShortlistPlayers(data || [])
+    setSearching(false)
+  }
+
   function toggleFilter(group: keyof typeof activeFilters, value: string) {
     const current = activeFilters[group]
     const next = current.includes(value) ? current.filter(v => v !== value) : [...current, value]
     const newFilters = { ...activeFilters, [group]: next }
     setActiveFilters(newFilters)
     fetchPlayers(newFilters, search)
+    if (tab === 'shortlist') fetchShortlistPlayers(newFilters, search)
   }
 
   function removeFilter(group: keyof typeof activeFilters, value: string) {
@@ -255,6 +290,7 @@ export default function CoachDashboard() {
     const newFilters = { ...activeFilters, [group]: next }
     setActiveFilters(newFilters)
     fetchPlayers(newFilters, search)
+    if (tab === 'shortlist') fetchShortlistPlayers(newFilters, search)
   }
 
   function clearAllFilters() {
@@ -262,6 +298,7 @@ export default function CoachDashboard() {
     setActiveFilters(reset)
     setSearch('')
     fetchPlayers(reset, '')
+    if (tab === 'shortlist') fetchShortlistPlayers(reset, '')
   }
 
   async function toggleShortlist(e: React.MouseEvent, playerId: string) {
@@ -271,9 +308,12 @@ export default function CoachDashboard() {
       await supabase.from('shortlists').delete().eq('coach_id', user.id).eq('player_id', playerId)
       setShortlistedIds(prev => { const n = new Set(prev); n.delete(playerId); return n })
       setCategories(prev => { const n = { ...prev }; delete n[playerId]; return n })
+      setShortlistPlayers(prev => prev.filter(p => p.id !== playerId))
     } else {
       await supabase.from('shortlists').insert({ coach_id: user.id, player_id: playerId })
       setShortlistedIds(prev => new Set(prev).add(playerId))
+      const player = players.find(p => p.id === playerId)
+      if (player) setShortlistPlayers(prev => [player, ...prev])
     }
   }
 
@@ -325,8 +365,7 @@ export default function CoachDashboard() {
 
   const totalActiveFilters = activeFilters.positions.length + activeFilters.nationalities.length + activeFilters.ages.length + activeFilters.categories.length + (search ? 1 : 0)
 
-  let displayedPlayers = players
-  if (tab === 'shortlist') displayedPlayers = players.filter(p => shortlistedIds.has(p.id))
+  let displayedPlayers = tab === 'shortlist' ? shortlistPlayers : players
   if (activeFilters.categories.length > 0) displayedPlayers = displayedPlayers.filter(p => activeFilters.categories.includes(categories[p.id]))
   if (activeFilters.nationalities.length > 1) displayedPlayers = displayedPlayers.filter(p => activeFilters.nationalities.some(n => p.nationality_primary?.toLowerCase().includes(n.toLowerCase())))
 
@@ -693,7 +732,7 @@ export default function CoachDashboard() {
           <button className={`tab ${tab === 'all' ? 'tab-active' : ''}`} onClick={() => setTab('all')}>
             {lang === 'fr' ? 'Tous les joueurs' : 'All players'}
           </button>
-          <button className={`tab ${tab === 'shortlist' ? 'tab-active' : ''}`} onClick={() => setTab('shortlist')}>
+          <button className={`tab ${tab === 'shortlist' ? 'tab-active' : ''}`} onClick={() => { setTab('shortlist'); fetchShortlistPlayers(activeFilters, search) }}>
             {lang === 'fr' ? 'Ma sélection' : 'My shortlist'}
             {shortlistedIds.size > 0 && <span className="tab-count">{shortlistedIds.size}</span>}
           </button>
@@ -711,7 +750,7 @@ export default function CoachDashboard() {
 
         <div className="results-area">
           <div className="results-toolbar">
-            <input className="search-input" type="text" placeholder={lang === 'fr' ? 'Rechercher par nom...' : 'Search by name...'} value={search} onChange={e => { setSearch(e.target.value); fetchPlayers(activeFilters, e.target.value) }} />
+            <input className="search-input" type="text" placeholder={lang === 'fr' ? 'Rechercher par nom...' : 'Search by name...'} value={search} onChange={e => { setSearch(e.target.value); fetchPlayers(activeFilters, e.target.value); if (tab === 'shortlist') fetchShortlistPlayers(activeFilters, e.target.value) }} />
             <button className="mobile-filter-btn" onClick={() => setShowMobileFilters(true)}>
               {lang === 'fr' ? 'Filtres' : 'Filters'}
               {totalActiveFilters > 0 && <span className="mobile-filter-badge">{totalActiveFilters}</span>}
@@ -768,7 +807,7 @@ export default function CoachDashboard() {
                           </div>
                         </div>
                         <div className="row-actions">
-                          {sharedWithMeIds.has(player.id) ? (
+                          {(sharedWithMeIds.has(player.id) || !!coachProfile?.full_access) ? (
                             <a href={`/cv/${player.share_token}`} className="row-cv-btn" target="_blank" rel="noopener noreferrer">View full card</a>
                           ) : cvRequests[player.id] === 'pending' ? (
                             <button className="row-cv-btn-requested" disabled>Request sent ✓</button>
@@ -824,7 +863,7 @@ export default function CoachDashboard() {
                 {displayedPlayers.map(player => {
                   const age = getAge(player.date_of_birth)
                   const isShortlisted = shortlistedIds.has(player.id)
-                  const isShared = sharedWithMeIds.has(player.id)
+                  const isShared = sharedWithMeIds.has(player.id) || !!coachProfile?.full_access
                   const hasNote = !!notes[player.id]
                   const isNoteOpen = openNoteId === player.id
                   const isPending = cvRequests[player.id] === 'pending'
