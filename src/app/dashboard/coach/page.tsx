@@ -807,7 +807,7 @@ export default function CoachDashboard() {
                           </div>
                         </div>
                         <div className="row-actions">
-                          {sharedWithMeIds.has(player.id) ? (
+                          {(sharedWithMeIds.has(player.id) || !!coachProfile?.full_access) ? (
                             <a href={`/cv/${player.share_token}`} className="row-cv-btn" target="_blank" rel="noopener noreferrer">View full card</a>
                           ) : cvRequests[player.id] === 'pending' ? (
                             <button className="row-cv-btn-requested" disabled>Request sent ✓</button>
@@ -863,7 +863,7 @@ export default function CoachDashboard() {
                 {displayedPlayers.map(player => {
                   const age = getAge(player.date_of_birth)
                   const isShortlisted = shortlistedIds.has(player.id)
-                  const isShared = sharedWithMeIds.has(player.id)
+                  const isShared = sharedWithMeIds.has(player.id) || !!coachProfile?.full_access
                   const hasNote = !!notes[player.id]
                   const isNoteOpen = openNoteId === player.id
                   const isPending = cvRequests[player.id] === 'pending'
