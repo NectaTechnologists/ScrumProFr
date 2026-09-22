@@ -15,10 +15,6 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: 'Gainline — No Talent Goes Unseen',
   description: 'Gainline gives every rugby player a professional digital profile — and gives agents the tools to manage, present and place their players. Wherever the game takes you.',
-  icons: {
-    icon: '/gainline-favicon.svg',
-    shortcut: '/gainline-favicon.svg',
-  },
   openGraph: {
     title: 'Gainline — No Talent Goes Unseen',
     description: 'The digital platform for rugby player pathways. Build your free profile today.',
