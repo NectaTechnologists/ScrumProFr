@@ -38,28 +38,37 @@ export default function AdminPage() {
   const [signupDailyData, setSignupDailyData] = useState<{ label: string, total: number }[]>([])
   const [chartView, setChartView] = useState<'weekly' | 'daily'>('weekly')
 
-  // Marketplace health state
+  // Marketplace health state (populated from /api/admin/marketplace-stats via service role)
   const [mktStats, setMktStats] = useState({
     totalApps: 0,
     appsLast30: 0,
     uniqueApplicants: 0,
     unreviewedCount: 0,
     oldestUnreviewedDays: 0,
+    cvViewsTotal: 0,
     cvViewsLast30: 0,
     distinctOrgViewing: 0,
     playersWithView: 0,
     playersNoView: 0,
     totalPlayersForCoverage: 0,
+    pctPlayersViewed: 0,
   })
+  const [topViewed, setTopViewed] = useState<{
+    player_id: string
+    first_name: string
+    last_name: string
+    position: string
+    view_count: number
+  }[]>([])
   const [vacancyPerf, setVacancyPerf] = useState<{
-    vacancyId: string
+    vacancy_id: string
     club: string
-    coachLastSeen: string | null
-    totalApps: number
-    reviewed: number
-    unreviewed: number
-    lastAppDate: string | null
-    oldestUnreviewedDays: number
+    coach_last_seen: string | null
+    apps_total: number
+    apps_reviewed: number
+    apps_unreviewed: number
+    last_app_date: string | null
+    oldest_unreviewed_days: number
   }[]>([])
   const [appsChartData, setAppsChartData] = useState<{ label: string, total: number }[]>([])
   const [appsDailyData, setAppsDailyData] = useState<{ label: string, total: number }[]>([])
@@ -274,171 +283,31 @@ export default function AdminPage() {
           .slice(0, 8)
       )
 
-      // ── Marketplace health ──
+      // ── Marketplace health — fetched via service-role API route ──
+      // (avoids RLS blocking anon client, and avoids 1000-row truncation)
+      const mktRes = await fetch('/api/admin/marketplace-stats')
+      if (mktRes.ok) {
+        const mkt = await mktRes.json()
+        const cv = mkt.cv
+        const apps = mkt.apps
 
-      // Get test profile IDs for vacancy exclusion (already have testProfileIds from above)
-      const testIds = Array.from(testProfileIds)
-
-      // All applications, excluding those belonging to test-account coaches
-      const { data: allApps } = await supabase
-        .from('vacancy_applications')
-        .select('id, status, applied_at, vacancy_id, player_id, coach_id')
-
-      // All vacancies (need coach_id to exclude test coaches, and club_name)
-      const { data: allVacancies } = await supabase
-        .from('vacancies')
-        .select('id, club_name, coach_id, is_demo')
-
-      // Coach profiles for last_seen lookup (profiles.last_seen or created_at fallback)
-      const { data: coachProfilesFull } = await supabase
-        .from('profiles')
-        .select('id, last_seen, created_at, email')
-        .eq('role', 'org_user')
-
-      const testVacancyIds = new Set(
-        (allVacancies || [])
-          .filter(v => testIds.includes(v.coach_id) || v.is_demo)
-          .map(v => v.id)
-      )
-      const testCoachIds = new Set(testIds)
-
-      const cleanApps = (allApps || []).filter(
-        a => !testVacancyIds.has(a.vacancy_id) && !testCoachIds.has(a.coach_id)
-      )
-
-      const now30 = new Date()
-      now30.setDate(now30.getDate() - 30)
-      const appsLast30 = cleanApps.filter(a => new Date(a.applied_at) >= now30).length
-
-      const uniqueApplicants = new Set(cleanApps.map(a => a.player_id)).size
-
-      const unreviewedApps = cleanApps.filter(a => a.status === 'new')
-      const oldestUnreviewed = unreviewedApps.reduce((oldest, a) => {
-        const d = new Date(a.applied_at)
-        return d < oldest ? d : oldest
-      }, new Date())
-      const oldestUnreviewedDays = unreviewedApps.length > 0
-        ? Math.floor((Date.now() - oldestUnreviewed.getTime()) / 86400000)
-        : 0
-
-      // CV views
-      const { data: cvViewsData } = await supabase
-        .from('cv_views')
-        .select('player_id, coach_id, organisation_name, viewed_at')
-
-      const cleanViews = (cvViewsData || []).filter(v => !testCoachIds.has(v.coach_id))
-      const cvViewsLast30 = cleanViews.filter(v => new Date(v.viewed_at) >= now30).length
-      const distinctOrgViewing = new Set(
-        cleanViews
-          .filter(v => new Date(v.viewed_at) >= now30 && v.organisation_name)
-          .map(v => v.organisation_name)
-      ).size
-
-      // Player coverage (non-test players only)
-      const cleanPlayerIds = new Set(players.map((p: any) => p.profile_id))
-      const playersWithView = new Set(
-        cleanViews.filter(v => cleanPlayerIds.has(v.player_id)).map(v => v.player_id)
-      ).size
-      const playersNoView = players.length - playersWithView
-
-      setMktStats({
-        totalApps: cleanApps.length,
-        appsLast30,
-        uniqueApplicants,
-        unreviewedCount: unreviewedApps.length,
-        oldestUnreviewedDays,
-        cvViewsLast30,
-        distinctOrgViewing,
-        playersWithView,
-        playersNoView,
-        totalPlayersForCoverage: players.length,
-      })
-
-      // Vacancy performance table
-      const cleanVacancies = (allVacancies || []).filter(
-        v => !testVacancyIds.has(v.id) && !v.is_demo
-      )
-      const coachMap = Object.fromEntries(
-        (coachProfilesFull || []).map(c => [c.id, c])
-      )
-
-      const perfRows = cleanVacancies.map(v => {
-        const vacApps = cleanApps.filter(a => a.vacancy_id === v.id)
-        const unreviewed = vacApps.filter(a => a.status === 'new')
-        const reviewed = vacApps.filter(a => a.status !== 'new').length
-        const lastAppDate = vacApps.length > 0
-          ? vacApps.reduce((latest, a) =>
-              new Date(a.applied_at) > new Date(latest) ? a.applied_at : latest,
-              vacApps[0].applied_at
-            )
-          : null
-        const oldestUnreviewedInVac = unreviewed.length > 0
-          ? Math.floor((Date.now() - new Date(
-              unreviewed.reduce((oldest, a) =>
-                new Date(a.applied_at) < new Date(oldest) ? a.applied_at : oldest,
-                unreviewed[0].applied_at
-              )
-            ).getTime()) / 86400000)
-          : 0
-        const coach = coachMap[v.coach_id]
-        const coachLastSeen = coach?.last_seen || coach?.created_at || null
-
-        return {
-          vacancyId: v.id,
-          club: v.club_name || '—',
-          coachLastSeen,
-          totalApps: vacApps.length,
-          reviewed,
-          unreviewed: unreviewed.length,
-          lastAppDate,
-          oldestUnreviewedDays: oldestUnreviewedInVac,
-        }
-      }).sort((a, b) => b.totalApps - a.totalApps)
-
-      setVacancyPerf(perfRows)
-
-      // Applications over time — weekly cumulative
-      const appDates = cleanApps.map(a => new Date(a.applied_at)).sort((a, b) => a.getTime() - b.getTime())
-      if (appDates.length > 0) {
-        const earliest = appDates[0]
-        const nowDate = new Date()
-        const wkBuckets: { year: number, month: number, label: string, new: number }[] = []
-        const cur = new Date(earliest.getFullYear(), earliest.getMonth(), 1)
-        while (cur <= nowDate) {
-          wkBuckets.push({
-            year: cur.getFullYear(), month: cur.getMonth(),
-            label: cur.toLocaleDateString('en-GB', { month: 'short', year: '2-digit' }),
-            new: 0,
-          })
-          cur.setMonth(cur.getMonth() + 1)
-        }
-        appDates.forEach(d => {
-          const b = wkBuckets.find(b => b.year === d.getFullYear() && b.month === d.getMonth())
-          if (b) b.new++
+        setMktStats({
+          totalApps: Number(apps?.apps_total ?? 0),
+          appsLast30: Number(apps?.apps_in_period ?? 0),
+          uniqueApplicants: Number(apps?.unique_applicants ?? 0),
+          unreviewedCount: Number(apps?.unreviewed_count ?? 0),
+          oldestUnreviewedDays: Number(apps?.oldest_unreviewed_days ?? 0),
+          cvViewsTotal: Number(cv?.views_total ?? 0),
+          cvViewsLast30: Number(cv?.views_in_period ?? 0),
+          distinctOrgViewing: Number(cv?.distinct_viewer_orgs_in_period ?? 0),
+          playersWithView: Number(cv?.distinct_players_viewed ?? 0),
+          playersNoView: Number(cv?.players_never_viewed ?? 0),
+          totalPlayersForCoverage: Number(cv?.players_total ?? 0),
+          pctPlayersViewed: Number(cv?.pct_players_viewed ?? 0),
         })
-        let running = 0
-        setAppsChartData(wkBuckets.map(b => { running += b.new; return { label: b.label, total: running } }))
 
-        // Daily — last 30 days (count per day, not cumulative)
-        const thirtyAgo = new Date(nowDate)
-        thirtyAgo.setDate(nowDate.getDate() - 29)
-        thirtyAgo.setHours(0, 0, 0, 0)
-        const dayBkts: { dateKey: string, label: string, new: number }[] = []
-        for (let i = 0; i < 30; i++) {
-          const d = new Date(thirtyAgo)
-          d.setDate(thirtyAgo.getDate() + i)
-          dayBkts.push({
-            dateKey: d.toISOString().slice(0, 10),
-            label: d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }),
-            new: 0,
-          })
-        }
-        appDates.forEach(d => {
-          const key = d.toISOString().slice(0, 10)
-          const b = dayBkts.find(b => b.dateKey === key)
-          if (b) b.new++
-        })
-        setAppsDailyData(dayBkts.map(b => ({ label: b.label, total: b.new })))
+        setTopViewed(mkt.topViewed ?? [])
+        setVacancyPerf(mkt.vacancyPerf ?? [])
       }
 
       setLoading(false)
@@ -651,57 +520,67 @@ export default function AdminPage() {
           <div className="mkt-card">
             <p className="mkt-label">CV views (30d)</p>
             <p className="mkt-value">{mktStats.cvViewsLast30}</p>
-            <p className="mkt-sub">{mktStats.distinctOrgViewing} distinct org{mktStats.distinctOrgViewing !== 1 ? 's' : ''}</p>
+            <p className="mkt-sub">
+              {mktStats.cvViewsTotal} total · {mktStats.distinctOrgViewing} org{mktStats.distinctOrgViewing !== 1 ? 's' : ''} this month
+            </p>
           </div>
         </div>
 
-        {/* Applications over time chart */}
-        <div className="chart-card">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-            <p style={{ fontSize: 13, fontWeight: 700, color: '#0D1B2E' }}>Applications over time</p>
-            <div style={{ display: 'flex', background: '#F1EFE8', borderRadius: 6, padding: 3, gap: 2 }}>
-              {(['weekly', 'daily'] as const).map(v => (
-                <button
-                  key={v}
-                  onClick={() => setAppsChartView(v)}
-                  style={{
-                    fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 4,
-                    border: 'none', cursor: 'pointer', fontFamily: 'Arial, sans-serif',
-                    background: appsChartView === v ? '#3DBE72' : 'transparent',
-                    color: appsChartView === v ? 'white' : '#888780',
-                    transition: 'background 0.15s, color 0.15s',
-                  }}
-                >
-                  {v.charAt(0).toUpperCase() + v.slice(1)}
-                </button>
-              ))}
+        {/* Player coverage + top viewed (side by side) */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
+          {/* Coverage card */}
+          <div className="chart-card" style={{ marginBottom: 0 }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: '#0D1B2E', marginBottom: '1rem' }}>Player coverage</p>
+            <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start', flexWrap: 'wrap', marginBottom: 16 }}>
+              <div>
+                <p style={{ fontSize: 11, color: '#5F5E5A', fontWeight: 700, marginBottom: 4 }}>VIEWED BY A COACH</p>
+                <p style={{ fontSize: 28, fontWeight: 900, color: '#0D1B2E', fontFamily: 'Arial Black, Arial, sans-serif' }}>
+                  {mktStats.totalPlayersForCoverage > 0 ? `${mktStats.pctPlayersViewed}%` : '—'}
+                </p>
+                <p style={{ fontSize: 12, color: '#888780', marginTop: 2 }}>{mktStats.playersWithView} of {mktStats.totalPlayersForCoverage} players</p>
+              </div>
+              <div>
+                <p style={{ fontSize: 11, color: '#5F5E5A', fontWeight: 700, marginBottom: 4 }}>NEVER VIEWED</p>
+                <p style={{ fontSize: 28, fontWeight: 900, color: mktStats.playersNoView > 0 ? '#854F0B' : '#0D1B2E', fontFamily: 'Arial Black, Arial, sans-serif' }}>
+                  {mktStats.playersNoView}
+                </p>
+                <p style={{ fontSize: 12, color: '#888780', marginTop: 2 }}>no coach has seen them</p>
+              </div>
             </div>
+            {mktStats.totalPlayersForCoverage > 0 && (
+              <div>
+                <div style={{ height: 8, background: '#F1EFE8', borderRadius: 4, overflow: 'hidden' }}>
+                  <div style={{
+                    height: 8, borderRadius: 4, background: '#3DBE72',
+                    width: `${mktStats.pctPlayersViewed}%`,
+                    transition: 'width 0.4s',
+                  }} />
+                </div>
+                <p style={{ fontSize: 10, color: '#888780', marginTop: 4 }}>Coverage</p>
+              </div>
+            )}
           </div>
-          {(appsChartView === 'weekly' ? appsChartData : appsDailyData).length > 1 ? (
-            <ResponsiveContainer width="100%" height={200}>
-              {appsChartView === 'weekly' ? (
-                <LineChart data={appsChartData} margin={{ top: 4, right: 16, bottom: 0, left: -20 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#F1EFE8" vertical={false} />
-                  <XAxis dataKey="label" tick={{ fontSize: 11, fill: '#888780' }} axisLine={false} tickLine={false} interval="preserveStartEnd" />
-                  <YAxis tick={{ fontSize: 11, fill: '#888780' }} axisLine={false} tickLine={false} allowDecimals={false} />
-                  <Tooltip contentStyle={{ background: '#0D1B2E', border: 'none', borderRadius: '8px', fontSize: '12px', color: '#F1EFE8' }} labelStyle={{ color: '#3DBE72', fontWeight: 700, marginBottom: 4 }} formatter={(v: number) => [v, 'Total applications']} />
-                  <Line type="monotone" dataKey="total" stroke="#D4A843" strokeWidth={2.5} dot={false} activeDot={{ r: 4, fill: '#D4A843', strokeWidth: 0 }} />
-                </LineChart>
-              ) : (
-                <BarChart data={appsDailyData} margin={{ top: 4, right: 16, bottom: 0, left: -20 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#F1EFE8" vertical={false} />
-                  <XAxis dataKey="label" tick={{ fontSize: 11, fill: '#888780' }} axisLine={false} tickLine={false} interval={6} />
-                  <YAxis tick={{ fontSize: 11, fill: '#888780' }} axisLine={false} tickLine={false} allowDecimals={false} />
-                  <Tooltip contentStyle={{ background: '#0D1B2E', border: 'none', borderRadius: '8px', fontSize: '12px', color: '#F1EFE8' }} labelStyle={{ color: '#D4A843', fontWeight: 700, marginBottom: 4 }} formatter={(v: number) => [v, 'Applications']} />
-                  <Bar dataKey="total" fill="#D4A843" radius={[3, 3, 0, 0]} />
-                </BarChart>
-              )}
-            </ResponsiveContainer>
-          ) : (
-            <div style={{ height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888780', fontSize: '13px' }}>
-              No applications yet
-            </div>
-          )}
+
+          {/* Top viewed */}
+          <div className="card" style={{ padding: '1.25rem' }}>
+            <p className="card-title">Top viewed players</p>
+            {topViewed.length === 0 ? (
+              <p style={{ fontSize: 13, color: '#888780' }}>No views yet</p>
+            ) : topViewed.map((p, i) => (
+              <div key={p.player_id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 0', borderTop: i === 0 ? 'none' : '0.5px solid #F1EFE8' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ fontSize: 11, color: '#888780', width: 16, flexShrink: 0 }}>{i + 1}</span>
+                  <div>
+                    <p style={{ fontSize: 13, fontWeight: 600, color: '#0D1B2E', margin: 0 }}>{p.first_name} {p.last_name}</p>
+                    <p style={{ fontSize: 11, color: '#888780', margin: 0 }}>{p.position?.replace(/_/g, ' ') || '—'}</p>
+                  </div>
+                </div>
+                <span style={{ fontSize: 13, fontWeight: 700, color: '#0D1B2E', background: '#E8E6DF', borderRadius: 4, padding: '2px 8px' }}>
+                  {p.view_count}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Vacancy performance table */}
@@ -722,62 +601,26 @@ export default function AdminPage() {
               {vacancyPerf.length === 0 ? (
                 <tr><td colSpan={6} style={{ color: '#888780', textAlign: 'center', padding: '20px 0' }}>No vacancies yet</td></tr>
               ) : vacancyPerf.map(r => {
-                const isWarn = r.unreviewed > 0 && r.oldestUnreviewedDays > 7
+                const isWarn = r.apps_unreviewed > 0 && r.oldest_unreviewed_days > 7
                 return (
-                  <tr key={r.vacancyId} className={isWarn ? 'warn-row' : ''}>
+                  <tr key={r.vacancy_id} className={isWarn ? 'warn-row' : ''}>
                     <td style={{ fontWeight: 600 }}>{r.club}</td>
-                    <td style={{ color: '#888780' }}>{r.coachLastSeen ? formatDate(r.coachLastSeen) : '—'}</td>
-                    <td>{r.totalApps}</td>
-                    <td style={{ color: '#0F6E56' }}>{r.reviewed}</td>
+                    <td style={{ color: '#888780' }}>{r.coach_last_seen ? formatDate(r.coach_last_seen) : '—'}</td>
+                    <td>{r.apps_total}</td>
+                    <td style={{ color: '#0F6E56' }}>{r.apps_reviewed}</td>
                     <td>
-                      {r.unreviewed > 0 ? (
+                      {r.apps_unreviewed > 0 ? (
                         <span style={{ fontWeight: 700, color: isWarn ? '#854F0B' : '#0D1B2E' }}>
-                          {r.unreviewed}{isWarn ? ` (${r.oldestUnreviewedDays}d)` : ''}
+                          {r.apps_unreviewed}{isWarn ? ` (${r.oldest_unreviewed_days}d)` : ''}
                         </span>
                       ) : <span style={{ color: '#888780' }}>0</span>}
                     </td>
-                    <td style={{ color: '#888780' }}>{r.lastAppDate ? formatDate(r.lastAppDate) : '—'}</td>
+                    <td style={{ color: '#888780' }}>{r.last_app_date ? formatDate(r.last_app_date) : '—'}</td>
                   </tr>
                 )
               })}
             </tbody>
           </table>
-        </div>
-
-        {/* Player coverage card */}
-        <div className="chart-card" style={{ marginBottom: 24 }}>
-          <p style={{ fontSize: 13, fontWeight: 700, color: '#0D1B2E', marginBottom: '1rem' }}>Player coverage</p>
-          <div style={{ display: 'flex', gap: 32, alignItems: 'center', flexWrap: 'wrap' }}>
-            <div>
-              <p style={{ fontSize: 11, color: '#5F5E5A', fontWeight: 700, marginBottom: 4 }}>PLAYERS WITH AT LEAST 1 VIEW</p>
-              <p style={{ fontSize: 28, fontWeight: 900, color: '#0D1B2E', fontFamily: 'Arial Black, Arial, sans-serif' }}>
-                {mktStats.totalPlayersForCoverage > 0
-                  ? `${Math.round((mktStats.playersWithView / mktStats.totalPlayersForCoverage) * 100)}%`
-                  : '—'}
-              </p>
-              <p style={{ fontSize: 12, color: '#888780', marginTop: 2 }}>{mktStats.playersWithView} of {mktStats.totalPlayersForCoverage} players</p>
-            </div>
-            <div style={{ width: 1, height: 48, background: '#F1EFE8', flexShrink: 0 }} />
-            <div>
-              <p style={{ fontSize: 11, color: '#5F5E5A', fontWeight: 700, marginBottom: 4 }}>PLAYERS WITH ZERO VIEWS</p>
-              <p style={{ fontSize: 28, fontWeight: 900, color: mktStats.playersNoView > 0 ? '#854F0B' : '#0D1B2E', fontFamily: 'Arial Black, Arial, sans-serif' }}>
-                {mktStats.playersNoView}
-              </p>
-              <p style={{ fontSize: 12, color: '#888780', marginTop: 2 }}>never seen by a coach</p>
-            </div>
-            {mktStats.totalPlayersForCoverage > 0 && (
-              <div style={{ flex: 1, minWidth: 120 }}>
-                <div style={{ height: 8, background: '#F1EFE8', borderRadius: 4, overflow: 'hidden' }}>
-                  <div style={{
-                    height: 8, borderRadius: 4, background: '#3DBE72',
-                    width: `${Math.round((mktStats.playersWithView / mktStats.totalPlayersForCoverage) * 100)}%`,
-                    transition: 'width 0.4s',
-                  }} />
-                </div>
-                <p style={{ fontSize: 10, color: '#888780', marginTop: 4 }}>Coverage</p>
-              </div>
-            )}
-          </div>
         </div>
 
         {/* ── Three breakdown cards ── */}
