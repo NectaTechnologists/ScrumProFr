@@ -605,7 +605,7 @@ export default function AdminPage() {
                 return (
                   <tr key={r.vacancy_id} className={isWarn ? 'warn-row' : ''}>
                     <td style={{ fontWeight: 600 }}>{r.club}</td>
-                    <td style={{ color: '#888780' }}>{r.coach_last_seen ? formatDate(r.coach_last_seen) : '—'}</td>
+                    <td style={{ color: '#888780' }}>{r.coach_last_seen === 'Managed by Gainline' ? 'Managed by Gainline' : r.coach_last_seen ? formatDate(r.coach_last_seen) : '—'}</td>
                     <td>{r.apps_total}</td>
                     <td style={{ color: '#0F6E56' }}>{r.apps_reviewed}</td>
                     <td>
