@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { t, Lang } from '@/lib/translations'
+import { openCookieSettings } from '@/lib/consent'
+import { setStoredLang } from '@/lib/lang'
 
 const FLAG_EN = '🇬🇧'
 const FLAG_FR = '🇫🇷'
@@ -29,7 +31,7 @@ export default function Home() {
 
   function toggleLang(l: Lang) {
     setLang(l)
-    localStorage.setItem('gainline_lang', l)
+    setStoredLang(l)
   }
 
   const T = t[lang]
@@ -562,6 +564,13 @@ export default function Home() {
           <a href="/privacy" className="footer-link">{T.footer_privacy}</a>
           <a href="/terms" className="footer-link">{T.footer_terms}</a>
           <a href="mailto:hello@gainline.pro" className="footer-link">{T.footer_contact}</a>
+          <button
+            onClick={openCookieSettings}
+            className="footer-link"
+            style={{ background: 'none', border: 'none', cursor: 'pointer', font: 'inherit' }}
+          >
+            {T.footer_cookie_settings}
+          </button>
         </div>
       </footer>
     </>

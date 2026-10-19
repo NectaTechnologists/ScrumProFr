@@ -9,11 +9,12 @@ const supabaseAdmin = createClient(
 
 export async function GET() {
   try {
-    const [cvStats, topViewed, appStats, vacPerf] = await Promise.all([
+    const [cvStats, topViewed, appStats, vacPerf, attributionStats] = await Promise.all([
       supabaseAdmin.rpc('admin_cv_stats', { days: 30 }),
       supabaseAdmin.rpc('admin_top_viewed_players', { lim: 10 }),
       supabaseAdmin.rpc('admin_app_stats', { days: 30 }),
       supabaseAdmin.rpc('admin_vacancy_perf'),
+      supabaseAdmin.rpc('admin_signup_attribution_stats'),
     ])
 
     if (cvStats.error) throw cvStats.error
@@ -24,6 +25,7 @@ export async function GET() {
       topViewed: topViewed.data ?? [],
       apps: appStats.data?.[0] ?? null,
       vacancyPerf: vacPerf.data ?? [],
+      attribution: attributionStats.data ?? [],
     })
   } catch (err: any) {
     console.error('admin/marketplace-stats error:', err)

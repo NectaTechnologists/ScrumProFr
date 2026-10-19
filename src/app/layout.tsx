@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import ConsentBanner from "@/components/ConsentBanner";
+import AttributionCapture from "@/components/AttributionCapture";
+import MetaPixel from "@/components/MetaPixel";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +40,9 @@ export const metadata = {
     description: 'The digital platform for rugby player pathways.',
     images: ['/gainline-og-image.svg'],
   },
+  ...(process.env.NEXT_PUBLIC_META_DOMAIN_VERIFICATION
+    ? { other: { 'facebook-domain-verification': process.env.NEXT_PUBLIC_META_DOMAIN_VERIFICATION } }
+    : {}),
 }
 
 export default function RootLayout({
@@ -49,7 +55,12 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <AttributionCapture />
+        <MetaPixel />
+        <ConsentBanner />
+      </body>
     </html>
   );
 }

@@ -8,15 +8,7 @@ import {
   LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer,
   BarChart, Bar
 } from 'recharts'
-
-// Test accounts to exclude from all stats
-const TEST_EMAILS = [
-  'brucekay@outlook.com',
-  'bruce@necta.co.za',
-  'bruce+1@necta.co.za',
-  'brucekay+1@outlook.com',
-  'brucekay+3@outlook.com',
-]
+import { TEST_EMAILS } from '@/lib/testAccounts'
 
 export default function AdminPage() {
   const supabase = createClient()
@@ -73,6 +65,14 @@ export default function AdminPage() {
   const [appsChartData, setAppsChartData] = useState<{ label: string, total: number }[]>([])
   const [appsDailyData, setAppsDailyData] = useState<{ label: string, total: number }[]>([])
   const [appsChartView, setAppsChartView] = useState<'weekly' | 'daily'>('weekly')
+
+  // Signups by ad campaign (from signup_attribution, via marketplace-stats API)
+  const [attributionData, setAttributionData] = useState<{
+    utm_source: string
+    utm_campaign: string
+    role: 'player' | 'coach'
+    signup_count: number
+  }[]>([])
 
   useEffect(() => {
     async function load() {
@@ -308,12 +308,29 @@ export default function AdminPage() {
 
         setTopViewed(mkt.topViewed ?? [])
         setVacancyPerf(mkt.vacancyPerf ?? [])
+        setAttributionData(mkt.attribution ?? [])
       }
 
       setLoading(false)
     }
     load()
   }, [])
+
+  // Group attribution rows (which come back split by role) into one row per
+  // source/campaign with player + coach counts side by side.
+  const campaignRows = (() => {
+    const byKey = new Map<string, { source: string, campaign: string, players: number, coaches: number }>()
+    attributionData.forEach(r => {
+      const key = `${r.utm_source}|||${r.utm_campaign}`
+      const row = byKey.get(key) || { source: r.utm_source, campaign: r.utm_campaign, players: 0, coaches: 0 }
+      if (r.role === 'player') row.players += r.signup_count
+      else row.coaches += r.signup_count
+      byKey.set(key, row)
+    })
+    return Array.from(byKey.values()).sort(
+      (a, b) => (b.players + b.coaches) - (a.players + a.coaches)
+    )
+  })()
 
   const maxPos = Math.max(...positionData.map(p => p.count), 1)
   const maxAge = Math.max(...ageData.map(a => a.count), 1)
@@ -485,6 +502,35 @@ export default function AdminPage() {
               Not enough data yet
             </div>
           )}
+        </div>
+
+        {/* ── Signups by ad campaign ── */}
+        <div className="table-card" style={{ marginBottom: 16 }}>
+          <p className="table-title">Signups by campaign</p>
+          <table>
+            <thead>
+              <tr>
+                <th>SOURCE</th>
+                <th>CAMPAIGN</th>
+                <th>PLAYERS</th>
+                <th>COACHES</th>
+                <th>TOTAL</th>
+              </tr>
+            </thead>
+            <tbody>
+              {campaignRows.length === 0 ? (
+                <tr><td colSpan={5} style={{ color: '#888780', textAlign: 'center', padding: '20px 0' }}>No signups yet</td></tr>
+              ) : campaignRows.map(r => (
+                <tr key={`${r.source}-${r.campaign}`}>
+                  <td style={{ fontWeight: 600 }}>{r.source}</td>
+                  <td style={{ color: '#888780' }}>{r.campaign}</td>
+                  <td>{r.players}</td>
+                  <td>{r.coaches}</td>
+                  <td style={{ fontWeight: 700 }}>{r.players + r.coaches}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
         {/* ── Marketplace health ── */}
