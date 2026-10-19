@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import { recordSignupAndFirePixel } from '@/lib/signupTracking'
 
 const orgTypes = [
   'Professional Club',
@@ -78,6 +79,8 @@ export default function CoachRegisterPage() {
         role_title: form.role_title,
         country: form.country,
       }, { onConflict: 'user_id' })
+
+      await recordSignupAndFirePixel(supabase, data.user.id, form.email, 'coach')
     }
 
     await fetch('/api/send-email', {

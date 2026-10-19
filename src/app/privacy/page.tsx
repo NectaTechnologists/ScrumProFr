@@ -257,9 +257,12 @@ export default function PrivacyPolicy() {
         </div>
 
         <div className="legal-section">
-          <h2>11. Cookies</h2>
-          <p>Gainline uses essential cookies to operate the platform — specifically for authentication and session management. We do not use advertising cookies or third-party tracking cookies.</p>
-          <p>By using Gainline, you consent to the use of these essential cookies. You can disable cookies in your browser settings, but this will prevent you from logging in to the platform.</p>
+          <h2>11. Cookies and advertising</h2>
+          <p><strong>Essential cookies</strong> — Gainline uses essential cookies to operate the platform, specifically for authentication, session management, and remembering your cookie choice. These are required for the platform to function and are not subject to the consent banner.</p>
+          <p><strong>Advertising cookies (Meta Pixel)</strong> — with your consent, given via the cookie banner shown on your first visit, we load the Meta Pixel, a tracking technology provided by Meta (Facebook/Instagram). It is used to measure the performance of our advertising campaigns and to understand when someone who clicked one of our ads goes on to create a Gainline account. It is not loaded, and no data is sent to Meta, until you accept.</p>
+          <p>The Meta Pixel may collect: pages you visit on gainline.pro, the fact that you completed registration (and whether as a player or coach), your IP address and browser information, and identifiers from the ad click that brought you here (such as an &ldquo;fbclid&rdquo; parameter). Meta&rsquo;s own use of this data is governed by its own privacy policy.</p>
+          <p><strong>Campaign attribution</strong> — regardless of your cookie choice, when you arrive via a tagged link (for example from one of our ads) we record, against your account at signup, which campaign and source referred you (UTM parameters and, where present, the Meta click identifier), your referring page, and the page you landed on. This is first-party data used only for our own reporting on which campaigns bring players and coaches to Gainline, and is never sold or shared with third parties beyond what is described above.</p>
+          <p>You can change your cookie choice at any time using the &ldquo;Cookie settings&rdquo; link in the site footer. Rejecting cookies means the Meta Pixel will not load and no advertising cookie will be stored; it does not affect your ability to log in or use the platform.</p>
         </div>
 
         <div className="legal-section">

@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { t, Lang } from '@/lib/translations'
+import { recordSignupAndFirePixel } from '@/lib/signupTracking'
+import { setStoredLang } from '@/lib/lang'
 
 const FLAG_EN = '🇬🇧'
 const FLAG_FR = '🇫🇷'
@@ -27,7 +29,7 @@ export default function LoginPage() {
 
   function toggleLang(l: Lang) {
     setLang(l)
-    localStorage.setItem('gainline_lang', l)
+    setStoredLang(l)
   }
 
   const T = t[lang]
@@ -38,7 +40,14 @@ export default function LoginPage() {
     setMessage('')
     if (isSignUp) {
       const { data, error } = await supabase.auth.signUp({ email, password })
-      if (error) { setMessage(error.message) } else { router.push('/onboarding') }
+      if (error) {
+        setMessage(error.message)
+      } else {
+        if (data.user) {
+          await recordSignupAndFirePixel(supabase, data.user.id, email, 'player')
+        }
+        router.push('/onboarding')
+      }
       } else {
       const { error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) {

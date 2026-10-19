@@ -186,6 +186,13 @@ export const t = {
     footer_privacy: 'Privacy',
     footer_terms: 'Terms',
     footer_contact: 'Contact',
+    footer_cookie_settings: 'Cookie settings',
+
+    // Cookie consent banner
+    consent_message: 'We use cookies to run Gainline and, with your permission, to measure how well our ads are working. You can change your mind at any time.',
+    consent_accept: 'Accept',
+    consent_reject: 'Reject',
+    consent_privacy_link: 'Privacy policy',
   },
 
   fr: {
@@ -373,5 +380,12 @@ export const t = {
     footer_privacy: 'Confidentialité',
     footer_terms: 'Conditions',
     footer_contact: 'Contact',
+    footer_cookie_settings: 'Paramètres des cookies',
+
+    // Cookie consent banner
+    consent_message: 'Nous utilisons des cookies pour faire fonctionner Gainline et, avec votre accord, pour mesurer l\'efficacité de nos publicités. Vous pouvez changer d\'avis à tout moment.',
+    consent_accept: 'Accepter',
+    consent_reject: 'Refuser',
+    consent_privacy_link: 'Politique de confidentialité',
   }
 }
